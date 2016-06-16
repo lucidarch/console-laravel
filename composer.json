@@ -13,6 +13,7 @@
             "Lucid\\Console\\": "src/"
         }
     },
+    "bin": ["lucid"],
     "minimum-stability": "stable",
     "require": {
         "symfony/console": "^3.1",
