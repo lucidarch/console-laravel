@@ -1,0 +1,13 @@
+- [ ] Generator
+    - [ ] Generate Services
+    - [ ] Generate Features
+    - [ ] Generate Jobs
+- [ ] Specifying Laravel version on installation
+- [ ] Documentation
+- [ ] Change namespace using CLI
+    - By extending `Illuminate\Foundation\Console\AppNameCommand`
+- [ ] Listing
+    - [ ] Services
+    - [ ] Features (per service, and across all services)
+    - [ ] Jobs per feature
+- [ ] Pretty Interface

@@ -1,0 +1,21 @@
+{
+    "name": "vinelab/lucid-cli",
+    "description": "The Command Line Interface for Lucid",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Abed Halawi",
+            "email": "abed.halawi@vinelab.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Lucid\\Console\\": "src/"
+        }
+    },
+    "minimum-stability": "stable",
+    "require": {
+        "symfony/console": "^3.1",
+        "symfony/process": "^3.1"
+    }
+}
