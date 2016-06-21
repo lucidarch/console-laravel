@@ -1,0 +1,39 @@
+<?php
+namespace {{namespace}};
+
+use View;
+use Lang;
+use Illuminate\Support\ServiceProvider;
+use {{namespace}}\RouteServiceProvider;
+use Illuminate\Translation\TranslationServiceProvider;
+
+class {{name}}ServiceProvider extends ServiceProvider
+{
+    /**
+    * Register the {{name}} service provider.
+    *
+    * @return void
+    */
+    public function register()
+    {
+        $this->app->register(RouteServiceProvider::class);
+
+        $this->registerResources();
+    }
+
+    /**
+     * Register the {{name}} service resource namespaces.
+     *
+     * @return void
+     */
+    protected function registerResources()
+    {
+        // Translation must be registered ahead of adding lang namespaces
+        $this->app->register(TranslationServiceProvider::class);
+
+        Lang::addNamespace('{{slug}}', realpath(__DIR__.'/../resources/lang'));
+
+        View::addNamespace('{{slug}}', base_path('resources/views/vendor/{{slug}}'));
+        View::addNamespace('{{slug}}', realpath(__DIR__.'/../resources/views'));
+    }
+}

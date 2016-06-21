@@ -1,13 +1,21 @@
 #!/usr/bin/env php
 <?php
 
-if (file_exists(__DIR__.'/../../autoload.php')) {
-    require __DIR__.'/../../autoload.php';
-} else {
-    require __DIR__.'/vendor/autoload.php';
-}
+use Illuminate\Container\Container;
+use Lucid\Console\Commands\NewCommand;
+use Lucid\Console\Commands\ServiceMakeCommand;
+use Lucid\Console\Commands\ControllerMakeCommand;
 
-$app = new Symfony\Component\Console\Application('Lucid CLI', '0.1.0');
-$app->add(new Lucid\Console\Commands\NewCommand());
+require __DIR__.'/../../bootstrap/autoload.php';
+$app = require __DIR__.'/../../bootstrap/app.php';
 
-$app->run();
+$kernel = $app->make(Lucid\Console\Kernel::class);
+
+$status = $kernel->handle(
+    $input = new Symfony\Component\Console\Input\ArgvInput,
+    new Symfony\Component\Console\Output\ConsoleOutput
+);
+
+$kernel->terminate($input, $status);
+
+exit($status);

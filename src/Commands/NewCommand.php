@@ -1,7 +1,7 @@
 <?php
 
 /*
- * This file is part of the lucid-cli project.
+ * This file is part of the lucid-console project.
  *
  * (c) Vinelab <dev@vinelab.com>
  *
