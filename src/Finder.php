@@ -85,4 +85,17 @@ trait Finder
     {
         return $this->findSourceRoot().'/Services/'.$service;
     }
+
+    /**
+     * Find the file path for the given feature.
+     *
+     * @param  string $service
+     * @param  string $feature
+     *
+     * @return string
+     */
+    public function findFeaturePath($service, $feature)
+    {
+        return $this->findServicePath($service).'/Features/'.$feature.'.php';
+    }
 }

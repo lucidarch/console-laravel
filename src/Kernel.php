@@ -26,7 +26,7 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\NewCommand::class,
         Commands\ServiceMakeCommand::class,
-        Commands\ControllerMakeCommand::class,
+        Commands\FeatureMakeCommand::class,
     ];
 
 }

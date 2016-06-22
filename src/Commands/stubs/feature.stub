@@ -1,0 +1,17 @@
+<?php
+namespace {{namespace}};
+
+use {{foundation_namespace}}\Feature;
+
+class {{feature}} extends Feature
+{
+    public function __construct()
+    {
+
+    }
+
+    public function handle()
+    {
+
+    }
+}
