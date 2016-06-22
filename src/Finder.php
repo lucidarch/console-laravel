@@ -43,6 +43,16 @@ trait Finder
     }
 
     /**
+     * Find the namespace of the foundation.
+     *
+     * @return string
+     */
+    public function findFoundationNamespace()
+    {
+        return $this->findRootNamespace().'\Foundation';
+    }
+
+    /**
      * Find the namespace for the given service name.
      *
      * @param  string $service
