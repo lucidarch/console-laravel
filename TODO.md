@@ -1,7 +1,7 @@
-- [ ] Generator
+- [x] Generator
     - [x] Generate Services
-    - [ ] Generate Features
-    - [ ] Generate Jobs
+    - [x] Generate Features
+    - [x] Generate Jobs
 - [x] Replace modules with custom-built services
 - [ ] Specifying Laravel version on installation
 - [ ] Documentation

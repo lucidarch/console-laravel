@@ -98,4 +98,53 @@ trait Finder
     {
         return $this->findServicePath($service).'/Features/'.$feature.'.php';
     }
+
+    /**
+     * Find the path for the given domain.
+     *
+     * @param  string $domain
+     *
+     * @return string
+     */
+    public function findDomainPath($domain)
+    {
+        return $this->findSourceRoot().'/Domains/'.$domain;
+    }
+
+    /**
+     * Find the path for the given job name.
+     *
+     * @param  string$domain
+     * @param  string$job
+     *
+     * @return string
+     */
+    public function findJobPath($domain, $job)
+    {
+        return $this->findDomainPath($domain).'/Jobs/'.$job.'.php';
+    }
+
+    /**
+     * Find the namespace for the given domain.
+     *
+     * @param  string $domain
+     *
+     * @return string
+     */
+    public function findDomainNamespace($domain)
+    {
+        return $this->findRootNamespace().'\\Domains\\'.$domain;
+    }
+
+    /**
+     * Find the namespace for the given domain's Jobs.
+     *
+     * @param  string $domain
+     * 
+     * @return string
+     */
+    public function findDomainJobsNamespace($domain)
+    {
+        return $this->findDomainNamespace($domain).'\\Jobs';
+    }
 }

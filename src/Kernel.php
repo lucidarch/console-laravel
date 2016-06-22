@@ -27,6 +27,7 @@ class Kernel extends ConsoleKernel
         Commands\NewCommand::class,
         Commands\ServiceMakeCommand::class,
         Commands\FeatureMakeCommand::class,
+        Commands\JobMakeCommand::class,
     ];
 
 }
