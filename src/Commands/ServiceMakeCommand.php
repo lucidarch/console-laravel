@@ -12,7 +12,7 @@
 namespace Lucid\Console\Commands;
 
 use Lucid\Console\Finder;
-use Illuminate\Filesystem\Filesystem;
+use Lucid\Console\Filesystem;
 use Illuminate\Console\GeneratorCommand;
 use Illuminate\Config\Repository as Config;
 use Symfony\Component\Console\Input\InputOption;
@@ -25,6 +25,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ServiceMakeCommand extends GeneratorCommand
 {
     use Finder;
+    use Filesystem;
 
     /**
      * The base namespace for this command.
@@ -55,13 +56,6 @@ class ServiceMakeCommand extends GeneratorCommand
     protected $description = 'Create a new Service';
 
     /**
-     * The type of class being generated.
-     *
-     * @var string
-     */
-    protected $type = 'Service';
-
-    /**
      * The directories to be created under the service directory.
      *
      * @var array
@@ -76,6 +70,7 @@ class ServiceMakeCommand extends GeneratorCommand
 		'Http/Middleware/',
 		'Http/Requests/',
 		'Providers/',
+        'Features/',
 		'resources/',
 		'resources/lang/',
 		'resources/views/',
@@ -105,7 +100,7 @@ class ServiceMakeCommand extends GeneratorCommand
         $path = $this->getPath($name);
 
         if ($this->files->exists($path)) {
-            $this->error($this->type.' already exists!');
+            $this->error('Service already exists!');
 
             return false;
         }
@@ -147,31 +142,6 @@ class ServiceMakeCommand extends GeneratorCommand
     public function getPath($name)
     {
         return $this->findServicePath($name);
-    }
-
-    /**
-     * Create an empty directory at the given path.
-     *
-     * @param  string $path
-     *
-     * @return bool
-     */
-    public function createDirectory($path)
-    {
-        return $this->files->makeDirectory($path, 0755, true, true);
-    }
-
-    /**
-     * Create a file at the given path with the given contents.
-     *
-     * @param  string $path
-     * @param  string $contents
-     *
-     * @return bool
-     */
-    public function createFile($path, $contents = '')
-    {
-        return $this->files->put($path, $contents);
     }
 
     /**
@@ -236,7 +206,7 @@ class ServiceMakeCommand extends GeneratorCommand
     {
         $serviceNamespace = $this->findServiceNamespace($name);
         $controllers = $serviceNamespace.'\Http\Controllers';
-        $foundation = $this->findRootNamespace().'\Foundation';
+        $foundation = $this->findFoundationNamespace();
 
         $content = file_get_contents(__DIR__.'/stubs/routeserviceprovider.stub');
         $content = str_replace(
