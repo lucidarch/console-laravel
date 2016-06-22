@@ -45,6 +45,11 @@ class FeatureMakeCommand extends GeneratorCommand
      */
     protected $type = 'Feature';
 
+    /**
+     * Execute the console command.
+     *
+     * @return bool|null
+     */
     public function fire()
     {
         $service = studly_case($this->argument('service'));
@@ -69,7 +74,7 @@ class FeatureMakeCommand extends GeneratorCommand
 
         $this->createFile($path, $content);
 
-        $this->info('Class '.$feature.' created successfully.'.
+        $this->info('Feature class '.$feature.' created successfully.'.
             "\n".
             "\n".
             'Find it at <comment>'.strstr($path, 'src/').'</comment>'."\n");
@@ -84,7 +89,7 @@ class FeatureMakeCommand extends GeneratorCommand
     {
         return [
             ['service', InputArgument::REQUIRED, 'The service in which the feature should be implemented.'],
-            ['feature', InputArgument::REQUIRED, 'The feature name'],
+            ['feature', InputArgument::REQUIRED, 'The feature\'s name.'],
         ];
     }
 
