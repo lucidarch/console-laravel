@@ -159,4 +159,29 @@ trait Finder
     {
         return $this->findDomainNamespace($domain).'\\Jobs';
     }
+
+    /**
+     * Find the path for the give controller class.
+     *
+     * @param  string $service
+     * @param  string $controller
+     *
+     * @return string
+     */
+    public function findControllerPath($service, $controller)
+    {
+        return $this->findServicePath($service).'/Http/Controllers/'.$controller.'.php';
+    }
+
+    /**
+     * Find the namespace of controllers in the given service.
+     *
+     * @param  string $service
+     *
+     * @return string          
+     */
+    public function findControllerNamespace($service)
+    {
+        return $this->findServiceNamespace($service).'\\Http\\Controllers';
+    }
 }
