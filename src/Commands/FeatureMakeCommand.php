@@ -63,7 +63,7 @@ class FeatureMakeCommand extends GeneratorCommand
             return false;
         }
 
-        $namespace = $this->findServiceNamespace($service).'\\Features';
+        $namespace = $this->findFeatureNamespace($service);
 
         $content = file_get_contents($this->getStub());
         $content = str_replace(

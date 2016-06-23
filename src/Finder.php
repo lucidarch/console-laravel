@@ -100,6 +100,18 @@ trait Finder
     }
 
     /**
+     * Find the namespace for features in the given service.
+     *
+     * @param  string $service
+     *
+     * @return string
+     */
+    public function findFeatureNamespace($service)
+    {
+        return $this->findServiceNamespace($service).'\\Features';
+    }
+
+    /**
      * Find the path for the given domain.
      *
      * @param  string $domain
@@ -140,7 +152,7 @@ trait Finder
      * Find the namespace for the given domain's Jobs.
      *
      * @param  string $domain
-     * 
+     *
      * @return string
      */
     public function findDomainJobsNamespace($domain)
