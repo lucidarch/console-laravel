@@ -6,8 +6,8 @@ use Lucid\Console\Commands\NewCommand;
 use Lucid\Console\Commands\ServiceMakeCommand;
 use Lucid\Console\Commands\ControllerMakeCommand;
 
-require __DIR__.'/../../bootstrap/autoload.php';
-$app = require __DIR__.'/../../bootstrap/app.php';
+require __DIR__.'/../../../bootstrap/autoload.php';
+$app = require __DIR__.'/../../../bootstrap/app.php';
 
 $kernel = $app->make(Lucid\Console\Kernel::class);
 
