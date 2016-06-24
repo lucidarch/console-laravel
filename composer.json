@@ -1,6 +1,7 @@
 {
-    "name": "vinelab/lucid-cli",
-    "description": "The Command Line Interface for Lucid",
+    "name": "vinelab/lucid-console",
+    "description": "The Command Line Interface for the Lucid Architecture",
+    "keywords": ["laravel", "lucid", "mvc", "ddd", "domains"],
     "license": "MIT",
     "authors": [
         {
