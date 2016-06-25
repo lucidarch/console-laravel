@@ -25,10 +25,11 @@ class Kernel extends ConsoleKernel
      */
     protected $commands = [
         Commands\NewCommand::class,
+        Commands\JobMakeCommand::class,
         Commands\ServiceMakeCommand::class,
         Commands\FeatureMakeCommand::class,
-        Commands\JobMakeCommand::class,
+        Commands\ServicesListCommand::class,
+        Commands\FeaturesListCommand::class,
         Commands\ControllerMakeCommand::class,
     ];
-
 }

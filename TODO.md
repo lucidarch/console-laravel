@@ -9,7 +9,8 @@
 - [ ] Change namespace using CLI
     - > By extending `Illuminate\Foundation\Console\AppNameCommand`
 - [ ] Listing
-    - [ ] Services
-    - [ ] Features (per service, and across all services)
+    - [x] Services
+    - [x] Features (per service, and across all services)
     - [ ] Jobs per feature
+    - [ ] Domains
 - [ ] Pretty Interface

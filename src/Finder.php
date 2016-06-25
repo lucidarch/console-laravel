@@ -11,6 +11,14 @@
 
 namespace Lucid\Console;
 
+use Exception;
+use InvalidArgumentException;
+use Lucid\Console\Str;
+use Illuminate\Support\Collection;
+use Lucid\Console\Components\Feature;
+use Lucid\Console\Components\Service;
+use Symfony\Component\Finder\Finder as SymfonyFinder;
+
 /**
  * @author Abed Halawi <abed.halawi@vinelab.com>
  */
@@ -39,7 +47,7 @@ trait Finder
             if ($directory === $this->srcDirectoryName.'/') return trim($namespace, '\\');
         }
 
-        throw Exception('App namespace not set in composer.json');
+        throw new Exception('App namespace not set in composer.json');
     }
 
     /**
@@ -75,6 +83,16 @@ trait Finder
     }
 
     /**
+     * Find the root path of all the services.
+     *
+     * @return string
+     */
+    public function findServicesRootPath()
+    {
+        return $this->findSourceRoot().'/Services';
+    }
+
+    /**
      * Find the path to the directory of the given service name.
      *
      * @param  string $service
@@ -83,7 +101,19 @@ trait Finder
      */
     public function findServicePath($service)
     {
-        return $this->findSourceRoot().'/Services/'.$service;
+        return $this->findServicesRootPath()."/$service";
+    }
+
+    /**
+     * Find the features root path in the given service.
+     *
+     * @param  string $service
+     *
+     * @return string
+     */
+    public function findFeaturesRootPath($service)
+    {
+        return $this->findServicePath($service).'/Features';
     }
 
     /**
@@ -96,7 +126,7 @@ trait Finder
      */
     public function findFeaturePath($service, $feature)
     {
-        return $this->findServicePath($service).'/Features/'.$feature.'.php';
+        return $this->findFeaturesRootPath($service)."/$feature.php";
     }
 
     /**
@@ -178,10 +208,89 @@ trait Finder
      *
      * @param  string $service
      *
-     * @return string          
+     * @return string
      */
     public function findControllerNamespace($service)
     {
         return $this->findServiceNamespace($service).'\\Http\\Controllers';
+    }
+
+    /**
+     * Get the list of services.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function listServices()
+    {
+        $finder = new SymfonyFinder();
+
+        $services = new Collection();
+        foreach ($finder->directories()->depth('== 0')->in($this->findServicesRootPath())->directories() as $dir) {
+            $realPath = $dir->getRealPath();
+            $services->push(new Service($dir->getRelativePathName(), $realPath, $this->relativeFromReal($realPath)));
+        }
+
+        return $services;
+    }
+
+    /**
+     * Get the list of features,
+     * optionally withing a specified service.
+     *
+     * @param string $serviceName
+     *
+     * @return \Illuminate\Support\Collection
+     * @throws \Exception
+     */
+    public function listFeatures($serviceName = '')
+    {
+        $services = $this->listServices();
+
+        if (!empty($serviceName)) {
+            $services = $services->filter(function($service) use($serviceName) {
+                return $service->name === $serviceName || $service->slug === $serviceName;
+            });
+
+            if ($services->isEmpty()) {
+                throw new InvalidArgumentException('Service "'.$serviceName.'" could not be found.');
+            }
+        }
+
+
+        $features = [];
+        foreach ($services as $service) {
+            $serviceFeatures = new Collection();
+            $finder = new SymfonyFinder();
+            $files = $finder
+                ->name('*Feature.php')
+                ->in($this->findFeaturesRootPath($service->name))
+                ->files();
+            foreach ($files as $file) {
+                $fileName = $file->getRelativePathName();
+                $title = Str::realName($fileName, '/Feature.php/');
+                $realPath = $file->getRealPath();
+                $relativePath = $this->relativeFromReal($realPath);
+
+                $serviceFeatures->push(new Feature($title, $fileName, $realPath, $relativePath, $service));
+            }
+
+            // add to the features array as [service_name => Collection(Feature)]
+            $features[$service->name] = $serviceFeatures;
+        }
+
+        return $features;
+    }
+
+    /**
+     * Get the relative version of the given real path.
+     *
+     * @param  string $path
+     * @param  string $needle
+     *
+     * @return string
+     */
+    protected function relativeFromReal($path, $needle = 'src/')
+    {
+        return strstr($path, $needle);
     }
 }
