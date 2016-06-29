@@ -22,14 +22,43 @@ class Str
      * 	i.e. the name: "CreateArticleFeature.php" with pattern '/Feature.php'
      * 		will result in "Create Article"
      *
-     * @param  [type] $name    [description]
-     * @param  string $pattern [description]
-     * @return [type]          [description]
+     * @param  string $name
+     * @param  string $pattern
+     *
+     * @return string
      */
     public static function realName($name, $pattern = '//')
     {
         $name = preg_replace($pattern, '', $name);
 
         return implode(' ', preg_split('/(?=[A-Z])/', $name, -1, PREG_SPLIT_NO_EMPTY));
+    }
+
+    /**
+     * Get the given name formatted as a feature.
+     *
+     * 	i.e. "Create Post Feature", "CreatePostFeature.php", "createPost", "createe"
+     * 	and many other forms will be transformed to "CreatePostFeature" which is
+     * 	the standard feature class name.
+     *
+     * @param  string $name
+     *
+     * @return string
+     */
+    public static function feature($name)
+    {
+        return studly_case(preg_replace('/Feature(\.php)?$/', '', $name).'Feature');
+    }
+
+    /**
+     * Get the given name formatted as a service name.
+     *
+     * @param  string $name
+     *
+     * @return string
+     */
+    public static function service($name)
+    {
+        return studly_case($name);
     }
 }

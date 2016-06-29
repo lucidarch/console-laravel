@@ -11,6 +11,7 @@
 
 namespace Lucid\Console\Commands;
 
+use Lucid\Console\Str;
 use Lucid\Console\Finder;
 use Lucid\Console\Filesystem;
 use Illuminate\Console\GeneratorCommand;
@@ -114,6 +115,6 @@ class FeatureMakeCommand extends GeneratorCommand
      */
     protected function parseName($name)
     {
-        return studly_case(preg_replace('/Feature(\.php)?$/', '', $name).'Feature');
+        return Str::feature($name);
     }
 }

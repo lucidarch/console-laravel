@@ -11,6 +11,7 @@
 
 namespace Lucid\Console\Commands;
 
+use Lucid\Console\Str;
 use Lucid\Console\Finder;
 use Lucid\Console\Filesystem;
 use Illuminate\Console\GeneratorCommand;
@@ -93,7 +94,7 @@ class ServiceMakeCommand extends GeneratorCommand
      */
     public function fire()
     {
-        $name = studly_case($this->getNameInput());
+        $name = Str::service($this->getNameInput());
 
         $slug = snake_case($name);
 

@@ -34,8 +34,13 @@ class FeaturesListCommand extends Command
      *
      * @var string
      */
-    protected $description = 'List the services in this project.';
+    protected $description = 'List the features.';
 
+    /**
+     * Execute the console command.
+     *
+     * @return bool|null
+     */
     public function fire()
     {
         foreach ($this->listFeatures($this->argument('service')) as $service => $features) {
