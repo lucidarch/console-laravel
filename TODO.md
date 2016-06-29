@@ -11,6 +11,7 @@
 - [ ] Listing
     - [x] Services
     - [x] Features (per service, and across all services)
-    - [ ] Jobs per feature
+    - [x] Jobs per feature
     - [ ] Domains
+    - [ ] Jobs per domain
 - [ ] Pretty Interface

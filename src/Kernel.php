@@ -31,5 +31,6 @@ class Kernel extends ConsoleKernel
         Commands\ServicesListCommand::class,
         Commands\FeaturesListCommand::class,
         Commands\ControllerMakeCommand::class,
+        Commands\FeatureDescribeCommand::class,
     ];
 }

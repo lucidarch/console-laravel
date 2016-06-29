@@ -234,6 +234,57 @@ trait Finder
     }
 
     /**
+     * Find the service for the given service name.
+     *
+     * @param  string $service
+     *
+     * @return \Lucid\Console\Components\Service
+     */
+    public function findService($service)
+    {
+        $finder = new SymfonyFinder();
+        $dirs = $finder->name($service)->in($this->findServicesRootPath())->directories();
+        if ($dirs->count() < 1) {
+            throw new Exception('Service "'.$service.'" could not be found.');
+        }
+
+        foreach ($dirs as $dir) {
+            $path = $dir->getRealPath();
+
+            return  new Service(Str::service($service), $path, $this->relativeFromReal($path));
+        }
+    }
+
+    /**
+     * Find the feature for the given feature name.
+     *
+     * @param  string $name
+     *
+     * @return \Lucid\Console\Components\Feature
+     */
+    public function findFeature($name)
+    {
+        $name = Str::feature($name);
+        $fileName = "$name.php";
+
+        $finder = new SymfonyFinder();
+        $files = $finder->name($fileName)->in($this->findServicesRootPath())->files();
+        foreach ($files as $file) {
+            $path = $file->getRealPath();
+            $serviceName = strstr($file->getRelativePath(), '/', true);
+            $service = $this->findService($serviceName);
+
+            return new Feature(
+                Str::realName($name, '/Feature/'),
+                $fileName,
+                $path,
+                $this->relativeFromReal($path),
+                $service
+            );
+        }
+    }
+
+    /**
      * Get the list of features,
      * optionally withing a specified service.
      *
@@ -255,7 +306,6 @@ trait Finder
                 throw new InvalidArgumentException('Service "'.$serviceName.'" could not be found.');
             }
         }
-
 
         $features = [];
         foreach ($services as $service) {
