@@ -52,9 +52,33 @@ class Parser
 
     public function parseFunctionBody($contents, $function)
     {
-        $pattern = "/function\s$function\([a-zA-Z0-9_\$\s]+\)?". // match "function handle(...)"
-            '[\n\s]?[\t\s]*'. // regardless of the indentation preceding the {
-            '{([^{}]*)}/'; // find everything within braces.
+        // $pattern = "/function\s$function\([a-zA-Z0-9_\$\s,]+\)?". // match "function handle(...)"
+        //     '[\n\s]?[\t\s]*'. // regardless of the indentation preceding the {
+        //     '{([^{}]*)}/'; // find everything within braces.
+
+        $pattern = '~^\s*[\w\s]+\(.*\)\s*\K({((?>"[^"]*+"|\'[^\']*+\'|//.*$|/\*[\s\S]*?\*/|#.*$|<<<\s*["\']?(\w+)["\']?[^;]+\3;$|[^{}<\'"/#]++|[^{}]++|(?1))*)})~m';
+
+        // '~^ \s* [\w\s]+ \( .* \) \s* \K'.       # how it matches a function definition
+        //      '('.                                  # (1 start)
+        //           '{'.                             # opening brace
+        //           '('.                             # (2 start)
+        /*                '(?>'.*/                      # atomic grouping (for its non-capturing purpose only)
+        //                     '" [^"]*+ "'.          # double quoted strings
+        //                  '|  \' [^\']*+ \''.       # single quoted strings
+        //                  '|  // .* $'.             # a comment block starting with //
+        //                  '|  /\* [\s\S]*? \*/'.    # a multi line comment block /*...*/
+        //                  '|  \# .* $'.             # a single line comment block starting with #...
+        //                  '|  <<< \s* ["\']?'.      # heredocs and nowdocs
+        //                     '( \w+ )'.             # (3) ^
+        //                     '["\']? [^;]+ \3 ; $'. # ^
+        //                  '|  [^{}<\'"/#]++'.       # force engine to backtack if it encounters special characters [<'"/#] (possessive)
+        //                  '|  [^{}]++'.             # default matching bahaviour (possessive)
+        //                  '|  (?1)'.                # recurse 1st capturing group
+        //                ')*'.                       # zero to many times of atomic group
+        //           ')'.                             # (2 end)
+        //           '}'.                             # closing brace
+        //      ')~';                                  # (1 end)
+
 
         preg_match($pattern, $contents, $match);
 
@@ -184,7 +208,7 @@ class Parser
         } else {
             // nope it's just Space::class, we will figure
             // out the namespace from a "use" statement.
-            $name = str_replace('::class', '', $match);
+            $name = str_replace(['::class', ');'], '', $match);
             preg_match("/use\s(.*$name)/", $contents, $namespace);
             // it is necessary to have a \ at the beginning.
             $namespace = '\\'.preg_replace('/^\\\/', '', $namespace[1]);
@@ -207,7 +231,7 @@ class Parser
         $match = str_replace('new ', '', $match);
 
         // match the job's class name
-        preg_match('/(.*Job).*\);/', $match, $name);
+        preg_match('/(.*Job).*[\);]?/', $match, $name);
         $name = $name[1];
 
         // Determine Namespace
