@@ -45,19 +45,24 @@
       */
      public function fire()
      {
-         $feature = $this->findFeature('Create Article');
-         $parser = new Parser();
-         $jobs = $parser->parseFeatureJobs($feature);
+         if ($feature = $this->findFeature($this->argument('feature'))) {
+            $parser = new Parser();
+            $jobs = $parser->parseFeatureJobs($feature);
 
-         $features = [];
-         foreach ($jobs as $index => $job) {
-             $features[$feature->title][] = [$index+1, $job->title, $job->domain->name, $job->relativePath];
-         }
+            $features = [];
+            foreach ($jobs as $index => $job) {
+                $features[$feature->title][] = [$index+1, $job->title, $job->domain->name, $job->relativePath];
+            }
 
-         foreach ($features as $feature => $jobs) {
-             $this->comment("\n$feature\n");
-             $this->table(['', 'Job', 'Domain', 'Path'], $jobs);
-         }
+            foreach ($features as $feature => $jobs) {
+                $this->comment("\n$feature\n");
+                $this->table(['', 'Job', 'Domain', 'Path'], $jobs);
+            }
+
+            return true;
+        }
+
+        throw new InvalidArgumentException('Feature with name "'.$this->argument('feature').'" not found.');
      }
 
 
