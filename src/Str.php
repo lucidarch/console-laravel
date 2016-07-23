@@ -51,6 +51,36 @@ class Str
     }
 
     /**
+     * Get the given name formatted as a job.
+     *
+     * 	i.e. "Create Post Feature", "CreatePostJob.php", "createPost",
+     * 	and many other forms will be transformed to "CreatePostJob" which is
+     * 	the standard job class name.
+     *
+     * @param  string $name
+     *
+     * @return string
+     */
+    public static function job($name)
+    {
+        return studly_case(preg_replace('/Feature(\.php)?$/', '', $name).'Job');
+    }
+
+    /**
+     * Get the given name formatted as a domain.
+     *
+     * Domain names are just CamelCase
+     *
+     * @param  string $name
+     *
+     * @return string
+     */
+    public static function domain($name)
+    {
+        return studly_case($name);
+    }
+
+    /**
      * Get the given name formatted as a service name.
      *
      * @param  string $name

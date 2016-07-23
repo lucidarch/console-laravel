@@ -26,12 +26,12 @@ class Service extends Component
         ]);
     }
 
-    public function toArray()
-    {
-        $attributes = parent::toArray();
-
-        unset($attributes['realPath']);
-
-        return $attributes;
-    }
+    // public function toArray()
+    // {
+    //     $attributes = parent::toArray();
+    //
+    //     unset($attributes['realPath']);
+    //
+    //     return $attributes;
+    // }
 }

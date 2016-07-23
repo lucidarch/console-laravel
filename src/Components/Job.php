@@ -16,7 +16,7 @@ namespace Lucid\Console\Components;
  */
 class Job extends Component
 {
-    public function __construct($title, $namespace, $file, $path, $relativePath, Domain $domain)
+    public function __construct($title, $namespace, $file, $path, $relativePath, Domain $domain = null, $content = '')
     {
         $this->setAttributes([
             'title' => $title,
@@ -25,6 +25,7 @@ class Job extends Component
             'realPath' => $path,
             'relativePath' => $relativePath,
             'domain' => $domain,
+            'content' => $content,
         ]);
     }
 
@@ -32,7 +33,9 @@ class Job extends Component
     {
         $attributes = parent::toArray();
 
-        $attributes['domain'] = $attributes['domain']->toArray();
+        if ($attributes['domain'] instanceof Domain) {
+            $attributes['domain'] = $attributes['domain']->toArray();
+        }
 
         return $attributes;
     }

@@ -1,0 +1,9 @@
+#services,#domains
+{
+    background: white;
+    border: #cdcdcd thin solid;
+}
+
+.vertical-middle {
+    vertical-align: middle !important;
+}

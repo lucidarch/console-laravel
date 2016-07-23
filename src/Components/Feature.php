@@ -16,7 +16,7 @@ namespace Lucid\Console\Components;
  */
 class Feature extends Component
 {
-    public function __construct($title, $file, $realPath, $relativePath, Service $service)
+    public function __construct($title, $file, $realPath, $relativePath, Service $service, $content = '')
     {
         $this->setAttributes([
             'title' => $title,
@@ -24,19 +24,20 @@ class Feature extends Component
             'file' => $file,
             'realPath' => $realPath,
             'relativePath' => $relativePath,
+            'content' => $content,
         ]);
     }
 
-    public function toArray()
-    {
-        $attributes = parent::toArray();
-
-        // real path not needed
-        unset($attributes['realPath']);
-
-        // map the service object to its name
-        $attributes['service'] = $attributes['service']->name;
-
-        return $attributes;
-    }
+    // public function toArray()
+    // {
+    //     $attributes = parent::toArray();
+    //
+    //     // real path not needed
+    //     unset($attributes['realPath']);
+    //
+    //     // map the service object to its name
+    //     $attributes['service'] = $attributes['service']->name;
+    //
+    //     return $attributes;
+    // }
 }

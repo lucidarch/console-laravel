@@ -17,6 +17,8 @@ use Lucid\Console\Str;
 use Illuminate\Support\Collection;
 use Lucid\Console\Components\Feature;
 use Lucid\Console\Components\Service;
+use Lucid\Console\Components\Domain;
+use Lucid\Console\Components\Job;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
 
 /**
@@ -142,6 +144,16 @@ trait Finder
     }
 
     /**
+     * Find the root path of domains.
+     *
+     * @return string
+     */
+    public function findDomainsRootPath()
+    {
+        return $this->findSourceRoot().'/Domains';
+    }
+
+    /**
      * Find the path for the given domain.
      *
      * @param  string $domain
@@ -150,7 +162,73 @@ trait Finder
      */
     public function findDomainPath($domain)
     {
-        return $this->findSourceRoot().'/Domains/'.$domain;
+        return $this->findDomainsRootPath()."/$domain";
+    }
+
+    /**
+     * Get the list of domains.
+     *
+     * @return \Illuminate\Support\Collection;
+     */
+    public function listDomains()
+    {
+        $finder = new SymfonyFinder();
+        $directories = $finder
+            ->depth(0)
+            ->in($this->findDomainsRootPath())
+            ->directories();
+
+        $domains = new Collection();
+        foreach ($directories as $directory) {
+            $name = $directory->getRelativePathName();
+
+            $domain = new Domain(
+                Str::realName($name),
+                $this->findDomainNamespace($name),
+                $directory->getRealPath(),
+                $this->relativeFromReal($directory->getRealPath())
+            );
+
+            $domains->push($domain);
+        }
+
+        return $domains;
+    }
+
+    /**
+     * List the jobs of the given domain name.
+     *
+     * @param  string $domain
+     *
+     * @return Collection
+     */
+    public function listJobsInDomain($domain)
+    {
+        $path = $this->findDomainPath(Str::domain($domain));
+
+        $finder = new SymfonyFinder();
+        $files = $finder
+            ->name('*Job.php')
+            ->in($path.'/Jobs')
+            ->files();
+
+        $jobs = new Collection();
+        foreach ($files as $file) {
+            $name = $file->getRelativePathName();
+            $job = new Job(
+                Str::realName($name, '/Job.php/'),
+                $this->findDomainJobsNamespace($domain),
+                $name,
+                $file->getRealPath(),
+                $this->relativeFromReal($file->getRealPath()),
+                $this->findDomain($domain),
+                file_get_contents($file->getRealPath())
+            );
+
+            $jobs->push($job);
+        }
+
+        return $jobs;
     }
 
     /**
@@ -256,6 +334,33 @@ trait Finder
     }
 
     /**
+     * Find the domain for the given domain name.
+     *
+     * @param  string $domain
+     *
+     * @return \Lucid\Console\Components\Domain
+     */
+    public function findDomain($domain)
+    {
+        $finder = new SymfonyFinder();
+        $dirs = $finder->name($domain)->in($this->findDomainsRootPath())->directories();
+        if ($dirs->count() < 1) {
+            throw new Exception('Domain "'.$domain.'" could not be found.');
+        }
+
+        foreach ($dirs as $dir) {
+            $path = $dir->getRealPath();
+
+            return  new Domain(
+                Str::service($domain),
+                $this->findDomainNamespace($domain),
+                $path,
+                $this->relativeFromReal($path)
+            );
+        }
+    }
+
+    /**
      * Find the feature for the given feature name.
      *
      * @param  string $name
@@ -273,13 +378,47 @@ trait Finder
             $path = $file->getRealPath();
             $serviceName = strstr($file->getRelativePath(), '/', true);
             $service = $this->findService($serviceName);
+            $content = file_get_contents($path);
 
             return new Feature(
                 Str::realName($name, '/Feature/'),
                 $fileName,
                 $path,
                 $this->relativeFromReal($path),
-                $service
+                $service,
+                $content
+            );
+        }
+    }
+
+    /**
+     * Find the feature for the given feature name.
+     *
+     * @param  string $name
+     *
+     * @return \Lucid\Console\Components\Feature
+     */
+    public function findJob($name)
+    {
+        $name = Str::job($name);
+        $fileName = "$name.php";
+
+        $finder = new SymfonyFinder();
+        $files = $finder->name($fileName)->in($this->findDomainsRootPath())->files();
+        foreach ($files as $file) {
+            $path = $file->getRealPath();
+            $domainName = strstr($file->getRelativePath(), '/', true);
+            $domain = $this->findDomain($domainName);
+            $content = file_get_contents($path);
+
+            return new Job(
+                Str::realName($name, '/Job/'),
+                $this->findDomainJobsNamespace($domainName),
+                $fileName,
+                $path,
+                $this->relativeFromReal($path),
+                $domain,
+                $content
             );
         }
     }
