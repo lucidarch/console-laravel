@@ -8,11 +8,12 @@ Route::group(['prefix' => 'lucid'], function() {
     });
 
     Route::get('/dashboard/services', function() {
-        return view('lucid::services');
+        return view('lucid::services-mdl');
+        // return view('lucid::mdl-layout');
     });
 
     Route::get('/dashboard/domains', function() {
-        return view('lucid::domains');
+        return view('lucid::domains-mdl');
     });
 
     Route::get('/dashboard/features', function() {

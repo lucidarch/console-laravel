@@ -3,60 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Lucid • Console</title>
-    <link rel="stylesheet" href="/vendor/lucid/css/lib/bootstrap.min.css">
-    <link rel="stylesheet" href="/vendor/lucid/css/lib/bootstrap-material-design-theme.min.css">
+    <link rel="stylesheet" href="/vendor/lucid/css/lib/material.min.css">
+    <link rel="stylesheet" href="/vendor/lucid/css/lib/material.font.css">
     <link rel="stylesheet" href="/vendor/lucid/css/stylesheet.css">
-    <link rel="stylesheet" href="/vendor/lucid/css/lib/ripples.min.css">
     <link rel="stylesheet" href="/vendor/lucid/css/lib/prism.css">
 
     <script type="text/javascript" src="/vendor/lucid/js/lib/vue.js"></script>
     <script type="text/javascript" src="/vendor/lucid/js/lib/vue-resource.js"></script>
+    <script type="text/javascript" src="/vendor/lucid/js/lib/material.min.js"></script>
+
 </head>
 <body>
 
-    <nav class="navbar navbar-default">
-        <div class="container-fluid">
+    <div id="console" class="mdl-layout mdl-js-layout mdl-layout--fixed-header
+                mdl-layout--fixed-tabs">
 
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-              <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1" aria-expanded="false">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-              </button>
-              <a class="navbar-brand" href="/lucid/dashboard">Lucid • Console</a>
+         <header class="mdl-layout__header">
+            <div class="mdl-layout__header-row">
+                <span class="mdl-layout-title">Lucid • Console</span>
+                <div class="mdl-layout-spacer"></div>
+                <nav class="mdl-navigation">
+                    <a href="/lucid/dashboard/services" class="mdl-navigation__link @if(isset($active) && $active == 'services') mdl-navigation__link--current @endif">Services</a>
+                    <a href="/lucid/dashboard/domains" class="mdl-navigation__link @if(isset($active) && $active == 'domains') mdl-navigation__link--current @endif">Domains</a>
+                    <a href="/lucid/dashboard/features" class="mdl-navigation__link @if(isset($active) && $active == 'features') mdl-navigation__link--current @endif">Features</a>
+                </nav>
             </div>
 
-            <!-- Nav sections -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <ul class="nav navbar-nav">
-                     <li @if(isset($active) && $active == 'services') class="active" @endif><a href="/lucid/dashboard/services">Services <span class="sr-only">(current)</span></a></li>
-                     <li @if(isset($active) && $active == 'domains') class="active" @endif><a href="/lucid/dashboard/domains">Domains <span class="sr-only">(current)</span></a></li>
-                     <li @if(isset($active) && $active == 'features') class="active" @endif><a href="/lucid/dashboard/features">Features <span class="sr-only">(current)</span></a></li>
-                </ul>
-            </div>
+        </header>
 
-        </div>
-    </nav>
+        @yield('drawer')
 
-    <div class="container-fluid">
-        @yield('content')
+        <main class="mdl-layout__content">
+            @yield('content')
+        </main>
+
     </div>
 
-    <script src="/vendor/lucid/js/lib/jquery.min.js"></script>
-    <script src="/vendor/lucid/js/lib/bootstrap.min.js"></script>
-    <script src="/vendor/lucid/js/lib/material.min.js"></script>
-    <script src="/vendor/lucid/js/lib/ripples.min.js"></script>
-    <script type="text/javascript">
-    $.material.init()
-    </script>
+    <button id="lucid-add-button" class="mdl-button mdl-js-ripple-effect mdl-js-button mdl-button--fab mdl-color--accent">
+        <i class="material-icons mdl-color-text--white" role="presentation">add</i>
+        <span class="visuallyhidden">add</span>
+        <span class="mdl-button__ripple-container"><span class="mdl-ripple"></span></span>
+    </button>
+
+    <div id="creation-menu">
+        <ul class="mdl-menu mdl-menu--top-right mdl-js-menu mdl-js-ripple-effect"
+        data-mdl-for="lucid-add-button">
+            <li class="mdl-menu__item" @click="showCreateJobDialog()">Job</li>
+            <li class="mdl-menu__item">Feature</li>
+        </ul>
+    </div>
+
+    <!-- create job form -->
+    <dialog id="lucid-create-job-dialog" class="mdl-dialog lucid-create-job">
+        <h5 class="mdl-dialog__title">New Job</h5>
+        <div class="mdl-dialog__content">
+            <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" type="text" id="lucid-job-title" v-model="title">
+                <label class="mdl-textfield__label" for="lucid-job-title">Name your job</label>
+            </div>
+
+            <div id="lucid-domains-list" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                <input class="mdl-textfield__input" data-badge="10" @keyup="onDomainKey" v-bind:value="domainName" type="text" id="lucid-job-domain" v-model="domainName">
+                <label class="mdl-textfield__label" for="lucid-job-domain">Which Domain?</label>
+            </div>
+
+            <i class="material-icons" v-if="isNewDomain">fiber_new</i>
+
+            <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
+            for="lucid-domains-list">
+                <li class="mdl-menu__item" v-for="domain in filteredDomains" @click="onDomainChosen(domain)">@{{domain.name}}</li>
+            </ul>
+
+        </div>
+        <div class="mdl-dialog__actions">
+            <button type="button" class="mdl-button mdl-js-button
+                mdl-button--raised mdl-js-ripple-effect mdl-button--colored" @click="createNewJob()">Create</button>
+            <button type="button" class="mdl-button mdl-js-button mdl-textfield--floating-label
+                mdl-button--raised mdl-js-ripple-effect close" @click="closeCreateJobForm()">Close</button>
+        </div>
+    </dialog>
 
     <script src="/vendor/lucid/js/lib/prism.js"></script>
-
     <script src="/vendor/lucid/js/dashboard.js"></script>
     @yield('scripts')
 </body>

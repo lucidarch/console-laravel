@@ -1,11 +1,13 @@
 
 new Vue({
 
-    el:'#content',
+    el:'#console',
 
     data: {
         // whether code preview is showing or not
         isCodeShowing: false,
+        // the code dialog reference
+        codeDialog: null,
         services: [],
         features: [],
         currentService: null,
@@ -52,19 +54,18 @@ new Vue({
         },
 
         showFeature: function(feature) {
-            // set the currently viewing feature
-            this.currentFeature = feature;
 
             // fetch the contents of the current feature
             this.$http.get('features/'+feature.title).then(
                 // success
                 function (response) {
                     console.log('feature details: ', response.json());
+                    // set the currently viewing feature
                     this.$set('currentFeature', response.json());
 
-                    // show the code modal
                     this.$set('isCodeShowing', true);
-                    $('#codePreview').modal();
+
+                    this.codeDialog.showModal();
 
                     // generate and set highlighted content for this feature
                     this.$set('currentFeature.highlightedContent', Prism.highlight(this.$get('currentFeature.content'), Prism.languages.php));
@@ -75,11 +76,19 @@ new Vue({
                 }
             );
             console.log('Got to show the details of: ', feature.title);
+        },
+
+        closeCurrentFeature: function() {
+            this.codeDialog.close();
+            this.isCodeShowing = false;
+            this.currentFeature = null;
         }
 
     },
 
     ready: function () {
         this.loadServices();
+        // set the code dialog reference
+        this.codeDialog = document.querySelector('dialog');
     }
 });

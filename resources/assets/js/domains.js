@@ -1,6 +1,6 @@
 new Vue({
 
-    el:'#content',
+    el:'#console',
 
     data: {
         // whether code preview is showing or not
@@ -51,19 +51,17 @@ new Vue({
         },
 
         showJob: function(job) {
-            // set the currently viewing job
-            this.currentJob = job;
-
             // fetch the contents of the current job
             this.$http.get('jobs/'+job.title).then(
                 // success
                 function (response) {
                     console.log('job details: ', response.json());
+                    // set the currently viewing job
                     this.$set('currentJob', response.json());
 
-                    // show the code modal
                     this.$set('isCodeShowing', true);
-                    $('#codePreview').modal();
+
+                    this.codeDialog.showModal();
 
                     // generate and set highlighted content for this job
                     this.$set('currentJob.highlightedContent', Prism.highlight(this.$get('currentJob.content'), Prism.languages.php));
@@ -73,13 +71,20 @@ new Vue({
                     console.log('Error fetching job details', response.status);
                 }
             );
+        },
 
-            console.log('Got to show the details of: ', job.title);
+        closeCurrentJob: function() {
+            this.codeDialog.close();
+            this.isCodeShowing = false;
+            this.currentFeature = null;
         }
 
     },
 
     ready: function () {
         this.loadDomains();
+
+        // set the code dialog reference
+        this.codeDialog = document.querySelector('dialog');
     }
 });

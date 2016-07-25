@@ -1,9 +1,19 @@
-#services,#domains
-{
-    background: white;
-    border: #cdcdcd thin solid;
+#lucid-add-button {
+    position: absolute;
+    right: 3%;
+    bottom: 3%;
+    z-index: 6;
 }
 
-.vertical-middle {
-    vertical-align: middle !important;
+#lucid-create-job-dialog {
+    width: 500px;
+}
+
+.lucid-code-preview {
+    width: 970px;
+    min-height: 800px;
+}
+
+.full-width {
+    width: 100%;
 }
