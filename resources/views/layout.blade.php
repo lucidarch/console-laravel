@@ -16,6 +16,7 @@
     <script type="text/javascript" src="/vendor/lucid/js/lib/vue-resource.js"></script>
     <script type="text/javascript" src="/vendor/lucid/js/lib/material.min.js"></script>
 
+    <script src="/vendor/lucid/js/stores.js"></script>
 </head>
 <body>
 
@@ -55,7 +56,7 @@
         <ul class="mdl-menu mdl-menu--top-right mdl-js-menu mdl-js-ripple-effect"
         data-mdl-for="lucid-add-button">
             <li class="mdl-menu__item" @click="showCreateJobDialog()">Job</li>
-            <li class="mdl-menu__item">Feature</li>
+            <li class="mdl-menu__item" @click="showCreateFeatureDialog()">Feature</li>
         </ul>
     </div>
 
@@ -65,11 +66,11 @@
         <div class="mdl-dialog__content">
             <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
                 <input class="mdl-textfield__input" type="text" id="lucid-job-title" v-model="title">
-                <label class="mdl-textfield__label" for="lucid-job-title">Name your job</label>
+                <label class="mdl-textfield__label" for="lucid-job-title">Name your Job</label>
             </div>
 
             <div id="lucid-domains-list" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-                <input class="mdl-textfield__input" data-badge="10" @keyup="onDomainKey" v-bind:value="domainName" type="text" id="lucid-job-domain" v-model="domainName">
+                <input class="mdl-textfield__input" v-bind:value="domainName" type="text" id="lucid-job-domain" v-model="domainName">
                 <label class="mdl-textfield__label" for="lucid-job-domain">Which Domain?</label>
             </div>
 
@@ -77,7 +78,7 @@
 
             <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
             for="lucid-domains-list" style="max-height:300px;overflow-y: auto">
-                <li class="mdl-menu__item" v-for="domain in domainsStore.domains" @click="onDomainChosen(domain)">@{{domain.name}}</li>
+                <li class="mdl-menu__item" v-for="domain in DomainsStore.domains" @click="onDomainChosen(domain)">@{{domain.name}}</li>
             </ul>
 
         </div>
@@ -94,7 +95,8 @@
         <button class="mdl-snackbar__action" type="button"></button>
     </div>
 
-    <script src="/vendor/lucid/js/stores.js"></script>
+    @include('lucid::components.create-feature')
+
     <script src="/vendor/lucid/js/dashboard.js"></script>
     <script src="/vendor/lucid/js/lib/prism.js"></script>
     @yield('scripts')

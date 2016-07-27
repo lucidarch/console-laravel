@@ -39,6 +39,10 @@ new Vue({
     methods: {
         showCreateJobDialog: function() {
             this.dialog.showModal();
+        },
+
+        showCreateFeatureDialog: function() {
+            CreateFeatureDialog.show();
         }
     },
 
@@ -48,7 +52,7 @@ new Vue({
 });
 
 
-new Vue({
+var CreateJobDialog = new Vue({
     el: '#lucid-create-job-dialog',
 
     data: {
@@ -141,4 +145,4 @@ new Vue({
     ready() {
         window.DomainsStore.load();
     }
-})
+});

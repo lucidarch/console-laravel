@@ -52,6 +52,14 @@ Route::group(['prefix' => 'lucid'], function() {
 
         return app(Lucid\Console\Generators\JobGenerator::class)->generate($title, $domain)->toArray();
     });
+
+    Route::post('/features', function() {
+        // create feature
+        $title = request()->input('title');
+        $service = request()->input('service');
+
+        return app(Lucid\Console\Generators\FeatureGenerator::class)->generate($title, $service)->toArray();
+    });
 });
 
 class Controller {

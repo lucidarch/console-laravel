@@ -56,25 +56,6 @@ class FeatureMakeCommand extends GeneratorCommand
         $service = studly_case($this->argument('service'));
         $feature = $this->parseName($this->argument('feature'));
 
-        $path = $this->findFeaturePath($service, $feature);
-
-        if ($this->files->exists($path)) {
-            $this->error('Feature already exists!');
-
-            return false;
-        }
-
-        $namespace = $this->findFeatureNamespace($service);
-
-        $content = file_get_contents($this->getStub());
-        $content = str_replace(
-            ['{{feature}}', '{{namespace}}', '{{foundation_namespace}}'],
-            [$feature, $namespace, $this->findFoundationNamespace()],
-            $content
-        );
-
-        $this->createFile($path, $content);
-
         $this->info('Feature class '.$feature.' created successfully.'.
             "\n".
             "\n".
