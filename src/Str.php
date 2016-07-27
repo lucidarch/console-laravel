@@ -63,7 +63,7 @@ class Str
      */
     public static function job($name)
     {
-        return studly_case(preg_replace('/Feature(\.php)?$/', '', $name).'Job');
+        return studly_case(preg_replace('/Job(\.php)?$/', '', $name).'Job');
     }
 
     /**

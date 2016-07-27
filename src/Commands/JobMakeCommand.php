@@ -11,10 +11,12 @@
 
 namespace Lucid\Console\Commands;
 
+use Lucid\Console\Str;
 use Lucid\Console\Finder;
 use Lucid\Console\Filesystem;
 use Illuminate\Console\GeneratorCommand;
 use Symfony\Component\Console\Input\InputArgument;
+use Lucid\Console\Generators\JobGenerator;
 
 /**
  * @author Abed Halawi <abed.halawi@vinelab.com>
@@ -52,36 +54,31 @@ class JobMakeCommand extends GeneratorCommand
      */
     public function fire()
     {
+        $generator = app(JobGenerator::class);
+
         $domain = studly_case($this->argument('domain'));
-        $job = $this->parseName($this->argument('job'));
+        $title = $this->parseName($this->argument('job'));
 
-        $path = $this->findJobPath($domain, $job);
+        try {
 
-        if ($this->files->exists($path)) {
-            $this->error('Job already exists');
+            $job = $generator->generate($title, $domain);
 
-            return false;
+            $this->info('Job class '.$title.' created successfully.'.
+            "\n".
+            "\n".
+            'Find it at <comment>'.$job->relativePath.'</comment>'."\n");
+
+        } catch (Exception $e) {
+            $this->error($e->getMessage());
         }
+    }
 
-        // Make sure the domain directory exists
-        $this->createDirectory($this->findDomainPath($domain).'/Jobs');
-
-        // Create the job
-        $namespace = $this->findDomainJobsNamespace($domain);
-
-        $content = file_get_contents($this->getStub());
-        $content = str_replace(
-            ['{{job}}', '{{namespace}}', '{{foundation_namespace}}'],
-            [$job, $namespace, $this->findFoundationNamespace()],
-            $content
-        );
-
-        $this->createFile($path, $content);
-
-        $this->info('Job class '.$job.' created successfully.'.
-            "\n".
-            "\n".
-            'Find it at <comment>'.strstr($path, 'src/').'</comment>'."\n");
+    public function getArguments()
+    {
+        return [
+            ['domain', InputArgument::REQUIRED, 'The domain to be responsible for the job.'],
+            ['job', InputArgument::REQUIRED, 'The job\'s name.'],
+        ];
     }
 
     /**
@@ -92,14 +89,6 @@ class JobMakeCommand extends GeneratorCommand
     public function getStub()
     {
         return __DIR__.'/stubs/job.stub';
-    }
-
-    public function getArguments()
-    {
-        return [
-            ['domain', InputArgument::REQUIRED, 'The domain to be responsible for the job.'],
-            ['job', InputArgument::REQUIRED, 'The job\'s name.'],
-        ];
     }
 
     /**
@@ -113,6 +102,6 @@ class JobMakeCommand extends GeneratorCommand
      */
     protected function parseName($name)
     {
-        return studly_case(preg_replace('/Job(\.php)?$/', '', $name).'Job');
+        return Str::job($name);
     }
 }
