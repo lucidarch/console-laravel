@@ -1,71 +1,78 @@
 @extends('lucid::layout', ['active' => 'domains'])
 
-@section('content')
-<div id="content">
-    <div id="domains" class="col-md-2">
-        <ul class="nav">
-            <li v-for="domain in domains">
-                <a @click="loadJobsForDomain(domain)" :class="['btn', 'btn-danger', {disabled: currentService == domain}]">@{{ domain.name }}</a>
-            </li>
-        </ul>
+@section('drawer')
+<div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer">
+    <div class="mdl-layout__drawer">
+        <span class="mdl-layout-title">Domains</span>
+        <nav class="mdl-navigation">
+            <template v-for="domain in DomainsStore.domains">
+                <a
+                    href="#"
+                    @click="loadJobsForDomain(domain)"
+                    :class="['mdl-navigation__link', {'mdl-navigation__link--current': currentDomain == domain}]"
+                >
+                    @{{domain.name}}
+                </a>
+            </template>
+        </nav>
     </div>
-
-    <div id="jobs" class="col-md-10">
-        <table class="table table-striped table-bordered table-hover row-select">
-            <h3 v-if="jobs.length <= 0 && !currentDomain" class="text-center">👈 choose a domain to see its jobs list</h3>
-            <h4 v-if="jobs.length <= 0 && currentDomain" class="text-center"><small>This domain has no jobs</small></h4>
-            <thead v-if="jobs.length > 0">
-                <tr>
-                    <th>Jobs</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="job in jobs">
-                    <td class="vertical-middle">@{{job.title}}</td>
-                    <td>
-                        <div class="btn btn-xs btn-success" @click="showJob(job)">
-                            <span class="glyphicon glyphicon-chevron-left"></span>
-                            <span class="glyphicon glyphicon-chevron-right"></span>
-                            <br/>
-                            source
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div class="modal" id="codePreview">
-        <div class="modal-dialog modal-lg" tabindex="-1" role="dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                    <h2 class="modal-title">
-                        @{{currentJob.title}} <small><span class="label label-warning">Job</span></small>
-                    </h2>
-                    <h4>
-                        <small>
-                            <br/>
-                            @{{currentJob.file}}
-                            <br/>
-                            @{{currentJob.relativePath}}
-                        </small>
-                    </h4>
-                </div>
-              <div class="modal-body">
-                <pre><code class="language-php">@{{{currentJob.highlightedContent}}}</code></pre>
-              </div>
-              <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-              </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-
 </div>
+@stop
+
+@section('content')
+<div class="mdl-grid">
+    <div class="mdl-layout-spacer"></div>
+    <div class="dl-cell mdl-cell--4-col">
+        <h5 v-if="jobs.length <= 0 && !currentDomain" class="text-center">
+             <small>choose a domain to see its jobs list</small>
+        </h5>
+    </div>
+    <div class="mdl-layout-spacer"></div>
+</div>
+
+<div class="page-content">
+    <div class="mdl-grid">
+        <div class="mdl-layout-spacer"></div>
+        <div class="mdl-layout-spacer"></div>
+        <div class="mdl-layout-spacer"></div>
+        <div class="dl-cell mdl-cell--9-col">
+
+            <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp full-width"  v-if="jobs.length > 0">
+                <thead>
+                    <tr>
+                        <th class="mdl-data-table__cell--non-numeric full-width">Job</th>
+                        <th class="mdl-data-table__cell--non-numeric">Code</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template v-for="job in jobs">
+                        <tr>
+                            <td class="mdl-data-table__cell--non-numeric">@{{job.title}}</td>
+                            <td>
+                                <button class="mdl-button mdl-js-button mdl-button--icon" @click="showJob(job)">
+                                    <i class="material-icons">code</i>
+                                </button>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+
+        </div>
+        <div class="mdl-layout-spacer"></div>
+    </div>
+</template>
+
+
+<dialog class="mdl-dialog lucid-code-preview">
+    <h5 class="mdl-dialog__title">@{{currentJob.title}}</h5>
+    <div class="mdl-dialog__content">
+        <pre><code class="language-php">@{{{currentJob.highlightedContent}}}</code></pre>
+    </div>
+    <div class="mdl-dialog__actions">
+        <button type="button" class="mdl-button close" @click="closeCurrentJob()">Close</button>
+    </div>
+</dialog>
 @stop
 
 @section('scripts')

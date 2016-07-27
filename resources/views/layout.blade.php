@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta id="token" name="_token" content="{{ csrf_token() }}">
 
     <title>Lucid • Console</title>
     <link rel="stylesheet" href="/vendor/lucid/css/lib/material.min.css">
@@ -31,8 +32,10 @@
                     <a href="/lucid/dashboard/features" class="mdl-navigation__link @if(isset($active) && $active == 'features') mdl-navigation__link--current @endif">Features</a>
                 </nav>
             </div>
-
         </header>
+
+        <!-- Holds the progress indicators -->
+        <div id="lucid-progress-container"></div>
 
         @yield('drawer')
 
@@ -73,8 +76,8 @@
             <i class="material-icons" v-if="isNewDomain">fiber_new</i>
 
             <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
-            for="lucid-domains-list">
-                <li class="mdl-menu__item" v-for="domain in filteredDomains" @click="onDomainChosen(domain)">@{{domain.name}}</li>
+            for="lucid-domains-list" style="max-height:300px;overflow-y: auto">
+                <li class="mdl-menu__item" v-for="domain in domainsStore.domains" @click="onDomainChosen(domain)">@{{domain.name}}</li>
             </ul>
 
         </div>
@@ -86,8 +89,14 @@
         </div>
     </dialog>
 
-    <script src="/vendor/lucid/js/lib/prism.js"></script>
+    <div id="lucid-toast" class="mdl-js-snackbar mdl-snackbar">
+        <div class="mdl-snackbar__text"></div>
+        <button class="mdl-snackbar__action" type="button"></button>
+    </div>
+
+    <script src="/vendor/lucid/js/stores.js"></script>
     <script src="/vendor/lucid/js/dashboard.js"></script>
+    <script src="/vendor/lucid/js/lib/prism.js"></script>
     @yield('scripts')
 </body>
 </html>

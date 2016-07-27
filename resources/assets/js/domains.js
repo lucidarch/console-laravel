@@ -4,28 +4,14 @@ new Vue({
 
     data: {
         // whether code preview is showing or not
+        DomainsStore: window.DomainsStore.state,
         isCodeShowing: false,
-        domains: [],
         jobs: [],
         currentDomain: null,
-        currentJob: null,
+        currentJob: null
     },
 
     methods: {
-
-        loadDomains: function () {
-            this.$http.get('domains').then(
-                // success
-                function (response) {
-                    console.log('domains', response.json());
-                    this.$set('domains', response.json());
-                },
-                // error
-                function (response) {
-                    console.log('Error!', response.status);
-                }
-            );
-        },
 
         loadJobsForDomain: function(domain) {
             console.log('Loading jobs for domain: ', domain);
@@ -82,8 +68,7 @@ new Vue({
     },
 
     ready: function () {
-        this.loadDomains();
-
+        window.DomainsStore.load();
         // set the code dialog reference
         this.codeDialog = document.querySelector('dialog');
     }

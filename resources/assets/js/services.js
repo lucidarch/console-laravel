@@ -5,30 +5,18 @@ new Vue({
 
     data: {
         // whether code preview is showing or not
+        ServicesStore: window.ServicesStore.state,
+        // determines whether the code preview is currently showing
         isCodeShowing: false,
-        // the code dialog reference
+        // the code preview dialog reference
         codeDialog: null,
-        services: [],
+        // the features of the currently chosen service
         features: [],
         currentService: null,
-        currentFeature: null,
+        currentFeature: null
     },
 
     methods: {
-
-        loadServices: function () {
-            this.$http.get('services').then(
-                // success
-                function (response) {
-                    console.log('services', response.json());
-                    this.$set('services', response.json());
-                },
-                // error
-                function (response) {
-                    console.log('Error!', response.status);
-                }
-            );
-        },
 
         loadFeaturesForService: function(service) {
             console.log('Loading features for service: ', service);
@@ -87,7 +75,7 @@ new Vue({
     },
 
     ready: function () {
-        this.loadServices();
+        window.ServicesStore.load();
         // set the code dialog reference
         this.codeDialog = document.querySelector('dialog');
     }

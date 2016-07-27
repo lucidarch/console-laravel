@@ -8,12 +8,12 @@ Route::group(['prefix' => 'lucid'], function() {
     });
 
     Route::get('/dashboard/services', function() {
-        return view('lucid::services-mdl');
+        return view('lucid::services');
         // return view('lucid::mdl-layout');
     });
 
     Route::get('/dashboard/domains', function() {
-        return view('lucid::domains-mdl');
+        return view('lucid::domains');
     });
 
     Route::get('/dashboard/features', function() {
@@ -38,11 +38,19 @@ Route::group(['prefix' => 'lucid'], function() {
     });
 
     Route::get('/domains/{name}/jobs', function($name) {
-        return (new Controller)->listJobsInDomain($name);
+        return (new Controller)->listJobsInDomain(\Lucid\Console\Str::domain($name));
     });
 
     Route::get('/jobs/{name}', function($name) {
         return (new Controller)->findJob($name)->toArray();
+    });
+
+    Route::post('/jobs', function() {
+        // create job
+        $title = request()->input('title');
+        $domain = request()->input('domain');
+
+        return app(Lucid\Console\Generators\JobGenerator::class)->generate($title, $domain)->toArray();
     });
 });
 

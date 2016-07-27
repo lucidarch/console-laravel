@@ -9,6 +9,19 @@
     width: 500px;
 }
 
+#lucid-toast {
+    z-index: 10;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.lucid-progress-indicator {
+    position: absolute;
+    z-index: 6;
+}
+
 .lucid-code-preview {
     width: 970px;
     min-height: 800px;
