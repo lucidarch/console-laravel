@@ -1,56 +1,34 @@
-// configure vue-resource
-Vue.http.options.root = '/lucid';
-Vue.http.headers.common['X-CSRF-TOKEN'] = document.querySelector('#token').getAttribute('content');
-Vue.http.interceptors.push((request, next)  => {
+<!-- create job form -->
+<dialog id="lucid-create-job-dialog" class="mdl-dialog">
+    <h5 class="mdl-dialog__title">New Job</h5>
+    <div class="mdl-dialog__content">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" type="text" id="lucid-job-title" v-model="title">
+            <label class="mdl-textfield__label" for="lucid-job-title">Name your Job</label>
+        </div>
 
-    var indicator = document.createElement("div");
-    indicator.className = "lucid-progress-indicator mdl-progress mdl-js-progress mdl-progress__indeterminate full-width";
-    document.querySelector('#lucid-progress-container').appendChild(indicator);
+        <div id="lucid-domains-list" class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" v-bind:value="domainName" type="text" id="lucid-job-domain" v-model="domainName">
+            <label class="mdl-textfield__label" for="lucid-job-domain">Which Domain?</label>
+        </div>
 
-    // continue to next interceptor
-    next((response) => {
-        indicator.remove();
-    });
-});
+        <i class="material-icons" v-if="isNewDomain">fiber_new</i>
 
-var Toast = new Vue({
-    el: '#lucid-toast',
+        <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
+        for="lucid-domains-list" style="max-height:300px;overflow-y: auto">
+            <li class="mdl-menu__item" v-for="domain in DomainsStore.domains" @click="onDomainChosen(domain)">@{{domain.name}}</li>
+        </ul>
 
-    methods: {
-        show: function(text, actionText, actionHandler) {
-            var data = {
-                message: text,
-                timeout: 5000
-            }
+    </div>
+    <div class="mdl-dialog__actions">
+        <button type="button" class="mdl-button mdl-js-button
+            mdl-button--raised mdl-js-ripple-effect mdl-button--colored" @click="createNewJob()">Create</button>
+        <button type="button" class="mdl-button mdl-js-button mdl-textfield--floating-label
+            mdl-button--raised mdl-js-ripple-effect close" @click="closeCreateJobForm()">Close</button>
+    </div>
+</dialog>
 
-            if (actionText) {
-                data.actionText = actionText;
-                data.actionHandler = actionHandler
-            }
-
-            this.$el.MaterialSnackbar.showSnackbar(data);
-        }
-    }
-});
-
-new Vue({
-    el: '#creation-menu',
-
-    methods: {
-        showCreateJobDialog: function() {
-            this.dialog.showModal();
-        },
-
-        showCreateFeatureDialog: function() {
-            CreateFeatureDialog.show();
-        }
-    },
-
-    ready() {
-        this.dialog = document.getElementById('lucid-create-job-dialog');
-    }
-});
-
+<script type="text/javascript">
 
 var CreateJobDialog = new Vue({
     el: '#lucid-create-job-dialog',
@@ -81,6 +59,10 @@ var CreateJobDialog = new Vue({
     },
 
     methods: {
+        show: function() {
+            this.$el.showModal();
+        },
+
         /**
          * Called when a domain has been chosen from the list of filtered domains.
          *
@@ -94,7 +76,15 @@ var CreateJobDialog = new Vue({
          * Close the form.
          */
         closeCreateJobForm: function() {
-            document.getElementById('lucid-create-job-dialog').close();
+            this.$el.close();
+        },
+
+        /**
+         * Clear the form inputs
+         */
+        resetForm: function() {
+            this.title = '';
+            this.domainName = '';
         },
 
         /**
@@ -117,14 +107,13 @@ var CreateJobDialog = new Vue({
                 function (response) {
                     this.closeCreateJobForm();
 
-                    console.log('Job created successfully', response.json());
-
                     var job = response.json();
                     Toast.show('Job '+job.title+' created successfully');
 
                     // update the domains list when a new domain is added
                     if (this.$get('isNewDomain')) {
-                        window.domainsStore.load();
+                        // reload domains when it's a new one that's been created
+                        window.DomainsStore.load();
                     }
 
                     this.resetForm();
@@ -134,11 +123,6 @@ var CreateJobDialog = new Vue({
                     console.log('Error creating the job', response.status);
                 }
             );
-        },
-
-        resetForm: function() {
-            this.title = '';
-            this.domainName = '';
         }
     },
 
@@ -146,3 +130,4 @@ var CreateJobDialog = new Vue({
         window.DomainsStore.load();
     }
 });
+</script>
