@@ -27,7 +27,7 @@ new Vue({
                 // success
                 function (response) {
                     console.log('jobs:', response.json());
-                    this.$set('jobs', response.json());
+                    this.$set('jobs', response.json()[domain.slug]);
                 },
                 // error
                 function (response) {

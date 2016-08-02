@@ -196,36 +196,43 @@ trait Finder
     }
 
     /**
-     * List the jobs of the given domain name.
+     * List the jobs per domain,
+     * optionally provide a domain name to list its jobs.
      *
      * @param  string $domain
      *
      * @return Collection
      */
-    public function listJobsInDomain($domain)
+    public function listJobs($domainName = null)
     {
-        $path = $this->findDomainPath(Str::domain($domain));
-
-        $finder = new SymfonyFinder();
-        $files = $finder
-            ->name('*Job.php')
-            ->in($path.'/Jobs')
-            ->files();
+        $domains = ($domainName) ? [$this->findDomain(Str::domain($domainName))] : $this->listDomains();
 
         $jobs = new Collection();
-        foreach ($files as $file) {
-            $name = $file->getRelativePathName();
-            $job = new Job(
-                Str::realName($name, '/Job.php/'),
-                $this->findDomainJobsNamespace($domain),
-                $name,
-                $file->getRealPath(),
-                $this->relativeFromReal($file->getRealPath()),
-                $this->findDomain($domain),
-                file_get_contents($file->getRealPath())
-            );
+        foreach ($domains as $domain) {
+            $path = $domain->realPath;
 
-            $jobs->push($job);
+            $finder = new SymfonyFinder();
+            $files = $finder
+                ->name('*Job.php')
+                ->in($path.'/Jobs')
+                ->files();
+
+            $jobs[$domain->name] = new Collection();
+
+            foreach ($files as $file) {
+                $name = $file->getRelativePathName();
+                $job = new Job(
+                    Str::realName($name, '/Job.php/'),
+                    $this->findDomainJobsNamespace($domain->name),
+                    $name,
+                    $file->getRealPath(),
+                    $this->relativeFromReal($file->getRealPath()),
+                    $domain,
+                    file_get_contents($file->getRealPath())
+                );
+
+                $jobs[$domain->name]->push($job);
+            }
         }
 
         return $jobs;
@@ -265,7 +272,7 @@ trait Finder
      */
     public function findDomainJobsNamespace($domain)
     {
-        return $this->findDomainNamespace($domain).'\\Jobs';
+        return $this->findDomainNamespace($domain).'\Jobs';
     }
 
     /**
