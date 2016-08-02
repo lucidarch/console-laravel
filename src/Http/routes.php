@@ -38,7 +38,11 @@ Route::group(['prefix' => 'lucid'], function() {
     });
 
     Route::get('/domains/{name}/jobs', function($name) {
-        return (new Controller)->listJobsInDomain(\Lucid\Console\Str::domain($name));
+        return (new Controller)->listJobs(\Lucid\Console\Str::domain($name));
+    });
+
+    Route::get('/jobs', function() {
+        return (new Controller)->listJobs();
     });
 
     Route::get('/jobs/{name}', function($name) {
@@ -57,8 +61,9 @@ Route::group(['prefix' => 'lucid'], function() {
         // create feature
         $title = request()->input('title');
         $service = request()->input('service');
+        $jobs = request()->input('jobs');
 
-        return app(Lucid\Console\Generators\FeatureGenerator::class)->generate($title, $service)->toArray();
+        return app(Lucid\Console\Generators\FeatureGenerator::class)->generate($title, $service, $jobs)->toArray();
     });
 });
 

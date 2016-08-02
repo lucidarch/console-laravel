@@ -6,7 +6,11 @@
 }
 
 #lucid-create-job-dialog {
-    width: 500px;
+    width: 410px;
+}
+
+#lucid-create-feature-dialog {
+    width: 390px;
 }
 
 #lucid-toast {

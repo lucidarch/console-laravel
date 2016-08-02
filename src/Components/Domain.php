@@ -11,6 +11,8 @@
 
 namespace Lucid\Console\Components;
 
+use Illuminate\Support\Str;
+
 /**
  * @author Abed Halawi <abed.halawi@vinelab.com>
  */
@@ -20,6 +22,7 @@ class Domain extends Component
     {
         $this->setAttributes([
             'name' => $name,
+            'slug' => Str::studly($name),
             'namespace' => $namespace,
             'realPath' => $path,
             'relativePath' => $relativePath,

@@ -18,8 +18,10 @@ class Job extends Component
 {
     public function __construct($title, $namespace, $file, $path, $relativePath, Domain $domain = null, $content = '')
     {
+        $className = str_replace(' ', '', $title).'Job';
         $this->setAttributes([
             'title' => $title,
+            'className' => $className,
             'namespace' => $namespace,
             'file' => $file,
             'realPath' => $path,

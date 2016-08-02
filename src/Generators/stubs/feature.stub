@@ -2,16 +2,12 @@
 namespace {{namespace}};
 
 use {{foundation_namespace}}\Feature;
-
+use Illuminate\Http\Request;
+{{use_jobs}}
 class {{feature}} extends Feature
 {
-    public function __construct()
+    public function handle(Request $request)
     {
-
-    }
-
-    public function handle()
-    {
-
+{{run_jobs}}
     }
 }

@@ -20,7 +20,7 @@ use Lucid\Console\Components\Feature;
  */
  class FeatureGenerator extends Generator
  {
-     public function generate($feature, $service)
+     public function generate($feature, $service, array $jobs = [])
      {
          $feature = Str::feature($feature);
          $service = Str::service($service);
@@ -36,9 +36,24 @@ use Lucid\Console\Components\Feature;
          $namespace = $this->findFeatureNamespace($service);
 
          $content = file_get_contents($this->getStub());
+
+
+         $useJobs = ''; // stores the `use` statements of the jobs
+         $runJobs = ''; // stores the `$this->run` statements of the jobs
+
+         foreach ($jobs as $index => $job) {
+            $useJobs .= 'use '.$job['namespace'].'\\'.$job['className'].";\n";
+            $runJobs .= "\t\t".'$this->run('.$job['className']."::class);";
+
+            // only add carriage returns when it's not the last job
+            if($index != count($jobs) - 1) {
+                $runJobs .= "\n\n";
+            }
+         }
+
          $content = str_replace(
-             ['{{feature}}', '{{namespace}}', '{{foundation_namespace}}'],
-             [$feature, $namespace, $this->findFoundationNamespace()],
+             ['{{feature}}', '{{namespace}}', '{{foundation_namespace}}', '{{use_jobs}}', '{{run_jobs}}'],
+             [$feature, $namespace, $this->findFoundationNamespace(), $useJobs, $runJobs],
              $content
          );
 
