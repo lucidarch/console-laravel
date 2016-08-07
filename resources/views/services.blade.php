@@ -54,7 +54,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-show="shouldShowFilterRow == true">
+                <tr v-if="shouldShowFilterRow">
                     <td colspan=2 style="text-align: left;">
                         <div class="mdl-textfield mdl-js-textfield full-width">
                             <input class="mdl-textfield__input" type="text" v-el:filter-field
