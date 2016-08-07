@@ -115,7 +115,7 @@ var CreateFeatureDialog = new Vue({
             return this.JobsStore.jobs.filter(function(job) {
                 // do case-insensitive search
                 var title = job.title.replace(' ', '').toLowerCase();
-                query = query.toLowerCase();
+                query = query.trim().toLowerCase();
 
                 return title.indexOf(query) !== -1 ||                   // non-spaced title
                     job.title.toLowerCase().indexOf(query) !== -1 ||    // title as is (with spaces)

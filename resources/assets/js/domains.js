@@ -8,7 +8,19 @@ new Vue({
         isCodeShowing: false,
         jobs: [],
         currentDomain: null,
-        currentJob: null
+        currentJob: null,
+
+        // controls whether to show the filter row in the results
+        filterQuery: '',
+        shouldShowFilterRow: false,
+        filteredJobs: []
+    },
+
+     computed: {
+        // determine whether to show the filtered results or not
+        shouldShowFilteredResults: function() {
+            return this.filterQuery.length > 1;
+        },
     },
 
     methods: {
@@ -63,6 +75,38 @@ new Vue({
             this.codeDialog.close();
             this.isCodeShowing = false;
             this.currentFeature = null;
+        },
+
+        toggleFilter: function() {
+            this.shouldShowFilterRow = !this.shouldShowFilterRow;
+
+            if (this.shouldShowFilterRow) {
+                Vue.nextTick(function () {
+                    this.$els.filterField.focus();
+                }, this);
+            }
+        },
+
+        filter: function(e) {
+
+            if (e.keyCode == 27) { // esc
+                return this.cancelFilter();
+            }
+
+            this.filteredJobs = this.jobs.filter(function(job) {
+                // do case-insensitive search
+                var title = job.title.replace(' ', '').trim().toLowerCase();
+                var query = this.filterQuery.trim().toLowerCase();
+
+                return title.indexOf(query) !== -1 ||                   // non-spaced title
+                    job.title.toLowerCase().indexOf(query) !== -1 ||    // title as is (with spaces)
+                    job.file.toLowerCase().indexOf(query) !== -1;       // file name
+            }, this);
+        },
+
+        cancelFilter: function() {
+            this.shouldShowFilterRow = false;
+            this.filterQuery = '';
         }
 
     },

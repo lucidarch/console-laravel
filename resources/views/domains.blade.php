@@ -40,12 +40,29 @@
             <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp full-width"  v-if="jobs.length > 0">
                 <thead>
                     <tr>
-                        <th class="mdl-data-table__cell--non-numeric full-width">Job</th>
+                        <th class="mdl-data-table__cell--non-numeric full-width">
+                            Job
+                            <!-- table actions -->
+                            <span style="margin-left: 30px;">
+                                <button class="mdl-button mdl-js-button mdl-button--icon mdl-js-ripple-effect" @click="toggleFilter">
+                                    <i class="material-icons" style="vertical-align: middle;">filter_list</i>
+                                </button>
+                            </span>
+                        </th>
                         <th class="mdl-data-table__cell--non-numeric">Code</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <template v-for="job in jobs">
+                    <tr v-show="shouldShowFilterRow">
+                        <td colspan=2 style="text-align: left;">
+                            <div class="mdl-textfield mdl-js-textfield full-width">
+                                <input class="mdl-textfield__input" type="text" v-el:filter-field
+                                    placeholder="Filter results..." v-model="filterQuery" @keyup="filter">
+                            </div>
+                        </td>
+                    </tr>
+
+                    <template v-for="job in filteredJobs" v-if="shouldShowFilteredResults">
                         <tr>
                             <td class="mdl-data-table__cell--non-numeric">@{{job.title}}</td>
                             <td>
@@ -55,6 +72,20 @@
                             </td>
                         </tr>
                     </template>
+
+
+                    <template v-for="job in jobs" v-if="!shouldShowFilteredResults">
+                        <tr>
+                            <td class="mdl-data-table__cell--non-numeric">@{{job.title}}</td>
+                            <td>
+                                <button class="mdl-button mdl-js-button mdl-button--icon" @click="showJob(job)">
+                                    <i class="material-icons">code</i>
+                                </button>
+                            </td>
+                        </tr>
+                    </template>
+
+
                 </tbody>
             </table>
 
