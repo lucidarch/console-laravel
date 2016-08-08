@@ -2,13 +2,13 @@ new Vue({
 
     el:'#console',
 
+    mixins: [CodePreview],
+
     data: {
         // whether code preview is showing or not
-        DomainsStore: window.DomainsStore.state,
-        isCodeShowing: false,
         jobs: [],
+        DomainsStore: window.DomainsStore.state,
         currentDomain: null,
-        currentJob: null,
 
         // controls whether to show the filter row in the results
         filterQuery: '',
@@ -48,35 +48,6 @@ new Vue({
             );
         },
 
-        showJob: function(job) {
-            // fetch the contents of the current job
-            this.$http.get('jobs/'+job.title).then(
-                // success
-                function (response) {
-                    console.log('job details: ', response.json());
-                    // set the currently viewing job
-                    this.$set('currentJob', response.json());
-
-                    this.$set('isCodeShowing', true);
-
-                    this.codeDialog.showModal();
-
-                    // generate and set highlighted content for this job
-                    this.$set('currentJob.highlightedContent', Prism.highlight(this.$get('currentJob.content'), Prism.languages.php));
-                },
-                // error
-                function (response) {
-                    console.log('Error fetching job details', response.status);
-                }
-            );
-        },
-
-        closeCurrentJob: function() {
-            this.codeDialog.close();
-            this.isCodeShowing = false;
-            this.currentFeature = null;
-        },
-
         toggleFilter: function() {
             this.shouldShowFilterRow = !this.shouldShowFilterRow;
 
@@ -113,7 +84,5 @@ new Vue({
 
     ready: function () {
         window.DomainsStore.load();
-        // set the code dialog reference
-        this.codeDialog = document.querySelector('dialog');
     }
 });

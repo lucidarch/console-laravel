@@ -18,8 +18,11 @@ class Feature extends Component
 {
     public function __construct($title, $file, $realPath, $relativePath, Service $service, $content = '')
     {
+        $className = str_replace(' ', '', $title).'Feature';
+
         $this->setAttributes([
             'title' => $title,
+            'className' => $className,
             'service' => $service,
             'file' => $file,
             'realPath' => $realPath,

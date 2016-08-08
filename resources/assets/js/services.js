@@ -1,19 +1,17 @@
-
-new Vue({
+var Services = new Vue({
 
     el:'#console',
+
+    mixins: [CodePreview],
 
     data: {
         // whether code preview is showing or not
         ServicesStore: window.ServicesStore.state,
-        // determines whether the code preview is currently showing
-        isCodeShowing: false,
         // the code preview dialog reference
         codeDialog: null,
         // the features of the currently chosen service
         features: [],
         currentService: null,
-        currentFeature: null,
         // controls whether to show the filter row in the results
         filterQuery: '',
         shouldShowFilterRow: false,
@@ -50,37 +48,6 @@ new Vue({
                     console.log('Error!', response.status);
                 }
             );
-        },
-
-        showFeature: function(feature) {
-
-            // fetch the contents of the current feature
-            this.$http.get('features/'+feature.title).then(
-                // success
-                function (response) {
-                    console.log('feature details: ', response.json());
-                    // set the currently viewing feature
-                    this.$set('currentFeature', response.json());
-
-                    this.$set('isCodeShowing', true);
-
-                    this.codeDialog.showModal();
-
-                    // generate and set highlighted content for this feature
-                    this.$set('currentFeature.highlightedContent', Prism.highlight(this.$get('currentFeature.content'), Prism.languages.php));
-                },
-                // error
-                function (response) {
-                    console.log('Error fetching feature details', response.status);
-                }
-            );
-            console.log('Got to show the details of: ', feature.title);
-        },
-
-        closeCurrentFeature: function() {
-            this.codeDialog.close();
-            this.isCodeShowing = false;
-            this.currentFeature = null;
         },
 
         toggleFilter: function() {

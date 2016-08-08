@@ -20,6 +20,7 @@
 
     <script src="/vendor/lucid/js/dashboard.js"></script>
     <script src="/vendor/lucid/js/stores.js"></script>
+    <script src="/vendor/lucid/js/mixins.js"></script>
 </head>
 <body>
 
@@ -34,9 +35,22 @@
                     <a href="/lucid/dashboard/services" class="mdl-navigation__link @if(isset($active) && $active == 'services') mdl-navigation__link--current @endif">Services</a>
                     <a href="/lucid/dashboard/domains" class="mdl-navigation__link @if(isset($active) && $active == 'domains') mdl-navigation__link--current @endif">Domains</a>
                     <a href="/lucid/dashboard/features" class="mdl-navigation__link @if(isset($active) && $active == 'features') mdl-navigation__link--current @endif">Features</a>
+                    <!-- search field -->
+                    <div id="search-field" class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
+                        mdl-textfield--floating-label mdl-textfield--align-right">
+                        <label class="mdl-button mdl-js-button mdl-button--icon" for="search-textfield">
+                            <i class="material-icons">search</i>
+                        </label>
+                        <div class="mdl-textfield__expandable-holder">
+                            <input v-model="query" @keyup="search" class="mdl-textfield__input" type="text"
+                                id="search-textfield">
+                        </div>
+                    </div>
                 </nav>
             </div>
         </header>
+
+        @include('lucid::components.search-results')
 
         <!-- Holds the progress indicators -->
         <div id="lucid-progress-container"></div>
@@ -50,6 +64,7 @@
     </div>
 
     @include('lucid::components.toast')
+    @include('lucid::components.code-preview')
     @include('lucid::components.create-job')
     @include('lucid::components.create-feature')
     @include('lucid::components.add-menu')

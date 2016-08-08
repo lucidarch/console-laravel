@@ -1,17 +1,24 @@
+- [ ] Specifying Laravel version on installation
+- [ ] Documentation
+- [ ] Change namespace using CLI
+    - > By extending `Illuminate\Foundation\Console\AppNameCommand`
+- [x] Filter listings
+    - [ ] Make the "filter results" component a MIXIN (currently redundant)
+- [x] Fuzzy search
+- [ ] View Logs
 - [x] Generator
     - [x] Generate Services
     - [x] Generate Features
     - [x] Generate Jobs
     - [x] Generate Controllers
 - [x] Replace modules with custom-built services
-- [ ] Specifying Laravel version on installation
-- [ ] Documentation
-- [ ] Change namespace using CLI
-    - > By extending `Illuminate\Foundation\Console\AppNameCommand`
-- [ ] Listing
+- [x] Listing
     - [x] Services
     - [x] Features (per service, and across all services)
     - [x] Jobs per feature
-    - [ ] Domains
-    - [ ] Jobs per domain
-- [ ] Pretty Interface
+    - [x] Domains
+    - [x] Jobs per domain
+- [x] Pretty Interface
+    - [x] Manage Jobs
+    - [x] Manage Features
+    - [x] Manage Domains

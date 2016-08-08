@@ -93,17 +93,6 @@
         <div class="mdl-layout-spacer"></div>
     </div>
 </template>
-
-
-<dialog class="mdl-dialog lucid-code-preview">
-    <h5 class="mdl-dialog__title">@{{currentJob.title}}</h5>
-    <div class="mdl-dialog__content">
-        <pre><code class="language-php">@{{{currentJob.highlightedContent}}}</code></pre>
-    </div>
-    <div class="mdl-dialog__actions">
-        <button type="button" class="mdl-button close" @click="closeCurrentJob()">Close</button>
-    </div>
-</dialog>
 @stop
 
 @section('scripts')

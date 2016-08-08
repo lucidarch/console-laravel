@@ -13,7 +13,6 @@ namespace Lucid\Console;
 
 use Exception;
 use InvalidArgumentException;
-use Lucid\Console\Str;
 use Illuminate\Support\Collection;
 use Lucid\Console\Components\Feature;
 use Lucid\Console\Components\Service;
@@ -33,10 +32,45 @@ trait Finder
      */
     protected $srcDirectoryName = 'src';
 
+    public function fuzzyFind($query)
+    {
+        $finder = new SymfonyFinder();
+
+        $files = $finder->in($this->findServicesRootPath().'/*/Features') // features
+            ->in($this->findDomainsRootPath().'/*/Jobs') // jobs
+            ->name('*.php')
+            ->files();
+
+        $matches = [
+            'jobs' => [],
+            'features' => [],
+        ];
+        foreach ($files as $file) {
+            $base = $file->getBaseName();
+            $name = str_replace('.php', '', $base);
+
+            similar_text($query, $name, $percent);
+
+            if ($percent > 30) {
+                if (strpos($base, 'Feature.php')) {
+                    $matches['features'][$percent] = $this->findFeature($name)->toArray();
+                } elseif (strpos($base, 'Job.php')) {
+                    $matches['jobs'][$percent] = $this->findJob($name)->toArray();
+                }
+            }
+        }
+
+        $matches['features'] = array_reverse(array_values($matches['features']));
+        $matches['jobs'] = array_reverse(array_values($matches['jobs']));
+
+        return $matches;
+    }
+
     /**
      * Get the namespace used for the application.
      *
      * @return string
+     *
      * @throws \Exception
      */
     public function findRootNamespace()
@@ -46,7 +80,9 @@ trait Finder
 
         // see which one refers to the "src/" directory
         foreach ($composer['autoload']['psr-4'] as $namespace => $directory) {
-            if ($directory === $this->srcDirectoryName.'/') return trim($namespace, '\\');
+            if ($directory === $this->srcDirectoryName.'/') {
+                return trim($namespace, '\\');
+            }
         }
 
         throw new Exception('App namespace not set in composer.json');
@@ -65,7 +101,7 @@ trait Finder
     /**
      * Find the namespace for the given service name.
      *
-     * @param  string $service
+     * @param string $service
      *
      * @return string
      */
@@ -97,7 +133,7 @@ trait Finder
     /**
      * Find the path to the directory of the given service name.
      *
-     * @param  string $service
+     * @param string $service
      *
      * @return string
      */
@@ -109,7 +145,7 @@ trait Finder
     /**
      * Find the features root path in the given service.
      *
-     * @param  string $service
+     * @param string $service
      *
      * @return string
      */
@@ -121,8 +157,8 @@ trait Finder
     /**
      * Find the file path for the given feature.
      *
-     * @param  string $service
-     * @param  string $feature
+     * @param string $service
+     * @param string $feature
      *
      * @return string
      */
@@ -134,7 +170,7 @@ trait Finder
     /**
      * Find the namespace for features in the given service.
      *
-     * @param  string $service
+     * @param string $service
      *
      * @return string
      */
@@ -156,7 +192,7 @@ trait Finder
     /**
      * Find the path for the given domain.
      *
-     * @param  string $domain
+     * @param string $domain
      *
      * @return string
      */
@@ -199,7 +235,7 @@ trait Finder
      * List the jobs per domain,
      * optionally provide a domain name to list its jobs.
      *
-     * @param  string $domain
+     * @param string $domain
      *
      * @return Collection
      */
@@ -254,7 +290,7 @@ trait Finder
     /**
      * Find the namespace for the given domain.
      *
-     * @param  string $domain
+     * @param string $domain
      *
      * @return string
      */
@@ -266,7 +302,7 @@ trait Finder
     /**
      * Find the namespace for the given domain's Jobs.
      *
-     * @param  string $domain
+     * @param string $domain
      *
      * @return string
      */
@@ -278,8 +314,8 @@ trait Finder
     /**
      * Find the path for the give controller class.
      *
-     * @param  string $service
-     * @param  string $controller
+     * @param string $service
+     * @param string $controller
      *
      * @return string
      */
@@ -291,7 +327,7 @@ trait Finder
     /**
      * Find the namespace of controllers in the given service.
      *
-     * @param  string $service
+     * @param string $service
      *
      * @return string
      */
@@ -321,7 +357,7 @@ trait Finder
     /**
      * Find the service for the given service name.
      *
-     * @param  string $service
+     * @param string $service
      *
      * @return \Lucid\Console\Components\Service
      */
@@ -343,7 +379,7 @@ trait Finder
     /**
      * Find the domain for the given domain name.
      *
-     * @param  string $domain
+     * @param string $domain
      *
      * @return \Lucid\Console\Components\Domain
      */
@@ -370,7 +406,7 @@ trait Finder
     /**
      * Find the feature for the given feature name.
      *
-     * @param  string $name
+     * @param string $name
      *
      * @return \Lucid\Console\Components\Feature
      */
@@ -401,7 +437,7 @@ trait Finder
     /**
      * Find the feature for the given feature name.
      *
-     * @param  string $name
+     * @param string $name
      *
      * @return \Lucid\Console\Components\Feature
      */
@@ -437,6 +473,7 @@ trait Finder
      * @param string $serviceName
      *
      * @return \Illuminate\Support\Collection
+     *
      * @throws \Exception
      */
     public function listFeatures($serviceName = '')
@@ -444,7 +481,7 @@ trait Finder
         $services = $this->listServices();
 
         if (!empty($serviceName)) {
-            $services = $services->filter(function($service) use($serviceName) {
+            $services = $services->filter(function ($service) use ($serviceName) {
                 return $service->name === $serviceName || $service->slug === $serviceName;
             });
 
@@ -480,8 +517,8 @@ trait Finder
     /**
      * Get the relative version of the given real path.
      *
-     * @param  string $path
-     * @param  string $needle
+     * @param string $path
+     * @param string $needle
      *
      * @return string
      */

@@ -17,6 +17,13 @@
     z-index: 10;
 }
 
+#search-results {
+    position: absolute;
+    right: 20px;
+    z-index: 7;
+    min-width: 210px;
+}
+
 .text-center {
     text-align: center;
 }
