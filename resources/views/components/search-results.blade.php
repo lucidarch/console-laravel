@@ -67,6 +67,10 @@ var SearchStore = {
                 console.log('Error searching', response.status);
             }
         );
+    },
+
+    clear: function() {
+        this.state.results = [];
     }
 }
 
@@ -91,6 +95,7 @@ var Search = new Vue({
         close: function() {
             this.query = '';
             this.$el.className = this.$el.className.replace('is-focused', '').replace('is-dirty', '');
+            window.SearchStore.clear();
         }
     }
 });
