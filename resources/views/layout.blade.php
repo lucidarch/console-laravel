@@ -42,7 +42,7 @@
                             <i class="material-icons">search</i>
                         </label>
                         <div class="mdl-textfield__expandable-holder">
-                            <input v-model="query" @keyup="search" class="mdl-textfield__input" type="text"
+                            <input v-model="query" @keyup="search | debounce 300" class="mdl-textfield__input" type="text"
                                 id="search-textfield">
                         </div>
                     </div>
