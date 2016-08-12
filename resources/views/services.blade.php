@@ -24,9 +24,9 @@
 <div class="mdl-grid">
     <div class="mdl-layout-spacer"></div>
     <div class="dl-cell mdl-cell--4-col">
-        <h5 v-if="features.length <= 0 && !currentService" class="text-center">
+        <h1 v-if="features.length <= 0 && !currentService" class="text-center">
              <small>choose a service to see its features list</small>
-        </h5>
+        </h1>
     </div>
     <div class="mdl-layout-spacer"></div>
 </div>

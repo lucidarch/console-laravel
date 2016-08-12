@@ -23,9 +23,9 @@
 <div class="mdl-grid">
     <div class="mdl-layout-spacer"></div>
     <div class="dl-cell mdl-cell--4-col">
-        <h5 v-if="jobs.length <= 0 && !currentDomain" class="text-center">
+        <h1 v-if="jobs.length <= 0 && !currentDomain" class="text-center">
              <small>choose a domain to see its jobs list</small>
-        </h5>
+        </h1>
     </div>
     <div class="mdl-layout-spacer"></div>
 </div>
