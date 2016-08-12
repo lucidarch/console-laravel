@@ -29,6 +29,7 @@
 
          <header class="mdl-layout__header">
             <div class="mdl-layout__header-row">
+            <div class="mdl-layout-icon"><img class="invert" src="/vendor/lucid/images/lucid-icon.png" width=50>&nbsp;</div>
                 <span class="mdl-layout-title">Lucid • Console</span>
                 <div class="mdl-layout-spacer"></div>
                 <nav class="mdl-navigation">
