@@ -45,26 +45,64 @@ trait Finder
             'jobs' => [],
             'features' => [],
         ];
+
         foreach ($files as $file) {
             $base = $file->getBaseName();
-            $name = str_replace('.php', '', $base);
+            $name = str_replace(['.php', ' '], '', $base);
 
-            similar_text($query, $name, $percent);
+            $query = str_replace(' ', '', trim($query));
 
-            if ($percent > 30) {
+            similar_text($query, mb_strtolower($name), $percent);
+
+            if ($percent > 35) {
                 if (strpos($base, 'Feature.php')) {
-                    $matches['features'][$percent] = $this->findFeature($name)->toArray();
+                    $matches['features'][] = [$this->findFeature($name)->toArray(), $percent];
                 } elseif (strpos($base, 'Job.php')) {
-                    $matches['jobs'][$percent] = $this->findJob($name)->toArray();
+                    $matches['jobs'][] = [$this->findJob($name)->toArray(), $percent];
                 }
             }
         }
 
-        $matches['features'] = array_reverse(array_values($matches['features']));
-        $matches['jobs'] = array_reverse(array_values($matches['jobs']));
+        // sort the results by their similarity percentage
+        $this->sortFuzzyResults($matches['jobs']);
+        $this->sortFuzzyResults($matches['features']);
+
+        $matches['features'] = $this->mapFuzzyResults($matches['features']);
+        $matches['jobs'] = array_map(function ($result) {
+            return $result[0];
+        }, $matches['jobs']);
 
         return $matches;
     }
+
+    /**
+     * Sort the fuzzy-find results.
+     *
+     * @param array &$results
+     *
+     * @return bool
+     */
+    private function sortFuzzyResults(&$results)
+    {
+        return usort($results, function ($resultLeft, $resultRight) {
+            return $resultLeft[1] < $resultRight[1];
+        });
+    }
+
+     /**
+      * Map the fuzzy-find results into the data
+      * that should be returned.
+      *
+      * @param  array $results
+      *
+      * @return array
+      */
+     private function mapFuzzyResults($results)
+     {
+         return array_map(function ($result) {
+            return $result[0];
+        }, $results);
+     }
 
     /**
      * Get the namespace used for the application.
