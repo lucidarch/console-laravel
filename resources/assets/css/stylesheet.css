@@ -58,7 +58,12 @@
 
 .lucid-code-preview {
     width: 970px;
-    min-height: 800px;
+    height: 800px;
+}
+
+.lucid-code-preview pre {
+    height: 600px;
+    overflow-y: auto;
 }
 
 /*
