@@ -20,6 +20,10 @@ Route::group(['prefix' => 'lucid'], function () {
         return view('lucid::features');
     });
 
+    Route::get('/dashboard/logs', function () {
+        return view('lucid::logs');
+    });
+
     // Data Routes
     Route::post('/search', function () {
         // search for the query in features and jobs
