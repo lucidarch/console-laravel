@@ -12,6 +12,7 @@
 namespace Lucid\Console;
 
 use Illuminate\Support\ServiceProvider;
+use Stevebauman\LogReader\LogReaderServiceProvider;
 
  /**
   * @author Abed Halawi <abed.halawi@vinelab.com>
@@ -43,6 +44,6 @@ class LucidServiceProvider extends ServiceProvider
      */
     public function register()
     {
-
+        $this->app->register(LogReaderServiceProvider::class);
     }
 }

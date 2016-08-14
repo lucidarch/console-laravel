@@ -6,7 +6,7 @@
     </div>
 
     <div class="mdl-mini-footer__right-section">
-        <div class="mdl-logo"><img class="invert" src="/vendor/lucid/images/lucid-icon.png" width=30></div>
+        <div class="mdl-logo"><img class="invert" src="/vendor/lucid/images/lucid-icon.png" width="35"></div>
         <ul class="mdl-mini-footer__link-list">
             <li><a href="#">About</a></li>
             <li><a href="#">License</a></li>

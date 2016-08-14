@@ -74,6 +74,22 @@ Route::group(['prefix' => 'lucid'], function () {
 
         return app(Lucid\Console\Generators\FeatureGenerator::class)->generate($title, $service, $jobs)->toArray();
     });
+
+    Route::get('/logs', function() {
+        $reader = app(Stevebauman\LogReader\LogReader::class);
+
+        if (request()->has('level')) {
+            $reader->level(request()->input('level'));
+        }
+
+        return $reader->orderBy('date')
+            ->paginate(25);
+    });
+
+    Route::put('/logs/{id}/read', function($id) {
+        app(Stevebauman\LogReader\LogReader::class)->find($id)->markRead();
+    });
+
 });
 
 class Controller

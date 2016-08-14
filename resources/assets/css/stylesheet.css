@@ -1,6 +1,6 @@
 #lucid-add-button {
     position: absolute;
-    right: 3%;
+    right: 2%;
     bottom: 15%;
     z-index: 6;
 }
@@ -24,6 +24,11 @@
     min-width: 210px;
 }
 
+.lucid-logs-stack {
+    text-align: left !important;
+    max-width: 100px;
+}
+
 /* invert the colours */
 .invert {
     -webkit-filter: invert(100%);
@@ -32,6 +37,18 @@
 
 .text-center {
     text-align: center;
+}
+
+.text-colour-error {
+    color: red;
+}
+
+.text-colour-info {
+    color: lightblue;
+}
+
+.text-colour-warning {
+    color: orange;
 }
 
 .lucid-progress-indicator {
