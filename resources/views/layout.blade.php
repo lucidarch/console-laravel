@@ -35,7 +35,6 @@
                 <nav class="mdl-navigation">
                     <a href="/lucid/dashboard/services" class="mdl-navigation__link @if(isset($active) && $active == 'services') mdl-navigation__link--current @endif">Services</a>
                     <a href="/lucid/dashboard/domains" class="mdl-navigation__link @if(isset($active) && $active == 'domains') mdl-navigation__link--current @endif">Domains</a>
-                    <a href="/lucid/dashboard/features" class="mdl-navigation__link @if(isset($active) && $active == 'features') mdl-navigation__link--current @endif">Features</a>
                     <!-- search field -->
                     <div id="search-field" class="mdl-textfield mdl-js-textfield mdl-textfield--expandable
                         mdl-textfield--floating-label mdl-textfield--align-right">
@@ -56,11 +55,12 @@
         <!-- Holds the progress indicators -->
         <div id="lucid-progress-container"></div>
 
-        @yield('drawer')
-
         <main class="mdl-layout__content">
+            @yield('drawer')
             @yield('content')
         </main>
+
+        @include('lucid::components.footer')
 
     </div>
 

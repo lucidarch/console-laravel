@@ -1,9 +1,7 @@
-.invert {-webkit-filter: invert(100%); filter: invert(100%);}
-
 #lucid-add-button {
     position: absolute;
     right: 3%;
-    bottom: 3%;
+    bottom: 15%;
     z-index: 6;
 }
 
@@ -26,6 +24,12 @@
     min-width: 210px;
 }
 
+/* invert the colours */
+.invert {
+    -webkit-filter: invert(100%);
+    filter: invert(100%);
+}
+
 .text-center {
     text-align: center;
 }
@@ -40,6 +44,10 @@
     min-height: 800px;
 }
 
+/*
+ make the element take the fulld
+ width of the parent.
+ */
 .full-width {
     width: 100%;
 }
