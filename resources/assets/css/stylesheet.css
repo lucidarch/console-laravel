@@ -1,3 +1,7 @@
+#console {
+    background-color: rgb(252, 252, 252);
+}
+
 #lucid-add-button {
     position: absolute;
     right: 2%;
@@ -24,9 +28,19 @@
     min-width: 210px;
 }
 
+#lucid-logs .mdl-data-table {
+    table-layout:fixed;
+}
+
+#lucid-logs td {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -o-text-overflow: ellipsis;
+}
+
 .lucid-logs-stack {
     text-align: left !important;
-    max-width: 100px;
 }
 
 /* invert the colours */
