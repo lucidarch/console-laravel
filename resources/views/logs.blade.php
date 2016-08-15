@@ -7,27 +7,6 @@
         <div class="mdl-layout-spacer"></div>
         <div class="dl-cell mdl-cell--10-col">
             <table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp full-width">
-              {{--   <thead>
-                    <tr>
-                        <th class="mdl-data-table__cell--non-numeric" style="width: 7%;">Level</th>
-                        <th class="mdl-data-table__cell--non-numeric" style="width: 60%;">
-                            <button id="lucid-logs-filter" class="mdl-button mdl-js-button mdl-button--icon">
-                                <i class="material-icons">@{{levelIcon}}</i>
-                            </button>
-
-                            <ul class="mdl-menu mdl-menu--bottom-left mdl-js-menu mdl-js-ripple-effect"
-                                for="lucid-logs-filter">
-                                <li class="mdl-menu__item mdl-menu__item--full-bleed-divider" @click="chooseFilterLevel('all')">All</li>
-                                <li class="mdl-menu__item" @click="chooseFilterLevel('error')">Errors</li>
-                                <li class="mdl-menu__item" @click="chooseFilterLevel('warning')">Warnings</li>
-                                <li class="mdl-menu__item" @click="chooseFilterLevel('info')">Info</li>
-                            </ul>
-                        </th>
-                        <th class="mdl-data-table__cell--non-numeric" style="width: 17%;"></th>
-                        <th class="mdl-data-table__cell--non-numeric"></th>
-                        <th class="mdl-data-table__cell--non-numeric"></th>
-                    </tr>
-                </thead> --}}
                 <thead>
                     <tr>
                         <th class="mdl-data-table__cell--non-numeric" style="width: 10%;">
