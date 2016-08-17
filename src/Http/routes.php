@@ -90,6 +90,10 @@ Route::group(['prefix' => 'lucid'], function () {
         app(Stevebauman\LogReader\LogReader::class)->find($id)->markRead();
     });
 
+    Route::get('/analysis', function() {
+        return (new Lucid\Console\Analyser())->analyse();
+    });
+
 });
 
 class Controller

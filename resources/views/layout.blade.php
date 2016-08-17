@@ -30,8 +30,16 @@
 
          <header class="mdl-layout__header">
             <div class="mdl-layout__header-row">
-            <div class="mdl-layout-icon"><img class="invert" src="/vendor/lucid/images/lucid-icon.png" width=50>&nbsp;</div>
-                <span class="mdl-layout-title">Lucid • Console</span>
+                <nav class="mdl-navigation">
+                    <a class="mdl-navigation__link" href="/lucid/dashboard" style="text-decoration: none;">
+                        <div class="mdl-layout-icon">
+                            <img class="invert" src="/vendor/lucid/images/lucid-icon.png" width=50>&nbsp;
+                        </div>
+                    </a>
+                    <a class="mdl-navigation__link" href="/lucid/dashboard" style="text-decoration: none; margin-left: -45px;">
+                        <span class="mdl-layout-title" >Lucid • Console</span>
+                    </a>
+                </nav>
                 <div class="mdl-layout-spacer"></div>
                 <nav class="mdl-navigation">
                     <a href="/lucid/dashboard/services" class="mdl-navigation__link @if(isset($active) && $active == 'services') mdl-navigation__link--current @endif">Services</a>
