@@ -45,6 +45,9 @@ class FeaturesListCommand extends Command
     {
         foreach ($this->listFeatures($this->argument('service')) as $service => $features) {
             $this->comment("\n$service\n");
+            $features = array_map(function($feature) {
+                return [$feature->title, $feature->service->name, $feature->file, $feature->relativePath];
+            }, $features->all());
             $this->table(['Feature', 'Service', 'File', 'Path'], $features);
         }
     }

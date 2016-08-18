@@ -37,6 +37,9 @@ class ServicesListCommand extends Command
 
     public function fire()
     {
-        $this->table(['Service', 'Slug', 'Path'], $this->listServices());
+        $services = $this->listServices()->all();
+        $this->table(['Service', 'Slug', 'Path'], array_map(function($service) {
+            return [$service->name, $service->slug, $service->relativePath];
+        }, $services));
     }
 }

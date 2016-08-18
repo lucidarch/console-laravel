@@ -11,10 +11,11 @@
 
 namespace Lucid\Console\Commands;
 
-use Lucid\Console\Str;
-use Lucid\Console\Finder;
-use Lucid\Console\Filesystem;
 use Illuminate\Console\GeneratorCommand;
+use Lucid\Console\Filesystem;
+use Lucid\Console\Finder;
+use Lucid\Console\Generators\FeatureGenerator;
+use Lucid\Console\Str;
 use Symfony\Component\Console\Input\InputArgument;
 
 /**
@@ -53,13 +54,22 @@ class FeatureMakeCommand extends GeneratorCommand
      */
     public function fire()
     {
-        $service = studly_case($this->argument('service'));
-        $feature = $this->parseName($this->argument('feature'));
+        try {
+            $service = studly_case($this->argument('service'));
+            $title = $this->parseName($this->argument('feature'));
 
-        $this->info('Feature class '.$feature.' created successfully.'.
-            "\n".
-            "\n".
-            'Find it at <comment>'.strstr($path, 'src/').'</comment>'."\n");
+            $generator = app(FeatureGenerator::class);
+            $feature = $generator->generate($title, $service);
+
+            $this->info(
+                'Feature class '.$feature->title.' created successfully.'.
+                "\n".
+                "\n".
+                'Find it at <comment>'.strstr($feature->relativePath, 'src/').'</comment>'."\n"
+            );
+        } catch (Exception $e) {
+            $this->error($e->getMessage());
+        }
     }
 
     /**
@@ -90,7 +100,7 @@ class FeatureMakeCommand extends GeneratorCommand
      *  remove the Feature.php suffix if found
      *  we're adding it ourselves.
      *
-     * @param  string $name
+     * @param string $name
      *
      * @return string
      */

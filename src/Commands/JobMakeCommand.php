@@ -60,14 +60,14 @@ class JobMakeCommand extends GeneratorCommand
         $title = $this->parseName($this->argument('job'));
 
         try {
-
             $job = $generator->generate($title, $domain);
 
-            $this->info('Job class '.$title.' created successfully.'.
-            "\n".
-            "\n".
-            'Find it at <comment>'.$job->relativePath.'</comment>'."\n");
-
+            $this->info(
+                'Job class '.$title.' created successfully.'.
+                "\n".
+                "\n".
+                'Find it at <comment>'.$job->relativePath.'</comment>'."\n"
+            );
         } catch (Exception $e) {
             $this->error($e->getMessage());
         }
@@ -96,7 +96,7 @@ class JobMakeCommand extends GeneratorCommand
      *  remove the Job.php suffix if found
      *  we're adding it ourselves.
      *
-     * @param  string $name
+     * @param string $name
      *
      * @return string
      */
