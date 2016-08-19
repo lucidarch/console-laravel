@@ -38,6 +38,10 @@ Route::group(['prefix' => 'lucid'], function () {
         return (new Controller())->listFeatures($slug);
     });
 
+    Route::post('/services', function () {
+        return app(Lucid\Console\Generators\ServiceGenerator::class)->generate(request()->input('name'))->toArray();
+    });
+
     Route::get('/features/{name}', function ($name) {
         return (new Controller())->findFeature($name)->toArray();
     });
@@ -75,7 +79,7 @@ Route::group(['prefix' => 'lucid'], function () {
         return app(Lucid\Console\Generators\FeatureGenerator::class)->generate($title, $service, $jobs)->toArray();
     });
 
-    Route::get('/logs', function() {
+    Route::get('/logs', function () {
         $reader = app(Stevebauman\LogReader\LogReader::class);
 
         if (request()->has('level')) {
@@ -86,11 +90,11 @@ Route::group(['prefix' => 'lucid'], function () {
             ->paginate(25);
     });
 
-    Route::put('/logs/{id}/read', function($id) {
+    Route::put('/logs/{id}/read', function ($id) {
         app(Stevebauman\LogReader\LogReader::class)->find($id)->markRead();
     });
 
-    Route::get('/analysis', function() {
+    Route::get('/analysis', function () {
         return (new Lucid\Console\Analyser())->analyse();
     });
 

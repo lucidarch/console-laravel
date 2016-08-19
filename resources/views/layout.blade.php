@@ -77,6 +77,7 @@
     @include('lucid::components.code-preview')
     @include('lucid::components.create-job')
     @include('lucid::components.create-feature')
+    @include('lucid::components.create-service')
     @include('lucid::components.add-menu')
 
     <script src="/vendor/lucid/js/lib/prism.js"></script>

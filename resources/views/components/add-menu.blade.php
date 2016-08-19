@@ -7,8 +7,9 @@
 <div id="creation-menu">
     <ul class="mdl-menu mdl-menu--top-right mdl-js-menu mdl-js-ripple-effect"
     data-mdl-for="lucid-add-button">
-        <li class="mdl-menu__item" @click="showCreateJobDialog()">Job</li>
+        <li class="mdl-menu__item" @click="showCreateServiceDialog()">Service</li>
         <li class="mdl-menu__item" @click="showCreateFeatureDialog()">Feature</li>
+        <li class="mdl-menu__item" @click="showCreateJobDialog()">Job</li>
     </ul>
 </div>
 
@@ -24,6 +25,10 @@ new Vue({
 
         showCreateFeatureDialog: function() {
             CreateFeatureDialog.show();
+        },
+
+        showCreateServiceDialog: function() {
+            CreateServiceDialog.show();
         }
     }
 });
