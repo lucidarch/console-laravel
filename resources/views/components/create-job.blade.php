@@ -102,7 +102,7 @@ var CreateJobDialog = new Vue({
             };
 
             // create the job
-            this.$http.post('jobs', data).then(
+            Vue.http.post('jobs', data).then(
                 // success
                 function (response) {
                     this.closeCreateJobForm();
@@ -111,13 +111,13 @@ var CreateJobDialog = new Vue({
                     Toast.show('Job '+job.title+' created successfully');
 
                     // update the domains list when a new domain is added
-                    if (this.$get('isNewDomain')) {
+                    if (this.isNewDomain) {
                         // reload domains when it's a new one that's been created
                         window.DomainsStore.load();
                     }
 
                     this.resetForm();
-                },
+                }.bind(this),
                 // error
                 function (response) {
                     console.log('Error creating the job', response.status);
