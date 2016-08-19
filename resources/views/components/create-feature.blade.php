@@ -136,7 +136,7 @@ var CreateFeatureDialog = new Vue({
             };
 
             // create the feature
-            this.$http.post('features', data).then(
+            Vue.http.post('features', data).then(
                 // success
                 function (response) {
                     this.closeCreateFeatureForm();
@@ -147,7 +147,7 @@ var CreateFeatureDialog = new Vue({
                     Toast.show('Feature '+feature.title+' created successfully');
 
                     this.resetForm();
-                },
+                }.bind(this),
                 // error
                 function (response) {
                     console.log('Error creating the feature', response.status);
