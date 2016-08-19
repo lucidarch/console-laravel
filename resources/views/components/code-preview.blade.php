@@ -60,19 +60,19 @@ var CodePreviewDialogs = new Vue({
         showFeature: function(feature) {
 
             // fetch the contents of the current feature
-            this.$http.get('features/'+feature.title).then(
+            Vue.http.get('features/'+feature.title).then(
                 // success
                 function (response) {
                     // set the currently viewing feature
-                    this.$set('currentFeature', response.json());
+                    this.currentFeature = response.json();
 
-                    this.$set('isCodeShowing', true);
+                    this.isCodeShowing = true;
 
                     this.showFeatureCodeDialog();
 
                     // generate and set highlighted content for this feature
-                    this.$set('currentFeature.highlightedContent', Prism.highlight(this.$get('currentFeature.content'), Prism.languages.php));
-                },
+                    this.currentFeature.highlightedContent = Prism.highlight(this.currentFeature.content, Prism.languages.php);
+                }.bind(this),
                 // error
                 function (response) {
                     console.log('Error fetching feature details', response.status);
@@ -93,19 +93,19 @@ var CodePreviewDialogs = new Vue({
          showJob: function(job) {
             console.log(job.title);
             // fetch the contents of the current job
-            this.$http.get('jobs/'+job.title).then(
+            Vue.http.get('jobs/'+job.title).then(
                 // success
                 function (response) {
                     // set the currently viewing job
-                    this.$set('currentJob', response.json());
+                    this.currentJob = response.json();
 
-                    this.$set('isCodeShowing', true);
+                    this.isCodeShowing = true;
 
                     this.showJobCodeDialog();
 
                     // generate and set highlighted content for this job
-                    this.$set('currentJob.highlightedContent', Prism.highlight(this.$get('currentJob.content'), Prism.languages.php));
-                },
+                    this.currentJob.highlightedContent = Prism.highlight(this.currentJob.content, Prism.languages.php);
+                }.bind(this),
                 // error
                 function (response) {
                     console.log('Error fetching job details', response.status);
