@@ -37,12 +37,11 @@ var Services = new Vue({
             this.features = [];
 
             // fetch the features of the service
-            this.$http.get('services/'+service.slug+'/features').then(
+            Vue.http.get('services/'+service.slug+'/features').then(
                 // success
                 function (response) {
-                    console.log('features:', response.json());
-                    this.$set('features', response.json()[service.name]);
-                },
+                    this.features = response.json()[service.name];
+                }.bind(this),
                 // error
                 function (response) {
                     console.log('Error!', response.status);
