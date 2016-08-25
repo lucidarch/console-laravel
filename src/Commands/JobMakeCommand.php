@@ -88,7 +88,7 @@ class JobMakeCommand extends GeneratorCommand
      */
     public function getStub()
     {
-        return __DIR__.'/stubs/job.stub';
+        return __DIR__.'/../Generators/stubs/job.stub';
     }
 
     /**
