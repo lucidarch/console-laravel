@@ -127,9 +127,9 @@ class ControllerMakeCommand extends GeneratorCommand
     protected function getStub()
     {
         if ($this->option('plain')) {
-            return __DIR__.'/stubs/controller.plain.stub';
+            return __DIR__.'/../Generators/stubs/controller.plain.stub';
         }
 
-        return __DIR__.'/stubs/controller.stub';
+        return __DIR__.'/../Generators/stubs/controller.stub';
     }
 }

@@ -92,7 +92,7 @@ class FeatureMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return __DIR__.'/stubs/feature.stub';
+        return __DIR__.'/../Generators/stubs/feature.stub';
     }
 
     /**
