@@ -4,10 +4,10 @@
 if (file_exists(__DIR__.'/vendor/autoload.php')) {
     require __DIR__.'/vendor/autoload.php';
 } else {
-    require __DIR__.'/../../bootstrap/autoload.php';
+    require __DIR__.'/../../../bootstrap/autoload.php';
 }
 
-$laravel = require __DIR__.'/../../bootstrap/app.php';
+$laravel = require __DIR__.'/../../../bootstrap/app.php';
 
 $commands = [
     new Lucid\Console\Commands\JobMakeCommand(),
