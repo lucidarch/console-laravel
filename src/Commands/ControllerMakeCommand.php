@@ -12,18 +12,20 @@
 namespace Lucid\Console\Commands;
 
 use Lucid\Console\Finder;
+use Lucid\Console\Command;
 use Lucid\Console\Filesystem;
-use Illuminate\Console\GeneratorCommand;
 use Symfony\Component\Console\Input\InputOption;
 use Lucid\Console\Generators\ControllerGenerator;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Command\Command as SymfonyCommand;
 
 /**
  * @author Abed Halawi <abed.halawi@vinelab.com>
  */
-class ControllerMakeCommand extends GeneratorCommand
+class ControllerMakeCommand extends SymfonyCommand
 {
     use Finder;
+    use Command;
     use Filesystem;
 
     /**
@@ -54,13 +56,13 @@ class ControllerMakeCommand extends GeneratorCommand
      */
     public function fire()
     {
-        $generator = app(ControllerGenerator::class);
+        $generator = new ControllerGenerator();
 
         $service = $this->argument('service');
         $name = $this->argument('controller');
 
         try {
-            $controller = $generator->generate($name, $service);
+            $controller = $generator->generate($name, $service, $this->option('plain'));
 
             $this->info('Controller class created successfully.'.
                 "\n".

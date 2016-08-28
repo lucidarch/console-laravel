@@ -12,15 +12,17 @@
 namespace Lucid\Console\Commands;
 
 use Lucid\Console\Finder;
-use Illuminate\Console\Command;
+use Lucid\Console\Command;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Command\Command as SymfonyCommand;
 
 /**
  * @author Abed Halawi <abed.halawi@vinelab.com>
  */
-class FeaturesListCommand extends Command
+class FeaturesListCommand extends SymfonyCommand
 {
     use Finder;
+    use Command;
 
     /**
      * The console command name.

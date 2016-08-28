@@ -11,6 +11,7 @@
 
 namespace Lucid\Console\Generators;
 
+use Exception;
 use Lucid\Console\Str;
 
 /**
@@ -25,8 +26,8 @@ class ControllerGenerator extends Generator
 
         $path = $this->findControllerPath($service, $name);
 
-        if ($this->files->exists($path)) {
-            $this->error('Controller already exists!');
+        if ($this->exists($path)) {
+            throw new Exception('Controller already exists!');
 
             return false;
         }
