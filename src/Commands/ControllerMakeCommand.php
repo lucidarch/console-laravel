@@ -15,6 +15,7 @@ use Lucid\Console\Finder;
 use Lucid\Console\Filesystem;
 use Illuminate\Console\GeneratorCommand;
 use Symfony\Component\Console\Input\InputOption;
+use Lucid\Console\Generators\ControllerGenerator;
 use Symfony\Component\Console\Input\InputArgument;
 
 /**
@@ -53,31 +54,22 @@ class ControllerMakeCommand extends GeneratorCommand
      */
     public function fire()
     {
-        $service = studly_case($this->argument('service'));
-        $controller = $this->parseName($this->argument('controller'));
+        $generator = app(ControllerGenerator::class);
 
-        $path = $this->findControllerPath($service, $controller);
+        $service = $this->argument('service');
+        $name = $this->argument('controller');
 
-        if ($this->files->exists($path)) {
-            $this->error('Controller already exists');
+        try {
+            $controller = $generator->generate($name, $service);
 
-            return false;
+            $this->info('Controller class created successfully.'.
+                "\n".
+                "\n".
+                'Find it at <comment>'.strstr($controller, 'src/').'</comment>'."\n"
+            );
+        } catch (Exception $e) {
+            $this->error($e->getMessage());
         }
-
-        $namespace = $this->findControllerNamespace($service);
-
-        $content = file_get_contents($this->getStub());
-        $content = str_replace(
-            ['{{controller}}', '{{namespace}}', '{{foundation_namespace}}'],
-            [$controller, $namespace, $this->findFoundationNamespace()],
-            $content
-        );
-
-        $this->createFile($path, $content);
-        $this->info('Controller class '.$controller.' created successfully.'.
-            "\n".
-            "\n".
-            'Find it at <comment>'.strstr($path, 'src/').'</comment>'."\n");
     }
 
     /**
@@ -110,7 +102,7 @@ class ControllerMakeCommand extends GeneratorCommand
      *  remove the Controller.php suffix if found
      *  we're adding it ourselves.
      *
-     * @param  string $name
+     * @param string $name
      *
      * @return string
      */
