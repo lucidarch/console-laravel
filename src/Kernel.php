@@ -15,6 +15,7 @@ use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
 /**
  * @author Abed Halawi <abed.halawi@vinelab.com>
+ * @author Charalampos Raftopoulos <harris@vinelab.com>
  */
 class Kernel extends ConsoleKernel
 {
@@ -26,9 +27,11 @@ class Kernel extends ConsoleKernel
     protected $commands = [
         Commands\NewCommand::class,
         Commands\JobMakeCommand::class,
+        Commands\JobDeleteCommand::class,
         Commands\ServiceMakeCommand::class,
         Commands\ServiceDeleteCommand::class,
         Commands\FeatureMakeCommand::class,
+        Commands\FeatureDeleteCommand::class,
         Commands\ServicesListCommand::class,
         Commands\FeaturesListCommand::class,
         Commands\ControllerMakeCommand::class,

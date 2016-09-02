@@ -73,7 +73,7 @@ class ServiceDeleteCommand extends GeneratorCommand
 
             $this->deleteDirectory($this->findServicePath($name));
 
-            $this->info('Service '.$name.' deleted successfully.'."\n");
+            $this->info('Service <comment>'.$name.'</comment> deleted successfully.'."\n");
 
             $this->info('Please remove your registered service providers, if any.');
         } catch (\Exception $e) {

@@ -53,4 +53,28 @@ trait Filesystem
     {
         return $this->files->deleteDirectory($path, false);
     }
+
+    /**
+     * Delete an existing file at the given path.
+     *
+     * @param string $path
+     *
+     * @return bool
+     */
+    public function deleteFile($path)
+    {
+        return $this->files->delete($path);
+    }
+
+    /**
+     * Check if a directory is empty.
+     *
+     * @param string $directory
+     *
+     * @return array
+     */
+    public function checkDirectories($directory)
+    {
+        return $this->files->allFiles($directory);
+    }
 }
