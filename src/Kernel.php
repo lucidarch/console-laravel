@@ -27,6 +27,7 @@ class Kernel extends ConsoleKernel
         Commands\NewCommand::class,
         Commands\JobMakeCommand::class,
         Commands\ServiceMakeCommand::class,
+        Commands\ServiceDeleteCommand::class,
         Commands\FeatureMakeCommand::class,
         Commands\ServicesListCommand::class,
         Commands\FeaturesListCommand::class,

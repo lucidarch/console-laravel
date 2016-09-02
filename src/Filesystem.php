@@ -13,13 +13,14 @@ namespace Lucid\Console;
 
 /**
  * @author Abed Halawi <abed.halawi@vinelab.com>
+ * @author Charalampos Raftopoulos <harris@vinelab.com>
  */
 trait Filesystem
 {
     /**
      * Create an empty directory at the given path.
      *
-     * @param  string $path
+     * @param string $path
      *
      * @return bool
      */
@@ -31,13 +32,25 @@ trait Filesystem
     /**
      * Create a file at the given path with the given contents.
      *
-     * @param  string $path
-     * @param  string $contents
+     * @param string $path
+     * @param string $contents
      *
      * @return bool
      */
     public function createFile($path, $contents = '')
     {
         return $this->files->put($path, $contents);
+    }
+
+    /**
+     * Delete an existing directory at the given path.
+     *
+     * @param string $path
+     *
+     * @return bool
+     */
+    public function deleteDirectory($path)
+    {
+        return $this->files->deleteDirectory($path, false);
     }
 }
