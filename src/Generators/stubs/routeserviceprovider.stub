@@ -7,7 +7,7 @@ use {{foundation_namespace}}\Providers\RouteServiceProvider as ServiceProvider;
 class RouteServiceProvider extends ServiceProvider
 {
     /**
-     * Read the routes from the "routes.php" file of this service
+     * Read the routes from the "routes.php" file of this Service
      *
      * @param \Illuminate\Routing\Router $router
      */
