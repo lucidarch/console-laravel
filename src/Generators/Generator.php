@@ -22,9 +22,4 @@ class Generator
 {
     use Finder;
     use Filesystem;
-
-    public function __construct(IlluminateFilesystem $files)
-    {
-        $this->files = $files;
-    }
 }

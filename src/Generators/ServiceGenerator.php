@@ -48,7 +48,7 @@ class ServiceGenerator extends Generator
         $slug = snake_case($name);
         $path = $this->findServicePath($name);
 
-        if ($this->files->exists($path)) {
+        if ($this->exists($path)) {
             throw New Exception('Service already exists!');
 
             return false;

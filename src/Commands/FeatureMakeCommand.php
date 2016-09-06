@@ -11,19 +11,21 @@
 
 namespace Lucid\Console\Commands;
 
-use Illuminate\Console\GeneratorCommand;
-use Lucid\Console\Filesystem;
-use Lucid\Console\Finder;
-use Lucid\Console\Generators\FeatureGenerator;
 use Lucid\Console\Str;
+use Lucid\Console\Finder;
+use Lucid\Console\Command;
+use Lucid\Console\Filesystem;
+use Lucid\Console\Generators\FeatureGenerator;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Command\Command as SymfonyCommand;
 
 /**
  * @author Abed Halawi <abed.halawi@vinelab.com>
  */
-class FeatureMakeCommand extends GeneratorCommand
+class FeatureMakeCommand extends SymfonyCommand
 {
     use Finder;
+    use Command;
     use Filesystem;
 
     /**
@@ -58,7 +60,7 @@ class FeatureMakeCommand extends GeneratorCommand
             $service = studly_case($this->argument('service'));
             $title = $this->parseName($this->argument('feature'));
 
-            $generator = app(FeatureGenerator::class);
+            $generator = new FeatureGenerator();
             $feature = $generator->generate($title, $service);
 
             $this->info(

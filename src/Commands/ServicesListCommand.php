@@ -12,14 +12,16 @@
 namespace Lucid\Console\Commands;
 
 use Lucid\Console\Finder;
-use Illuminate\Console\Command;
+use Lucid\Console\Command;
+use Symfony\Component\Console\Command\Command as SymfonyCommand;
 
 /**
  * @author Abed Halawi <abed.halawi@vinelab.com>
  */
-class ServicesListCommand extends Command
+class ServicesListCommand extends SymfonyCommand
 {
     use Finder;
+    use Command;
 
     /**
      * The console command name.
@@ -38,6 +40,7 @@ class ServicesListCommand extends Command
     public function fire()
     {
         $services = $this->listServices()->all();
+
         $this->table(['Service', 'Slug', 'Path'], array_map(function($service) {
             return [$service->name, $service->slug, $service->relativePath];
         }, $services));
