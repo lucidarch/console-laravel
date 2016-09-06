@@ -11,18 +11,20 @@
 
 namespace Lucid\Console\Commands;
 
-use Illuminate\Console\GeneratorCommand;
-use Lucid\Console\Filesystem;
-use Lucid\Console\Finder;
 use Lucid\Console\Str;
+use Lucid\Console\Finder;
+use Lucid\Console\Command;
+use Lucid\Console\Filesystem;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Command\Command as SymfonyCommand;
 
 /**
  * @author Charalampos Raftopoulos <harris@vinelab.com>
  */
-class FeatureDeleteCommand extends GeneratorCommand
+class FeatureDeleteCommand extends SymfonyCommand
 {
     use Finder;
+    use Command;
     use Filesystem;
 
     /**

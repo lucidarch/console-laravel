@@ -70,7 +70,22 @@ trait Filesystem
      */
     public function deleteDirectory($path)
     {
-        return $this->files->deleteDirectory($path, false);
+        if ($handle = opendir($path)) {
+            while (false !== ($file = readdir($handle))) {
+                if ($file != '.' && $file != '..') {
+                    if (is_dir($path.'/'.$file)) {
+                        if (!@rmdir($path.'/'.$file)) {
+                            $this->deleteDirectory($path.'/'.$file.'/');
+                        }
+                    } else {
+                        @unlink($path.'/'.$file);
+                    }
+                }
+            }
+            closedir($handle);
+
+            return @rmdir($path);
+        }
     }
 
     /**
@@ -82,18 +97,6 @@ trait Filesystem
      */
     public function deleteFile($path)
     {
-        return $this->files->delete($path);
-    }
-
-    /**
-     * Check if a directory is empty.
-     *
-     * @param string $directory
-     *
-     * @return array
-     */
-    public function checkDirectories($directory)
-    {
-        return $this->files->allFiles($directory);
+        return @unlink($path);
     }
 }

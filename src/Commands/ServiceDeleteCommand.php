@@ -12,15 +12,18 @@
 namespace Lucid\Console\Commands;
 
 use Lucid\Console\Finder;
+use Lucid\Console\Command;
 use Lucid\Console\Filesystem;
-use Illuminate\Console\GeneratorCommand;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Command\Command as SymfonyCommand;
 
 /**
  * @author Charalampos Raftopoulos <harris@vinelab.com>
  */
-class ServiceDeleteCommand extends GeneratorCommand
+class ServiceDeleteCommand extends SymfonyCommand
 {
     use Finder;
+    use Command;
     use Filesystem;
 
     /**
@@ -69,7 +72,7 @@ class ServiceDeleteCommand extends GeneratorCommand
     public function fire()
     {
         try {
-            $name = $this->getNameInput();
+            $name = ucfirst($this->argument('name'));
 
             $this->deleteDirectory($this->findServicePath($name));
 
@@ -79,5 +82,12 @@ class ServiceDeleteCommand extends GeneratorCommand
         } catch (\Exception $e) {
             dd($e->getMessage(), $e->getFile(), $e->getLine());
         }
+    }
+
+    public function getArguments()
+    {
+        return [
+            ['name', InputArgument::REQUIRED, 'The service name.'],
+        ];
     }
 }

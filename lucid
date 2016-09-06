@@ -11,8 +11,11 @@ $laravel = require __DIR__.'/../../../bootstrap/app.php';
 
 $commands = [
     new Lucid\Console\Commands\JobMakeCommand(),
+    new Lucid\Console\Commands\JobDeleteCommand(),
     new Lucid\Console\Commands\ServiceMakeCommand(),
+    new Lucid\Console\Commands\ServiceDeleteCommand(),
     new Lucid\Console\Commands\FeatureMakeCommand(),
+    new Lucid\Console\Commands\FeatureDeleteCommand(),
     new Lucid\Console\Commands\ControllerMakeCommand(),
     new Lucid\Console\Commands\ServicesListCommand(),
     new Lucid\Console\Commands\FeaturesListCommand(),

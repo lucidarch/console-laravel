@@ -11,18 +11,20 @@
 
 namespace Lucid\Console\Commands;
 
-use Illuminate\Console\GeneratorCommand;
-use Lucid\Console\Filesystem;
-use Lucid\Console\Finder;
 use Lucid\Console\Str;
+use Lucid\Console\Finder;
+use Lucid\Console\Command;
+use Lucid\Console\Filesystem;
 use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Command\Command as SymfonyCommand;
 
 /**
  * @author Charalampos Raftopoulos <harris@vinelab.com>
  */
-class JobDeleteCommand extends GeneratorCommand
+class JobDeleteCommand extends SymfonyCommand
 {
     use Finder;
+    use Command;
     use Filesystem;
 
     /**
@@ -56,15 +58,14 @@ class JobDeleteCommand extends GeneratorCommand
         try {
             $domain = studly_case($this->argument('domain'));
             $title = $this->parseName($this->argument('job'));
-            $domainPath = $this->findDomainPath($domain).'/Jobs';
 
             if (!file_exists($job = $this->findJobPath($domain, $title))) {
                 $this->error('Job class '.$title.' cannot be found.');
             } else {
                 $this->deleteFile($job);
 
-                if (count($this->checkDirectories($domainPath)) === 0) {
-                    $this->deleteDirectory($domainPath);
+                if (count($this->listJobs($domain)->first()) === 0) {
+                    $this->deleteDirectory($this->findDomainPath($domain));
                 }
 
                 $this->info('Job class <comment>'.$title.'</comment> deleted successfully.');
