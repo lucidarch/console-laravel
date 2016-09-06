@@ -17,15 +17,14 @@ namespace Lucid\Console;
 trait Filesystem
 {
     /**
-     * Create an empty directory at the given path.
+     * Determine if a file or directory exists.
      *
-     * @param  string $path
-     *
+     * @param  string  $path
      * @return bool
      */
-    public function createDirectory($path)
+    public function exists($path)
     {
-        return $this->files->makeDirectory($path, 0755, true, true);
+        return file_exists($path);
     }
 
     /**
@@ -36,8 +35,27 @@ trait Filesystem
      *
      * @return bool
      */
-    public function createFile($path, $contents = '')
+    public function createFile($path, $contents = '', $lock = false)
     {
-        return $this->files->put($path, $contents);
+        return file_put_contents($path, $contents, $lock ? LOCK_EX : 0);
     }
+
+    /**
+     * Create a directory.
+     *
+     * @param  string  $path
+     * @param  int     $mode
+     * @param  bool    $recursive
+     * @param  bool    $force
+     * @return bool
+     */
+    public function createDirectory($path, $mode = 0755, $recursive = true, $force = true)
+    {
+        if ($force) {
+            return @mkdir($path, $mode, $recursive);
+        }
+
+        return mkdir($path, $mode, $recursive);
+    }
+
 }

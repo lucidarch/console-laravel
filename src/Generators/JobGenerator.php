@@ -16,8 +16,8 @@ use Lucid\Console\Str;
 use Lucid\Console\Components\Job;
 
 /**
- * @author Abed Halawi <abed.halawi@vinelab.com>
- */
+  * @author Abed Halawi <abed.halawi@vinelab.com>
+  */
  class JobGenerator extends Generator
  {
      public function generate($job, $domain)
@@ -26,7 +26,7 @@ use Lucid\Console\Components\Job;
          $domain = Str::domain($domain);
          $path = $this->findJobPath($domain, $job);
 
-         if ($this->files->exists($path)) {
+         if ($this->exists($path)) {
              throw new Exception('Job already exists');
 
              return false;
@@ -45,9 +45,9 @@ use Lucid\Console\Components\Job;
              $content
          );
 
-         $this->createFile($path, $content);
+        $this->createFile($path, $content);
 
-         return new Job(
+        return new Job(
             $job,
             $namespace,
             basename($path),
@@ -55,7 +55,7 @@ use Lucid\Console\Components\Job;
             $this->relativeFromReal($path),
             $this->findDomain($domain),
             $content
-         );
+        );
      }
 
      /**

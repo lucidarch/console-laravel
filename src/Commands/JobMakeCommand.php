@@ -13,17 +13,19 @@ namespace Lucid\Console\Commands;
 
 use Lucid\Console\Str;
 use Lucid\Console\Finder;
+use Lucid\Console\Command;
 use Lucid\Console\Filesystem;
-use Illuminate\Console\GeneratorCommand;
-use Symfony\Component\Console\Input\InputArgument;
 use Lucid\Console\Generators\JobGenerator;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Command\Command as SymfonyCommand;
 
 /**
  * @author Abed Halawi <abed.halawi@vinelab.com>
  */
-class JobMakeCommand extends GeneratorCommand
+class JobMakeCommand extends SymfonyCommand
 {
     use Finder;
+    use Command;
     use Filesystem;
 
     /**
@@ -54,7 +56,7 @@ class JobMakeCommand extends GeneratorCommand
      */
     public function fire()
     {
-        $generator = app(JobGenerator::class);
+        $generator = new JobGenerator();
 
         $domain = studly_case($this->argument('domain'));
         $title = $this->parseName($this->argument('job'));

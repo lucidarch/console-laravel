@@ -20,10 +20,10 @@ class Str
      * Determine the real name of the given name,
      * excluding the given pattern.
      * 	i.e. the name: "CreateArticleFeature.php" with pattern '/Feature.php'
-     * 		will result in "Create Article"
+     * 		will result in "Create Article".
      *
-     * @param  string $name
-     * @param  string $pattern
+     * @param string $name
+     * @param string $pattern
      *
      * @return string
      */
@@ -41,7 +41,7 @@ class Str
      * 	and many other forms will be transformed to "CreatePostFeature" which is
      * 	the standard feature class name.
      *
-     * @param  string $name
+     * @param string $name
      *
      * @return string
      */
@@ -57,7 +57,7 @@ class Str
      * 	and many other forms will be transformed to "CreatePostJob" which is
      * 	the standard job class name.
      *
-     * @param  string $name
+     * @param string $name
      *
      * @return string
      */
@@ -71,7 +71,7 @@ class Str
      *
      * Domain names are just CamelCase
      *
-     * @param  string $name
+     * @param string $name
      *
      * @return string
      */
@@ -83,12 +83,24 @@ class Str
     /**
      * Get the given name formatted as a service name.
      *
-     * @param  string $name
+     * @param string $name
      *
      * @return string
      */
     public static function service($name)
     {
         return studly_case($name);
+    }
+
+    /**
+     * Get the given name formatted as a controller name.
+     *
+     * @param string $name
+     *
+     * @return string
+     */
+    public static function controller($name)
+    {
+        return studly_case(preg_replace('/Controller(\.php)?$/', '', $name).'Controller');
     }
 }

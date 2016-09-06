@@ -11,22 +11,20 @@
 
 namespace Lucid\Console\Commands;
 
-use Lucid\Console\Str;
 use Lucid\Console\Finder;
+use Lucid\Console\Command;
 use Lucid\Console\Filesystem;
-use Illuminate\Console\GeneratorCommand;
-use Illuminate\Config\Repository as Config;
 use Lucid\Console\Generators\ServiceGenerator;
-use Symfony\Component\Console\Input\InputOption;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Command\Command as SymfonyCommand;
 
 /**
  * @author Abed Halawi <abed.halawi@vinelab.com>
  */
-class ServiceMakeCommand extends GeneratorCommand
+class ServiceMakeCommand extends SymfonyCommand
 {
     use Finder;
+    use Command;
     use Filesystem;
 
     /**
@@ -37,7 +35,7 @@ class ServiceMakeCommand extends GeneratorCommand
     private $namespace;
 
     /**
-     * The Services path
+     * The Services path.
      *
      * @var string
      */
@@ -75,31 +73,36 @@ class ServiceMakeCommand extends GeneratorCommand
     public function fire()
     {
         try {
+            $name = $this->argument('name');
 
-        $name = $this->getNameInput();
+            $generator = new ServiceGenerator();
+            $service = $generator->generate($name);
 
-        $generator = app(ServiceGenerator::class);
-        $service = $generator->generate($name);
+            $this->info('Service '.$service->name.' created successfully.'."\n");
 
-        $this->info('Service '.$service->name.' created successfully.'."\n");
+            $rootNamespace = $this->findRootNamespace();
+            $serviceNamespace = $this->findServiceNamespace($service->name);
 
-        $rootNamespace = $this->findRootNamespace();
-        $serviceNamespace = $this->findServiceNamespace($service->name);
+            $serviceProvider = $serviceNamespace.'\\Providers\\'.$service->name.'ServiceProvider';
 
-        $serviceProvider = $serviceNamespace.'\\Providers\\'.$service->name.'ServiceProvider';
+            $this->info('Activate it by registering '.
+                '<comment>'.$serviceProvider.'</comment> '.
+                "\n".
+                'in <comment>'.$rootNamespace.'\Foundation\Providers\ServiceProvider@register</comment> '.
+                'with the following:'.
+                "\n"
+            );
 
-        $this->info('Activate it by registering '.
-            '<comment>'.$serviceProvider.'</comment> '.
-            "\n".
-            'in <comment>'.$rootNamespace.'\Foundation\Providers\ServiceProvider@register</comment> '.
-            'with the following:'.
-            "\n"
-        );
-
-        $this->info('<comment>$this->app->register(\''.$serviceProvider.'\');</comment>'."\n");
+            $this->info('<comment>$this->app->register(\''.$serviceProvider.'\');</comment>'."\n");
         } catch (\Exception $e) {
-            dd($e->getMessage(), $e->getFile(), $e->getLine());
+            $this->error($e->getMessage()."\n".$e->getFile().' at '.$e->getLine());
         }
     }
 
+    public function getArguments()
+    {
+        return [
+            ['name', InputArgument::REQUIRED, 'The service name.'],
+        ];
+    }
 }
