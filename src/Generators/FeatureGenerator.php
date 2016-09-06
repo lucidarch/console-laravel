@@ -27,7 +27,7 @@ use Lucid\Console\Components\Feature;
 
          $path = $this->findFeaturePath($service, $feature);
 
-         if ($this->files->exists($path)) {
+         if ($this->exists($path)) {
              $this->error('Feature already exists!');
 
              return false;

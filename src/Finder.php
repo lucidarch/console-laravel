@@ -133,7 +133,7 @@ trait Finder
      */
     public function findFoundationNamespace()
     {
-        return $this->findRootNamespace().'\Foundation';
+        return 'Lucid\Foundation';
     }
 
     /**
