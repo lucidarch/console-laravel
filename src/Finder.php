@@ -457,7 +457,7 @@ trait Finder
         $files = $finder->name($fileName)->in($this->findServicesRootPath())->files();
         foreach ($files as $file) {
             $path = $file->getRealPath();
-            $serviceName = strstr($file->getRelativePath(), '/', true);
+            $serviceName = strstr($file->getRelativePath(), DIRECTORY_SEPARATOR, true);
             $service = $this->findService($serviceName);
             $content = file_get_contents($path);
 
