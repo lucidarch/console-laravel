@@ -59,7 +59,7 @@ class FeatureDeleteCommand extends SymfonyCommand
             $service = studly_case($this->argument('service'));
             $title = $this->parseName($this->argument('feature'));
 
-            if (!file_exists($feature = $this->findFeaturePath($service, $title))) {
+            if (!$this->exists($feature = $this->findFeaturePath($service, $title))) {
                 $this->error('Feature class '.$title.' cannot be found.');
             } else {
                 $this->deleteFile($feature);

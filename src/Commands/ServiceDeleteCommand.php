@@ -74,11 +74,15 @@ class ServiceDeleteCommand extends SymfonyCommand
         try {
             $name = ucfirst($this->argument('name'));
 
-            $this->deleteDirectory($this->findServicePath($name));
+            if (!$this->exists($service = $this->findServicePath($name))) {
+                $this->error('Service '.$name.' cannot be found.');
+            } else {
+                $this->deleteDirectory($service);
 
-            $this->info('Service <comment>'.$name.'</comment> deleted successfully.'."\n");
+                $this->info('Service <comment>'.$name.'</comment> deleted successfully.'."\n");
 
-            $this->info('Please remove your registered service providers, if any.');
+                $this->info('Please remove your registered service providers, if any.');
+            }
         } catch (\Exception $e) {
             dd($e->getMessage(), $e->getFile(), $e->getLine());
         }
