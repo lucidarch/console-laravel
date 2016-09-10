@@ -11,6 +11,8 @@
 
 namespace Lucid\Console;
 
+use Symfony\Component\Filesystem\Filesystem as SymfonyFilesystem;
+
 /**
  * @author Abed Halawi <abed.halawi@vinelab.com>
  * @author Charalampos Raftopoulos <harris@vinelab.com>
@@ -62,41 +64,16 @@ trait Filesystem
     }
 
     /**
-     * Delete an existing directory at the given path.
+     * Delete an existing file or directory at the given path.
      *
      * @param string $path
      *
      * @return bool
      */
-    public function deleteDirectory($path)
+    public function delete($path)
     {
-        if ($handle = opendir($path)) {
-            while (false !== ($file = readdir($handle))) {
-                if ($file != '.' && $file != '..') {
-                    if (is_dir($path.'/'.$file)) {
-                        if (!@rmdir($path.'/'.$file)) {
-                            $this->deleteDirectory($path.'/'.$file.'/');
-                        }
-                    } else {
-                        @unlink($path.'/'.$file);
-                    }
-                }
-            }
-            closedir($handle);
+        $filesystem = new SymfonyFilesystem();
 
-            return @rmdir($path);
-        }
-    }
-
-    /**
-     * Delete an existing file at the given path.
-     *
-     * @param string $path
-     *
-     * @return bool
-     */
-    public function deleteFile($path)
-    {
-        return @unlink($path);
+        $filesystem->remove($path);
     }
 }

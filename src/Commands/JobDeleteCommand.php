@@ -62,10 +62,10 @@ class JobDeleteCommand extends SymfonyCommand
             if (!$this->exists($job = $this->findJobPath($domain, $title))) {
                 $this->error('Job class '.$title.' cannot be found.');
             } else {
-                $this->deleteFile($job);
+                $this->delete($job);
 
                 if (count($this->listJobs($domain)->first()) === 0) {
-                    $this->deleteDirectory($this->findDomainPath($domain));
+                    $this->delete($this->findDomainPath($domain));
                 }
 
                 $this->info('Job class <comment>'.$title.'</comment> deleted successfully.');

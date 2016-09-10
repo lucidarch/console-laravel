@@ -77,7 +77,7 @@ class ServiceDeleteCommand extends SymfonyCommand
             if (!$this->exists($service = $this->findServicePath($name))) {
                 $this->error('Service '.$name.' cannot be found.');
             } else {
-                $this->deleteDirectory($service);
+                $this->delete($service);
 
                 $this->info('Service <comment>'.$name.'</comment> deleted successfully.'."\n");
 
