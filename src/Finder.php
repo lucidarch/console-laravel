@@ -206,6 +206,19 @@ trait Finder
     }
 
     /**
+     * Find the test file path for the given feature.
+     *
+     * @param string $service
+     * @param string $feature
+     *
+     * @return string
+     */
+    public function findFeatureTestPath($service, $test)
+    {
+        return $this->findServicePath($service)."/Tests/Features/$test.php";
+    }
+
+    /**
      * Find the namespace for features in the given service.
      *
      * @param string $service
@@ -215,6 +228,18 @@ trait Finder
     public function findFeatureNamespace($service)
     {
         return $this->findServiceNamespace($service).'\\Features';
+    }
+
+    /**
+     * Find the namespace for features tests in the given service.
+     *
+     * @param string $service
+     *
+     * @return string
+     */
+    public function findFeatureTestNamespace($service)
+    {
+        return $this->findServiceNamespace($service).'\\Tests\\Features';
     }
 
     /**
@@ -350,6 +375,31 @@ trait Finder
     }
 
     /**
+     * Find the namespace for the given domain's Jobs.
+     *
+     * @param string $domain
+     *
+     * @return string
+     */
+    public function findDomainJobsTestsNamespace($domain)
+    {
+        return $this->findDomainNamespace($domain).'\Tests\Jobs';
+    }
+
+    /**
+     * Find the test path for the given job.
+     *
+     * @param string $domain
+     * @param string $job
+     *
+     * @return string
+     */
+    public function findJobTestPath($domain, $jobTest)
+    {
+        return $this->findDomainPath($domain).DIRECTORY_SEPARATOR.'Tests'.DIRECTORY_SEPARATOR.'Jobs'.DIRECTORY_SEPARATOR.$jobTest.'.php';
+    }
+
+    /**
      * Find the path for the give controller class.
      *
      * @param string $service
@@ -457,7 +507,7 @@ trait Finder
         $files = $finder->name($fileName)->in($this->findServicesRootPath())->files();
         foreach ($files as $file) {
             $path = $file->getRealPath();
-            $serviceName = strstr($file->getRelativePath(), '/', true);
+            $serviceName = strstr($file->getRelativePath(), DIRECTORY_SEPARATOR, true);
             $service = $this->findService($serviceName);
             $content = file_get_contents($path);
 
