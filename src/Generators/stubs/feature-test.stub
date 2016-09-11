@@ -1,7 +1,8 @@
 <?php
-namespace {{namespace}}
+namespace {{namespace}};
 
-use TestCase;
+use PHPUnit_Framework_TestCase as TestCase;
+use {{feature_namespace}};
 
 class {{testclass}} extends TestCase
 {

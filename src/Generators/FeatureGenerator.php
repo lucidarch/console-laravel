@@ -81,11 +81,12 @@ class FeatureGenerator extends Generator
     	$content = file_get_contents($this->getTestStub());
 
     	$namespace = $this->findFeatureTestNamespace($service);
-    	$testClass = $feature.'Test';
+        $featureNamespace = $this->findFeatureNamespace($service)."\\$feature";
+        $testClass = $feature.'Test';
 
     	$content = str_replace(
-    		['{{namespace}}', '{{testclass}}', '{{feature}}'],
-    		[$namespace, $testClass, mb_strtolower($feature)],
+    		['{{namespace}}', '{{testclass}}', '{{feature}}', '{{feature_namespace}}'],
+    		[$namespace, $testClass, mb_strtolower($feature), $featureNamespace],
     		$content
     	);
 

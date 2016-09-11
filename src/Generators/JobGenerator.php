@@ -71,11 +71,12 @@ class JobGenerator extends Generator
         $content = file_get_contents($this->getTestStub());
 
         $namespace = $this->findDomainJobsTestsNamespace($domain);
+        $jobNamespace = $this->findDomainJobsNamespace($domain)."\\$job";
         $testClass = $job.'Test';
 
         $content = str_replace(
-            ['{{namespace}}', '{{testclass}}', '{{job}}'],
-            [$namespace, $testClass, mb_strtolower($job)],
+            ['{{namespace}}', '{{testclass}}', '{{job}}', '{{job_namespace}}'],
+            [$namespace, $testClass, mb_strtolower($job), $jobNamespace],
             $content
         );
 
