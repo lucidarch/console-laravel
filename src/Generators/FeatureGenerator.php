@@ -11,6 +11,7 @@
 
 namespace Lucid\Console\Generators;
 
+use Exception;
 use Lucid\Console\Str;
 use Lucid\Console\Components\Feature;
 
@@ -27,7 +28,7 @@ class FeatureGenerator extends Generator
         $path = $this->findFeaturePath($service, $feature);
 
         if ($this->exists($path)) {
-            $this->error('Feature already exists!');
+            throw new Exception('Feature already exists!');
 
             return false;
         }
