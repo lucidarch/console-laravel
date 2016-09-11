@@ -70,6 +70,12 @@ class FeatureGenerator extends Generator
         );
     }
 
+    /**
+     * Generate the test file.
+     *
+     * @param  string $feature
+     * @param  string $service
+     */
     private function generateTestFile($feature, $service)
     {
     	$content = file_get_contents($this->getTestStub());

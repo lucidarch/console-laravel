@@ -375,6 +375,31 @@ trait Finder
     }
 
     /**
+     * Find the namespace for the given domain's Jobs.
+     *
+     * @param string $domain
+     *
+     * @return string
+     */
+    public function findDomainJobsTestsNamespace($domain)
+    {
+        return $this->findDomainNamespace($domain).'\Tests\Jobs';
+    }
+
+    /**
+     * Find the test path for the given job.
+     *
+     * @param string $domain
+     * @param string $job
+     *
+     * @return string
+     */
+    public function findJobTestPath($domain, $jobTest)
+    {
+        return $this->findDomainPath($domain).DIRECTORY_SEPARATOR.'Tests'.DIRECTORY_SEPARATOR.'Jobs'.DIRECTORY_SEPARATOR.$jobTest.'.php';
+    }
+
+    /**
      * Find the path for the give controller class.
      *
      * @param string $service
