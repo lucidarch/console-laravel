@@ -57,6 +57,9 @@ class FeatureGenerator extends Generator
 
         $this->createFile($path, $content);
 
+        // generate test file
+        $this->generateTestFile($feature, $service);
+
         return new Feature(
             $feature,
             basename($path),
@@ -67,6 +70,24 @@ class FeatureGenerator extends Generator
         );
     }
 
+    private function generateTestFile($feature, $service)
+    {
+    	$content = file_get_contents($this->getTestStub());
+
+    	$namespace = $this->findFeatureTestNamespace($service);
+    	$testClass = $feature.'Test';
+
+    	$content = str_replace(
+    		['{{namespace}}', '{{testclass}}', '{{feature}}'],
+    		[$namespace, $testClass, mb_strtolower($feature)],
+    		$content
+    	);
+
+    	$path = $this->findFeatureTestPath($service, $testClass);
+
+    	$this->createFile($path, $content);
+    }
+
     /**
      * Get the stub file for the generator.
      *
@@ -75,5 +96,15 @@ class FeatureGenerator extends Generator
     protected function getStub()
     {
         return __DIR__.'/stubs/feature.stub';
+    }
+
+    /**
+     * Get the test stub file for the generator.
+     *
+     * @return string
+     */
+    private function getTestStub()
+    {
+    	return __DIR__.'/stubs/feature-test.stub';
     }
 }

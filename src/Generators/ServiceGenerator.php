@@ -39,6 +39,8 @@ class ServiceGenerator extends Generator
         'resources/',
         'resources/lang/',
         'resources/views/',
+        'Tests/',
+        'Tests/Features/',
     ];
 
 

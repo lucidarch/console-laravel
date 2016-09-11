@@ -206,6 +206,19 @@ trait Finder
     }
 
     /**
+     * Find the test file path for the given feature.
+     *
+     * @param string $service
+     * @param string $feature
+     *
+     * @return string
+     */
+    public function findFeatureTestPath($service, $test)
+    {
+        return $this->findServicePath($service)."/Tests/Features/$test.php";
+    }
+
+    /**
      * Find the namespace for features in the given service.
      *
      * @param string $service
@@ -215,6 +228,18 @@ trait Finder
     public function findFeatureNamespace($service)
     {
         return $this->findServiceNamespace($service).'\\Features';
+    }
+
+    /**
+     * Find the namespace for features tests in the given service.
+     *
+     * @param string $service
+     *
+     * @return string
+     */
+    public function findFeatureTestNamespace($service)
+    {
+        return $this->findServiceNamespace($service).'\\Tests\\Features';
     }
 
     /**
