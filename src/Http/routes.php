@@ -1,5 +1,9 @@
 <?php
 
+namespace Lucid\Console;
+
+use Route;
+
 Route::group(['prefix' => 'lucid'], function () {
 
     // UI Navigation Routes
@@ -39,7 +43,7 @@ Route::group(['prefix' => 'lucid'], function () {
     });
 
     Route::post('/services', function () {
-        return app(Lucid\Console\Generators\ServiceGenerator::class)->generate(request()->input('name'))->toArray();
+        return app(\Lucid\Console\Generators\ServiceGenerator::class)->generate(request()->input('name'))->toArray();
     });
 
     Route::get('/features/{name}', function ($name) {
@@ -67,7 +71,7 @@ Route::group(['prefix' => 'lucid'], function () {
         $title = request()->input('title');
         $domain = request()->input('domain');
 
-        return app(Lucid\Console\Generators\JobGenerator::class)->generate($title, $domain)->toArray();
+        return app(\Lucid\Console\Generators\JobGenerator::class)->generate($title, $domain)->toArray();
     });
 
     Route::post('/features', function () {
@@ -76,11 +80,11 @@ Route::group(['prefix' => 'lucid'], function () {
         $service = request()->input('service');
         $jobs = request()->input('jobs');
 
-        return app(Lucid\Console\Generators\FeatureGenerator::class)->generate($title, $service, $jobs)->toArray();
+        return app(\Lucid\Console\Generators\FeatureGenerator::class)->generate($title, $service, $jobs)->toArray();
     });
 
     Route::get('/logs', function () {
-        $reader = app(Stevebauman\LogReader\LogReader::class);
+        $reader = app(\Stevebauman\LogReader\LogReader::class);
 
         if (request()->has('level')) {
             $reader->level(request()->input('level'));
@@ -91,16 +95,16 @@ Route::group(['prefix' => 'lucid'], function () {
     });
 
     Route::put('/logs/{id}/read', function ($id) {
-        app(Stevebauman\LogReader\LogReader::class)->find($id)->markRead();
+        app(\Stevebauman\LogReader\LogReader::class)->find($id)->markRead();
     });
 
     Route::get('/analysis', function () {
-        return (new Lucid\Console\Analyser())->analyse();
+        return (new \Lucid\Console\Analyser())->analyse();
     });
 
 });
 
 class Controller
 {
-    use Lucid\Console\Finder;
+    use Finder;
 }
