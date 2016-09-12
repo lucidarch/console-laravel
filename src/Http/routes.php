@@ -2,6 +2,8 @@
 
 namespace Lucid\Console;
 
+use Route;
+
 Route::group(['prefix' => 'lucid'], function () {
 
     // UI Navigation Routes
