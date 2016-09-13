@@ -78,8 +78,8 @@ class JobDeleteCommand extends SymfonyCommand
     public function getArguments()
     {
         return [
-            ['domain', InputArgument::REQUIRED, 'The domain from which the job will be deleted.'],
             ['job', InputArgument::REQUIRED, 'The job\'s name.'],
+            ['domain', InputArgument::REQUIRED, 'The domain from which the job will be deleted.'],
         ];
     }
 
