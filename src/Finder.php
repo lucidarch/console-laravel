@@ -479,12 +479,15 @@ trait Finder
      */
     public function listServices()
     {
-        $finder = new SymfonyFinder();
-
         $services = new Collection();
-        foreach ($finder->directories()->depth('== 0')->in($this->findServicesRootPath())->directories() as $dir) {
-            $realPath = $dir->getRealPath();
-            $services->push(new Service($dir->getRelativePathName(), $realPath, $this->relativeFromReal($realPath)));
+
+        if (file_exists($this->findServicesRootPath())) {
+            $finder = new SymfonyFinder();
+
+            foreach ($finder->directories()->depth('== 0')->in($this->findServicesRootPath())->directories() as $dir) {
+                $realPath = $dir->getRealPath();
+                $services->push(new Service($dir->getRelativePathName(), $realPath, $this->relativeFromReal($realPath)));
+            }
         }
 
         return $services;

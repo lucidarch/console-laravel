@@ -67,7 +67,7 @@ class ControllerMakeCommand extends SymfonyCommand
             $this->info('Controller class created successfully.'.
                 "\n".
                 "\n".
-                'Find it at <comment>'.strstr($controller, 'src/').'</comment>'."\n"
+                'Find it at <comment>'.$controller.'</comment>'."\n"
             );
         } catch (Exception $e) {
             $this->error($e->getMessage());
@@ -82,8 +82,8 @@ class ControllerMakeCommand extends SymfonyCommand
     protected function getArguments()
     {
         return [
-            ['service', InputArgument::REQUIRED, 'The service in which the controller should be generated.'],
             ['controller', InputArgument::REQUIRED, 'The controller\'s name.'],
+            ['service', InputArgument::OPTIONAL, 'The service in which the controller should be generated.'],
         ];
     }
 
