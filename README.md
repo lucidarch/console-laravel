@@ -1,3 +1,4 @@
+# Lucid • Console
 The Console companion for the Lucid Architecture.
 
 ## Command Line Interface
