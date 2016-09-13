@@ -661,8 +661,12 @@ trait Finder
      *
      * @return string
      */
-    protected function relativeFromReal($path, $needle = 'src/')
+    protected function relativeFromReal($path, $needle = '')
     {
+        if (!$needle) {
+            $needle = $this->getSourceDirectoryName().'/';
+        }
+
         return strstr($path, $needle);
     }
 }
