@@ -16,7 +16,7 @@ namespace Lucid\Console\Components;
  */
 class Feature extends Component
 {
-    public function __construct($title, $file, $realPath, $relativePath, Service $service, $content = '')
+    public function __construct($title, $file, $realPath, $relativePath, Service $service = null, $content = '')
     {
         $className = str_replace(' ', '', $title).'Feature';
 

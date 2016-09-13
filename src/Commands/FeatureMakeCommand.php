@@ -67,7 +67,7 @@ class FeatureMakeCommand extends SymfonyCommand
                 'Feature class '.$feature->title.' created successfully.'.
                 "\n".
                 "\n".
-                'Find it at <comment>'.strstr($feature->relativePath, 'src/').'</comment>'."\n"
+                'Find it at <comment>'.$feature->relativePath.'</comment>'."\n"
             );
         } catch (Exception $e) {
             $this->error($e->getMessage());
@@ -82,8 +82,8 @@ class FeatureMakeCommand extends SymfonyCommand
     protected function getArguments()
     {
         return [
-            ['service', InputArgument::REQUIRED, 'The service in which the feature should be implemented.'],
             ['feature', InputArgument::REQUIRED, 'The feature\'s name.'],
+            ['service', InputArgument::OPTIONAL, 'The service in which the feature should be implemented.'],
         ];
     }
 

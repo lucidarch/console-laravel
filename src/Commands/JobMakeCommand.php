@@ -78,8 +78,8 @@ class JobMakeCommand extends SymfonyCommand
     public function getArguments()
     {
         return [
-            ['domain', InputArgument::REQUIRED, 'The domain to be responsible for the job.'],
             ['job', InputArgument::REQUIRED, 'The job\'s name.'],
+            ['domain', InputArgument::OPTIONAL, 'The domain to be responsible for the job.'],
         ];
     }
 

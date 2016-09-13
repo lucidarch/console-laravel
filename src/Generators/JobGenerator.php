@@ -93,7 +93,7 @@ class JobGenerator extends Generator
     private function createDomainDirectory($domain)
     {
         $this->createDirectory($this->findDomainPath($domain).'/Jobs');
-        $this->createDirectory($this->findDomainPath($domain).'/Tests/Jobs');
+        $this->createDirectory($this->findDomainTestsPath($domain).'/Jobs');
     }
 
     /**
