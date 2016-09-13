@@ -20,6 +20,8 @@ use Lucid\Console\Components\Domain;
 use Lucid\Console\Components\Job;
 use Symfony\Component\Finder\Finder as SymfonyFinder;
 
+define('DS', DIRECTORY_SEPARATOR);
+
 /**
  * @author Abed Halawi <abed.halawi@vinelab.com>
  */
@@ -105,6 +107,31 @@ trait Finder
      }
 
     /**
+     * Get the source directory name.
+     * In a microservice installation this will be `app`. `src` otherwise.
+     *
+     * @return string
+     */
+    public function getSourceDirectoryName()
+    {
+        if (file_exists(base_path().'/'.$this->srcDirectoryName)) {
+            return $this->srcDirectoryName;
+        }
+
+        return 'app';
+    }
+
+    /**
+     * Determines whether this is a lucid microservice installation.
+     *
+     * @return bool
+     */
+    public function isMicroservice()
+    {
+        return !($this->getSourceDirectoryName() === $this->srcDirectoryName);
+    }
+
+    /**
      * Get the namespace used for the application.
      *
      * @return string
@@ -118,7 +145,7 @@ trait Finder
 
         // see which one refers to the "src/" directory
         foreach ($composer['autoload']['psr-4'] as $namespace => $directory) {
-            if ($directory === $this->srcDirectoryName.'/') {
+            if ($directory === $this->getSourceDirectoryName().'/') {
                 return trim($namespace, '\\');
             }
         }
@@ -145,7 +172,9 @@ trait Finder
      */
     public function findServiceNamespace($service)
     {
-        return $this->findRootNamespace().'\\Services\\'.$service;
+        $root = $this->findRootNamespace();
+
+        return (!$service) ? $root : "$root\\Services\\$service";
     }
 
     /**
@@ -155,7 +184,7 @@ trait Finder
      */
     public function findSourceRoot()
     {
-        return base_path().'/'.$this->srcDirectoryName;
+        return ($this->isMicroservice()) ? app_path() : base_path().'/'.$this->srcDirectoryName;
     }
 
     /**
@@ -170,6 +199,7 @@ trait Finder
 
     /**
      * Find the path to the directory of the given service name.
+     * In the case of a microservice service installation this will be app path.
      *
      * @param string $service
      *
@@ -177,7 +207,7 @@ trait Finder
      */
     public function findServicePath($service)
     {
-        return $this->findServicesRootPath()."/$service";
+        return (!$service) ? app_path() : $this->findServicesRootPath()."/$service";
     }
 
     /**
@@ -215,7 +245,9 @@ trait Finder
      */
     public function findFeatureTestPath($service, $test)
     {
-        return $this->findServicePath($service)."/Tests/Features/$test.php";
+        $root = ($service) ? $this->findServicePath($service).'/Tests' : base_path().'/tests';
+
+        return "$root/Features/$test.php";
     }
 
     /**
@@ -347,7 +379,7 @@ trait Finder
      */
     public function findJobPath($domain, $job)
     {
-        return $this->findDomainPath($domain).'/Jobs/'.$job.'.php';
+        return $this->findDomainPath($domain).DS.'Jobs'.DS.$job.'.php';
     }
 
     /**
@@ -387,6 +419,22 @@ trait Finder
     }
 
     /**
+     * Get the path to the tests of the given domain.
+     *
+     * @param string $domain
+     *
+     * @return string
+     */
+    public function findDomainTestsPath($domain)
+    {
+        if ($this->isMicroservice()) {
+            return base_path().DS.'tests'.DS.'Domains'.DS.$domain;
+        }
+
+        return $this->findDomainPath($domain).DS.'Tests';
+    }
+
+    /**
      * Find the test path for the given job.
      *
      * @param string $domain
@@ -396,7 +444,7 @@ trait Finder
      */
     public function findJobTestPath($domain, $jobTest)
     {
-        return $this->findDomainPath($domain).DIRECTORY_SEPARATOR.'Tests'.DIRECTORY_SEPARATOR.'Jobs'.DIRECTORY_SEPARATOR.$jobTest.'.php';
+        return $this->findDomainTestsPath($domain).DS.'Jobs'.DS.$jobTest.'.php';
     }
 
     /**
@@ -431,12 +479,15 @@ trait Finder
      */
     public function listServices()
     {
-        $finder = new SymfonyFinder();
-
         $services = new Collection();
-        foreach ($finder->directories()->depth('== 0')->in($this->findServicesRootPath())->directories() as $dir) {
-            $realPath = $dir->getRealPath();
-            $services->push(new Service($dir->getRelativePathName(), $realPath, $this->relativeFromReal($realPath)));
+
+        if (file_exists($this->findServicesRootPath())) {
+            $finder = new SymfonyFinder();
+
+            foreach ($finder->directories()->depth('== 0')->in($this->findServicesRootPath())->directories() as $dir) {
+                $realPath = $dir->getRealPath();
+                $services->push(new Service($dir->getRelativePathName(), $realPath, $this->relativeFromReal($realPath)));
+            }
         }
 
         return $services;
@@ -507,7 +558,7 @@ trait Finder
         $files = $finder->name($fileName)->in($this->findServicesRootPath())->files();
         foreach ($files as $file) {
             $path = $file->getRealPath();
-            $serviceName = strstr($file->getRelativePath(), DIRECTORY_SEPARATOR, true);
+            $serviceName = strstr($file->getRelativePath(), DS, true);
             $service = $this->findService($serviceName);
             $content = file_get_contents($path);
 
@@ -610,8 +661,12 @@ trait Finder
      *
      * @return string
      */
-    protected function relativeFromReal($path, $needle = 'src/')
+    protected function relativeFromReal($path, $needle = '')
     {
+        if (!$needle) {
+            $needle = $this->getSourceDirectoryName().'/';
+        }
+
         return strstr($path, $needle);
     }
 }

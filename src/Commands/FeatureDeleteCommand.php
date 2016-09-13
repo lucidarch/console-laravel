@@ -56,7 +56,7 @@ class FeatureDeleteCommand extends SymfonyCommand
     public function fire()
     {
         try {
-            $service = studly_case($this->argument('service'));
+            $service = Str::service($this->argument('service'));
             $title = $this->parseName($this->argument('feature'));
 
             if (!$this->exists($feature = $this->findFeaturePath($service, $title))) {
@@ -79,8 +79,8 @@ class FeatureDeleteCommand extends SymfonyCommand
     protected function getArguments()
     {
         return [
-            ['service', InputArgument::REQUIRED, 'The service in which the feature should be deleted from.'],
             ['feature', InputArgument::REQUIRED, 'The feature\'s name.'],
+            ['service', InputArgument::OPTIONAL, 'The service from which the feature should be deleted.'],
         ];
     }
 

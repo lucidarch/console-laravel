@@ -1,4 +1,4 @@
-- [ ] Specifying Laravel version on installation
+- [x] Specifying Laravel version on installation
 - [ ] Documentation
 - [ ] Change namespace using CLI
     - > By extending `Illuminate\Foundation\Console\AppNameCommand`

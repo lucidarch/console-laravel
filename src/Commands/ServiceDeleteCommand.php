@@ -11,6 +11,7 @@
 
 namespace Lucid\Console\Commands;
 
+use Lucid\Console\Str;
 use Lucid\Console\Finder;
 use Lucid\Console\Command;
 use Lucid\Console\Filesystem;
@@ -71,18 +72,22 @@ class ServiceDeleteCommand extends SymfonyCommand
      */
     public function fire()
     {
+        if ($this->isMicroservice()) {
+            return $this->error('This functionality is disabled in a Microservice');
+        }
+
         try {
-            $name = ucfirst($this->argument('name'));
+            $name = Str::service($this->argument('name'));
 
             if (!$this->exists($service = $this->findServicePath($name))) {
-                $this->error('Service '.$name.' cannot be found.');
-            } else {
-                $this->delete($service);
-
-                $this->info('Service <comment>'.$name.'</comment> deleted successfully.'."\n");
-
-                $this->info('Please remove your registered service providers, if any.');
+                return $this->error('Service '.$name.' cannot be found.');
             }
+
+            $this->delete($service);
+
+            $this->info('Service <comment>'.$name.'</comment> deleted successfully.'."\n");
+
+            $this->info('Please remove your registered service providers, if any.');
         } catch (\Exception $e) {
             dd($e->getMessage(), $e->getFile(), $e->getLine());
         }

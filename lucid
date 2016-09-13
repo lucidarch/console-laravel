@@ -21,7 +21,7 @@ $commands = [
     new Lucid\Console\Commands\FeaturesListCommand(),
 ];
 
-$app = new Symfony\Component\Console\Application('Lucid Console', '0.4.1');
+$app = new Symfony\Component\Console\Application('Lucid Console', '0.5.0');
 array_walk($commands, [$app, 'add']);
 
 $app->run();
