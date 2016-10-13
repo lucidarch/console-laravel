@@ -41,6 +41,8 @@ trait Filesystem
      */
     public function createFile($path, $contents = '', $lock = false)
     {
+        $this->createDirectory(dirname($path));
+        
         return file_put_contents($path, $contents, $lock ? LOCK_EX : 0);
     }
 
