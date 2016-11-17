@@ -14,20 +14,18 @@ namespace Lucid\Console;
 use Illuminate\Support\ServiceProvider;
 use Stevebauman\LogReader\LogReaderServiceProvider;
 
- /**
-  * @author Abed Halawi <abed.halawi@vinelab.com>
-  */
+/**
+ * @author Abed Halawi <abed.halawi@vinelab.com>
+ */
 class LucidServiceProvider extends ServiceProvider
 {
     /**
      * Perform post-registration booting of services.
-     *
-     * @return void
      */
     public function boot()
     {
-        if (! $this->app->routesAreCached()) {
-            require __DIR__.'/Http/routes.php';
+        if (!$this->app->routesAreCached()) {
+            require_once __DIR__.'/Http/routes.php';
         }
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'lucid');
@@ -39,8 +37,6 @@ class LucidServiceProvider extends ServiceProvider
 
     /**
      * Register bindings in the container.
-     *
-     * @return void
      */
     public function register()
     {
