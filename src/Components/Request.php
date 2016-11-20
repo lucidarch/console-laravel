@@ -3,8 +3,12 @@
 
 namespace Lucid\Console\Components;
 
+
 /**
  * Class Request
+ *
+ * @author Bernat Jufré <info@behind.design>
+ *
  * @package Lucid\Console\Components
  */
 class Request extends Component

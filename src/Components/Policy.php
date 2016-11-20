@@ -2,8 +2,12 @@
 
 namespace Lucid\Console\Components;
 
+
 /**
  * Class Policy
+ *
+ * @author Bernat Jufré <info@behind.design>
+ *
  * @package Lucid\Console\Components
  */
 class Policy extends Component

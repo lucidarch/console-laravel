@@ -5,6 +5,9 @@ namespace Lucid\Console\Components;
 
 /**
  * Class Model
+ *
+ * @author Bernat Jufré <info@behind.design>
+ *
  * @package Lucid\Console\Components
  */
 class Model extends Component

@@ -6,8 +6,12 @@ use Exception;
 use Lucid\Console\Str;
 use Lucid\Console\Components\Model;
 
+
 /**
  * Class ModelGenerator
+ *
+ * @author Bernat Jufré <info@behind.design>
+ *
  * @package Lucid\Console\Generators
  */
 class ModelGenerator extends Generator

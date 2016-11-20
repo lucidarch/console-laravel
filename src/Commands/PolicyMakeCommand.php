@@ -10,8 +10,12 @@ use Lucid\Console\Finder;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 
+
 /**
  * Class PolicyMakeCommand
+ *
+ * @author Bernat Jufré <info@behind.design>
+ *
  * @package Lucid\Console\Commands
  */
 class PolicyMakeCommand extends SymfonyCommand

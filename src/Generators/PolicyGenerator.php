@@ -7,8 +7,12 @@ use Exception;
 use Lucid\Console\Str;
 use Lucid\Console\Components\Policy;
 
+
 /**
  * Class PolicyGenerator
+ *
+ * @author Bernat Jufré <info@behind.design>
+ *
  * @package Lucid\Console\Generators
  */
 class PolicyGenerator extends Generator

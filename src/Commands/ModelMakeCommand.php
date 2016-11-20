@@ -13,6 +13,9 @@ use Symfony\Component\Console\Input\InputArgument;
 
 /**
  * Class ModelMakeCommand
+ *
+ * @author Bernat Jufré <info@behind.design>
+ *
  * @package Lucid\Console\Commands
  */
 class ModelMakeCommand extends SymfonyCommand
