@@ -589,7 +589,7 @@ trait Finder
         $files = $finder->name($fileName)->in($this->findDomainsRootPath())->files();
         foreach ($files as $file) {
             $path = $file->getRealPath();
-            $domainName = strstr($file->getRelativePath(), '/', true);
+            $domainName = strstr($file->getRelativePath(), DIRECTORY_SEPARATOR, true);
             $domain = $this->findDomain($domainName);
             $content = file_get_contents($path);
 
