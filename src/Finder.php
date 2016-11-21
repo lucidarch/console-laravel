@@ -671,7 +671,7 @@ trait Finder
      */
     public function findPoliciesPath()
     {
-        return $this->getSourceDirectoryName() . '/Domains/Policies';
+        return $this->getSourceDirectoryName() . '/Policies';
     }
 
     /**
@@ -725,7 +725,7 @@ trait Finder
      */
     public function findPolicyNamespace()
     {
-        return $this->findDomainNamespace('Policies');
+        return $this->findRootNamespace() . '\\Policies';
     }
 
     /**
