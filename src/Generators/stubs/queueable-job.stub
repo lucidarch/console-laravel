@@ -1,8 +1,7 @@
 <?php
 namespace {{namespace}};
 
-use {{foundation_namespace}}\Job;
-use Lucid\Foundation\QueueableJob;
+use {{foundation_namespace}}\QueueableJob;
 
 class {{job}} extends QueueableJob
 {

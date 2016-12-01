@@ -38,7 +38,7 @@ To do that, put this in your shell profile (~/.bash_profile, ~/.zshrc, ~/bashrc)
 #### Make
 - `make:controller <controller> [<service>]`
 - `make:feature <feature> [<service>]`
-- `make:job <job> <domain>`
+- `make:job <job> <domain> [--queue]`
 - `make:service <name>`
 - `make:model <model>`
 - `make:request <request> [<service>]`
