@@ -20,7 +20,7 @@ use Lucid\Console\Components\Job;
  */
 class JobGenerator extends Generator
 {
-    public function generate($job, $domain)
+    public function generate($job, $domain, $isQueueable = false)
     {
         $job = Str::job($job);
         $domain = Str::domain($domain);
@@ -38,7 +38,7 @@ class JobGenerator extends Generator
         // Create the job
         $namespace = $this->findDomainJobsNamespace($domain);
 
-        $content = file_get_contents($this->getStub());
+        $content = file_get_contents($this->getStub($isQueueable));
         $content = str_replace(
             ['{{job}}', '{{namespace}}', '{{foundation_namespace}}'],
             [$job, $namespace, $this->findFoundationNamespace()],
@@ -101,9 +101,15 @@ class JobGenerator extends Generator
      *
      * @return string
      */
-    public function getStub()
+    public function getStub($isQueueable = false)
     {
-        return __DIR__.'/stubs/job.stub';
+        $stubName;
+        if ($isQueueable) {
+            $stubName = '/stubs/queueable-job.stub';
+        } else {
+            $stubName = '/stubs/job.stub';
+        }
+        return __DIR__.$stubName;
     }
 
     /**
