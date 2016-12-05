@@ -11,13 +11,14 @@
 
 namespace Lucid\Console\Commands;
 
-use Lucid\Console\Str;
-use Lucid\Console\Finder;
 use Lucid\Console\Command;
 use Lucid\Console\Filesystem;
+use Lucid\Console\Finder;
 use Lucid\Console\Generators\JobGenerator;
-use Symfony\Component\Console\Input\InputArgument;
+use Lucid\Console\Str;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
+use Symfony\Component\Console\Input\InputArgument;
+use Symfony\Component\Console\Input\InputOption;
 
 /**
  * @author Abed Halawi <abed.halawi@vinelab.com>
@@ -33,7 +34,7 @@ class JobMakeCommand extends SymfonyCommand
      *
      * @var string
      */
-    protected $name = 'make:job';
+    protected $name = 'make:job {--Q|queue}';
 
     /**
      * The console command description.
@@ -60,9 +61,9 @@ class JobMakeCommand extends SymfonyCommand
 
         $domain = studly_case($this->argument('domain'));
         $title = $this->parseName($this->argument('job'));
-
+        $isQueueable = $this->option('queue');
         try {
-            $job = $generator->generate($title, $domain);
+            $job = $generator->generate($title, $domain, $isQueueable);
 
             $this->info(
                 'Job class '.$title.' created successfully.'.
@@ -80,6 +81,13 @@ class JobMakeCommand extends SymfonyCommand
         return [
             ['job', InputArgument::REQUIRED, 'The job\'s name.'],
             ['domain', InputArgument::REQUIRED, 'The domain to be responsible for the job.'],
+        ];
+    }
+
+    public function getOptions()
+    {
+        return [
+            ['queue', 'Q', InputOption::VALUE_NONE, 'Whether a job is queueable or not.'],
         ];
     }
 
