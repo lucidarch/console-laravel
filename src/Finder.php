@@ -275,6 +275,70 @@ trait Finder
     }
 
     /**
+     * Find the operations root path in the given service.
+     *
+     * @param string $service
+     *
+     * @return string
+     */
+    public function findOperationsRootPath($service)
+    {
+        return $this->findServicePath($service).'/Operations';
+    }
+
+    /**
+     * Find the file path for the given operation.
+     *
+     * @param string $service
+     * @param string $operation
+     *
+     * @return string
+     */
+    public function findOperationPath($service, $operation)
+    {
+        return $this->findOperationsRootPath($service)."/$operation.php";
+    }
+
+    /**
+     * Find the test file path for the given operation.
+     *
+     * @param string $service
+     * @param string $operation
+     *
+     * @return string
+     */
+    public function findOperationTestPath($service, $test)
+    {
+        $root = ($service) ? $this->findServicePath($service).'/Tests' : base_path().'/tests';
+
+        return "$root/Operations/$test.php";
+    }
+
+    /**
+     * Find the namespace for operations in the given service.
+     *
+     * @param string $service
+     *
+     * @return string
+     */
+    public function findOperationNamespace($service)
+    {
+        return $this->findServiceNamespace($service).'\\Operations';
+    }
+
+    /**
+     * Find the namespace for operations tests in the given service.
+     *
+     * @param string $service
+     *
+     * @return string
+     */
+    public function findOperationTestNamespace($service)
+    {
+        return $this->findServiceNamespace($service).'\\Tests\\Operations';
+    }
+
+    /**
      * Find the root path of domains.
      *
      * @return string
@@ -657,11 +721,12 @@ trait Finder
      * Get the path to the passed model.
      *
      * @param string $model
+     *
      * @return string
      */
     public function findModelPath($model)
     {
-        return $this->getSourceDirectoryName() . '/Data/' . $model . '.php';
+        return $this->getSourceDirectoryName().'/Data/'.$model.'.php';
     }
 
     /**
@@ -671,29 +736,31 @@ trait Finder
      */
     public function findPoliciesPath()
     {
-        return $this->getSourceDirectoryName() . '/Policies';
+        return $this->getSourceDirectoryName().'/Policies';
     }
 
     /**
      * Get the path to the passed policy.
      *
      * @param string $policy
+     *
      * @return string
      */
     public function findPolicyPath($policy)
     {
-        return $this->findPoliciesPath() . '/' . $policy . '.php';
+        return $this->findPoliciesPath().'/'.$policy.'.php';
     }
 
     /**
      * Get the path to the request directory of a specific service.
      *
      * @param string $service
+     *
      * @return string
      */
     public function findRequestsPath($service)
     {
-        return $this->findServicePath($service) . '/Http/Requests';
+        return $this->findServicePath($service).'/Http/Requests';
     }
 
     /**
@@ -701,11 +768,12 @@ trait Finder
      *
      * @param string $service
      * @param string $request
+     *
      * @return string
      */
     public function findRequestPath($service, $request)
     {
-        return $this->findRequestsPath($service) . '/' . $request . '.php';
+        return $this->findRequestsPath($service).'/'.$request.'.php';
     }
 
     /**
@@ -715,28 +783,29 @@ trait Finder
      */
     public function findModelNamespace()
     {
-        return $this->findRootNamespace() . '\\Data';
+        return $this->findRootNamespace().'\\Data';
     }
 
     /**
-     * Get the namespace for Policies
+     * Get the namespace for Policies.
      *
      * @return mixed
      */
     public function findPolicyNamespace()
     {
-        return $this->findRootNamespace() . '\\Policies';
+        return $this->findRootNamespace().'\\Policies';
     }
 
     /**
      * Get the requests namespace for the service passed in.
      *
      * @param string $service
+     *
      * @return string
      */
     public function findRequestsNamespace($service)
     {
-        return $this->findServiceNamespace($service) . '\\Http\\Requests';
+        return $this->findServiceNamespace($service).'\\Http\\Requests';
     }
 
     /**

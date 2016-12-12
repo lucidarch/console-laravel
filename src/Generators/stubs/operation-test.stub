@@ -1,0 +1,13 @@
+<?php
+namespace {{namespace}};
+
+use TestCase;
+use {{operation_namespace}};
+
+class {{testclass}} extends TestCase
+{
+    public function test_{{operation}}()
+    {
+        $this->markTestIncomplete();
+    }
+}

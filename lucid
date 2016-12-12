@@ -26,6 +26,9 @@ $commands = [
     new \Lucid\Console\Commands\RequestDeleteCommand(),
     new \Lucid\Console\Commands\PolicyMakeCommand(),
     new \Lucid\Console\Commands\PolicyDeleteCommand(),
+
+    new \Lucid\Console\Commands\OperationMakeCommand(),
+    new \Lucid\Console\Commands\OperationDeleteCommand(),
 ];
 
 $app = new Symfony\Component\Console\Application('Lucid Console', '0.5.0');
