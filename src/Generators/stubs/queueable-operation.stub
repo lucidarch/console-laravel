@@ -1,0 +1,13 @@
+<?php
+namespace {{namespace}};
+
+use {{foundation_namespace}}\QueueableOperation;
+use Illuminate\Http\Request;
+{{use_jobs}}
+class {{operation}} extends QueueableOperation
+{
+    public function handle(Request $request)
+    {
+{{run_jobs}}
+    }
+}

@@ -17,16 +17,18 @@ To do that, put this in your shell profile (~/.bash_profile, ~/.zshrc, ~/bashrc)
 - **make**
   - `make:controller`  Create a new resource Controller class in a service
   - `make:feature   `  Create a new Feature in a service
+  - `make:operaion   ` Create a new Operation in a service
   - `make:job       `  Create a new Job in a domain
   - `make:service   `  Create a new Service
   - `make:model     `  Create a new Model
   - `make:request   `  Create a new Request in a service
-  - `make:policy   `  Create a new Policy
+  - `make:policy   `   Create a new Policy
 - **list**
   - `list:features`    List the features.
   - `list:services`    List the services in this project.
 - **delete**
   - `delete:feature`   Delete an existing Feature in a service
+  - `delete:operaion`  Delete an existing Operation in a service
   - `delete:job    `   Delete an existing Job in a domain
   - `delete:service`   Delete an existing Service
   - `delete:model   `  Delete an existing Model

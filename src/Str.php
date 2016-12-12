@@ -67,6 +67,22 @@ class Str
     }
 
     /**
+     * Get the given name formatted as an operation.
+     *
+     *  i.e. "Create Post Operation", "CreatePostOperation.php", "createPost",
+     *  and many other forms will be transformed to "CreatePostOperation" which is
+     *  the standard operation class name.
+     *
+     * @param string $name
+     *
+     * @return string
+     */
+    public static function operation($name)
+    {
+        return studly_case(preg_replace('/Operation(\.php)?$/', '', $name).'Operation');
+    }
+
+    /**
      * Get the given name formatted as a domain.
      *
      * Domain names are just CamelCase
