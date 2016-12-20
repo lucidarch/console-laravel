@@ -24,8 +24,19 @@ class LucidServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        if (!$this->app->routesAreCached()) {
-            require_once __DIR__.'/Http/routes.php';
+        $configPath = __DIR__ . '/../config/lucid.php';
+        $this->publishes([$configPath => $this->getConfigPath()], 'config');
+
+        $dashboard_enabled = $this->app['config']->get('lucid.dashboard');
+
+        if ($dashboard_enabled === null) {
+            $dashboard_enabled = $this->app['config']->get('app.debug');
+        }
+
+        if ($dashboard_enabled === true) {
+            if (!$this->app->routesAreCached() ) {
+                require_once __DIR__.'/Http/routes.php';
+            }
         }
 
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'lucid');
@@ -40,6 +51,19 @@ class LucidServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $configPath = __DIR__ . '/../config/lucid.php';
+        $this->mergeConfigFrom($configPath, 'lucid');
+
         $this->app->register(LogReaderServiceProvider::class);
+    }
+
+    /**
+     * Return path to config file.
+     *
+     * @return string
+     */
+    private function getConfigPath()
+    {
+        return config_path('lucid.php');
     }
 }
