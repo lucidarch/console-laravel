@@ -27,13 +27,13 @@ class LucidServiceProvider extends ServiceProvider
         $configPath = __DIR__ . '/../config/lucid.php';
         $this->publishes([$configPath => $this->getConfigPath()], 'config');
 
-        $dashboard_enabled = $this->app['config']->get('lucid.dashboard');
+        $dashboardEnabled = $this->app['config']->get('lucid.dashboard');
 
-        if ($dashboard_enabled === null) {
-            $dashboard_enabled = $this->app['config']->get('app.debug');
+        if ($dashboardEnabled === null) {
+            $dashboardEnabled = $this->app['config']->get('app.debug');
         }
 
-        if ($dashboard_enabled === true) {
+        if ($dashboardEnabled === true) {
             if (!$this->app->routesAreCached() ) {
                 require_once __DIR__.'/Http/routes.php';
             }
