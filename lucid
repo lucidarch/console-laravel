@@ -10,6 +10,7 @@ if (file_exists(__DIR__.'/vendor/autoload.php')) {
 $laravel = require __DIR__.'/../../../bootstrap/app.php';
 
 $commands = [
+    new Lucid\Console\Commands\ChangeSourceNamespaceCommand(),
     new Lucid\Console\Commands\JobMakeCommand(),
     new Lucid\Console\Commands\JobDeleteCommand(),
     new Lucid\Console\Commands\ServiceMakeCommand(),
@@ -31,7 +32,7 @@ $commands = [
     new \Lucid\Console\Commands\OperationDeleteCommand(),
 ];
 
-$app = new Symfony\Component\Console\Application('Lucid Console', '0.5.0');
+$app = new Symfony\Component\Console\Application('Lucid Console', '0.5.5');
 array_walk($commands, [$app, 'add']);
 
 $app->run();
