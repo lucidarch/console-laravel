@@ -1,9 +1,9 @@
 <?php
 namespace {{namespace}};
 
-use {{foundation_namespace}}\Job;
+use {{foundation_namespace}}\QueueableJob;
 
-class {{job}} extends Job
+class {{job}} extends QueueableJob
 {
     /**
      * Create a new job instance.

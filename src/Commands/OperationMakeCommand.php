@@ -14,16 +14,16 @@ namespace Lucid\Console\Commands;
 use Lucid\Console\Command;
 use Lucid\Console\Filesystem;
 use Lucid\Console\Finder;
-use Lucid\Console\Generators\JobGenerator;
+use Lucid\Console\Generators\OperationGenerator;
 use Lucid\Console\Str;
 use Symfony\Component\Console\Command\Command as SymfonyCommand;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 
 /**
- * @author Abed Halawi <abed.halawi@vinelab.com>
+ * @author Ali Issa <ali@vinelab.com>
  */
-class JobMakeCommand extends SymfonyCommand
+class OperationMakeCommand extends SymfonyCommand
 {
     use Finder;
     use Command;
@@ -34,21 +34,21 @@ class JobMakeCommand extends SymfonyCommand
      *
      * @var string
      */
-    protected $name = 'make:job {--Q|queue}';
+    protected $name = 'make:operation {--Q|queue}';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'Create a new Job in a domain';
+    protected $description = 'Create a new Operation in a domain';
 
     /**
      * The type of class being generated.
      *
      * @var string
      */
-    protected $type = 'Job';
+    protected $type = 'Operation';
 
     /**
      * Execute the console command.
@@ -57,19 +57,19 @@ class JobMakeCommand extends SymfonyCommand
      */
     public function fire()
     {
-        $generator = new JobGenerator();
+        $generator = new OperationGenerator();
 
-        $domain = studly_case($this->argument('domain'));
-        $title = $this->parseName($this->argument('job'));
+        $service = studly_case($this->argument('service'));
+        $title = $this->parseName($this->argument('operation'));
         $isQueueable = $this->option('queue');
         try {
-            $job = $generator->generate($title, $domain, $isQueueable);
+            $operation = $generator->generate($title, $service, $isQueueable);
 
             $this->info(
-                'Job class '.$title.' created successfully.'.
+                'Operation class '.$title.' created successfully.'.
                 "\n".
                 "\n".
-                'Find it at <comment>'.$job->relativePath.'</comment>'."\n"
+                'Find it at <comment>'.$operation->relativePath.'</comment>'."\n"
             );
         } catch (Exception $e) {
             $this->error($e->getMessage());
@@ -79,15 +79,15 @@ class JobMakeCommand extends SymfonyCommand
     public function getArguments()
     {
         return [
-            ['job', InputArgument::REQUIRED, 'The job\'s name.'],
-            ['domain', InputArgument::REQUIRED, 'The domain to be responsible for the job.'],
+            ['operation', InputArgument::REQUIRED, 'The operation\'s name.'],
+            ['service', InputArgument::OPTIONAL, 'The service in which the operation should be implemented.'],
         ];
     }
 
     public function getOptions()
     {
         return [
-            ['queue', 'Q', InputOption::VALUE_NONE, 'Whether a job is queueable or not.'],
+            ['queue', 'Q', InputOption::VALUE_NONE, 'Whether a operation is queueable or not.'],
         ];
     }
 
@@ -98,12 +98,12 @@ class JobMakeCommand extends SymfonyCommand
      */
     public function getStub()
     {
-        return __DIR__.'/../Generators/stubs/job.stub';
+        return __DIR__.'/../Generators/stubs/operation.stub';
     }
 
     /**
-     * Parse the job name.
-     *  remove the Job.php suffix if found
+     * Parse the operation name.
+     *  remove the Operation.php suffix if found
      *  we're adding it ourselves.
      *
      * @param string $name
@@ -112,6 +112,6 @@ class JobMakeCommand extends SymfonyCommand
      */
     protected function parseName($name)
     {
-        return Str::job($name);
+        return Str::operation($name);
     }
 }
