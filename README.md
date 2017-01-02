@@ -34,6 +34,8 @@ To do that, put this in your shell profile (~/.bash_profile, ~/.zshrc, ~/bashrc)
   - `delete:model   `  Delete an existing Model
   - `delete:request `  Delete an existing Request in a service
   - `delete:policy  `  Delete an existing Policy
+- **src**
+  - `src:name       `    Set the source directory namespace.
 
 ### Commands Usage
 
@@ -57,3 +59,6 @@ To do that, put this in your shell profile (~/.bash_profile, ~/.zshrc, ~/bashrc)
 - `delete:model <model>`
 - `delete:request <request> [<service>]`
 - `delete:policy <policy>`
+
+#### Set Source Namespace
+- `src:name <name>`
