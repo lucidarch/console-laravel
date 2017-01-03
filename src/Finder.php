@@ -824,4 +824,26 @@ trait Finder
 
         return strstr($path, $needle);
     }
+
+    /**
+     * Get the path to the Composer.json file.
+     *
+     * @return string
+     */
+    protected function getComposerPath()
+    {
+        return app()->basePath().'/composer.json';
+    }
+
+    /**
+     * Get the path to the given configuration file.
+     *
+     * @param string $name
+     *
+     * @return string
+     */
+    protected function getConfigPath($name)
+    {
+        return app()['path.config'].'/'.$name.'.php';
+    }
 }
