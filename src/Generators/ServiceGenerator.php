@@ -39,6 +39,7 @@ class ServiceGenerator extends Generator
         'resources/',
         'resources/lang/',
         'resources/views/',
+        'routes',
         'Tests/',
         'Tests/Features/',
     ];
@@ -51,7 +52,7 @@ class ServiceGenerator extends Generator
         $path = $this->findServicePath($name);
 
         if ($this->exists($path)) {
-            throw New Exception('Service already exists!');
+            throw new Exception('Service already exists!');
 
             return false;
         }
@@ -65,7 +66,7 @@ class ServiceGenerator extends Generator
 
         $this->addServiceProviders($name, $slug, $path);
 
-        $this->addRoutesFile($name, $slug, $path);
+        $this->addRoutesFiles($name, $slug, $path);
 
         $this->addWelcomeViewFile($path);
 
@@ -151,21 +152,27 @@ class ServiceGenerator extends Generator
         $this->createFile($path.'/Providers/RouteServiceProvider.php', $content);
     }
 
-    /**
-     * Add the routes file.
+     /**
+     * Add the routes files.
      *
      * @param string $name
      * @param string $slug
      * @param string $path
      */
-    public function addRoutesFile($name, $slug, $path)
+    public function addRoutesFiles($name, $slug, $path)
     {
-        $controllers = 'src/Services/'.$name.'/Http/Controllers';
+        $controllers = 'src/Services/' . $name . '/Http/Controllers';
 
-        $content = file_get_contents(__DIR__.'/stubs/routes.stub');
-        $content = str_replace(['{{slug}}', '{{controllers_path}}'], [$slug, $controllers], $content);
+        $contentApi = file_get_contents(__DIR__ . '/stubs/routes-api.stub');
+        $contentApi = str_replace(['{{slug}}', '{{controllers_path}}'], [$slug, $controllers], $contentApi);
 
-        $this->createFile($path.'/Http/routes.php', $content);
+        $contentWeb = file_get_contents(__DIR__ . '/stubs/routes-web.stub');
+        $contentWeb = str_replace(['{{slug}}', '{{controllers_path}}'], [$slug, $controllers], $contentWeb);
+
+        $this->createFile($path . '/routes/api.php', $contentApi);
+        $this->createFile($path . '/routes/web.php', $contentWeb);
+
+        unset($contentApi, $contentWeb);
     }
 
     /**
