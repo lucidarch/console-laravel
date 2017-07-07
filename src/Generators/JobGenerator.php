@@ -73,10 +73,12 @@ class JobGenerator extends Generator
         $namespace = $this->findDomainJobsTestsNamespace($domain);
         $jobNamespace = $this->findDomainJobsNamespace($domain)."\\$job";
         $testClass = $job.'Test';
+        $snakeJob = preg_replace('/\s+/u', '', $job);
+        $snakeJob = mb_strtolower(preg_replace('/(.)(?=[A-Z])/u', '$1_', $snakeJob));
 
         $content = str_replace(
             ['{{namespace}}', '{{testclass}}', '{{job}}', '{{job_namespace}}'],
-            [$namespace, $testClass, mb_strtolower($job), $jobNamespace],
+            [$namespace, $testClass, $snakeJob, $jobNamespace],
             $content
         );
 
