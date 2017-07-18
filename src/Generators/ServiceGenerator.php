@@ -28,6 +28,7 @@ class ServiceGenerator extends Generator
     protected $directories = [
         'Console/',
         'database/',
+        'database/factories/',
         'database/migrations/',
         'database/seeds/',
         'Http/',
