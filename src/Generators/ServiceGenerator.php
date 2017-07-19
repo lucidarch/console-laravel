@@ -71,6 +71,8 @@ class ServiceGenerator extends Generator
 
         $this->addWelcomeViewFile($path);
 
+        $this->addModelFactory($path);
+
         return new Service(
             $name,
             $slug,
@@ -197,5 +199,18 @@ class ServiceGenerator extends Generator
     protected function getStub()
     {
         return __DIR__.'/stubs/service.stub';
+    }
+
+    /**
+     * Add the ModelFactory file.
+     *
+     * @param string $path
+     */
+    public function addModelFactory($path)
+    {
+        $modelFactory = file_get_contents(__DIR__ . '/stubs/model-factory.stub');
+        $this->createFile($path . '/database/factories/ModelFactory.php', $modelFactory);
+
+        unset($modelFactory);
     }
 }
