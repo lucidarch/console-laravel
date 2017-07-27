@@ -28,6 +28,7 @@ class ServiceGenerator extends Generator
     protected $directories = [
         'Console/',
         'database/',
+        'database/factories/',
         'database/migrations/',
         'database/seeds/',
         'Http/',
@@ -69,6 +70,8 @@ class ServiceGenerator extends Generator
         $this->addRoutesFiles($name, $slug, $path);
 
         $this->addWelcomeViewFile($path);
+
+        $this->addModelFactory($path);
 
         return new Service(
             $name,
@@ -196,5 +199,18 @@ class ServiceGenerator extends Generator
     protected function getStub()
     {
         return __DIR__.'/stubs/service.stub';
+    }
+
+    /**
+     * Add the ModelFactory file.
+     *
+     * @param string $path
+     */
+    public function addModelFactory($path)
+    {
+        $modelFactory = file_get_contents(__DIR__ . '/stubs/model-factory.stub');
+        $this->createFile($path . '/database/factories/ModelFactory.php', $modelFactory);
+
+        unset($modelFactory);
     }
 }
