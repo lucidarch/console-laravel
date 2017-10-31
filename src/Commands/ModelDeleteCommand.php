@@ -49,7 +49,7 @@ class ModelDeleteCommand extends SymfonyCommand
      *
      * @return bool|null
      */
-    public function fire()
+    public function handle()
     {
         try {
             $model = $this->parseModelName($this->argument('model'));

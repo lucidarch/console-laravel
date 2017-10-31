@@ -54,7 +54,7 @@ class FeatureMakeCommand extends SymfonyCommand
      *
      * @return bool|null
      */
-    public function fire()
+    public function handle()
     {
         try {
             $service = studly_case($this->argument('service'));

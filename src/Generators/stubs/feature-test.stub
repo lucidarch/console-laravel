@@ -1,7 +1,7 @@
 <?php
 namespace {{namespace}};
 
-use TestCase;
+use Tests\TestCase;
 use {{feature_namespace}};
 
 class {{testclass}} extends TestCase

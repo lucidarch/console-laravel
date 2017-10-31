@@ -49,7 +49,7 @@ class RequestDeleteCommand extends SymfonyCommand
      *
      * @return bool|null
      */
-    public function fire()
+    public function handle()
     {
         try {
             $request = $this->parseRequestName($this->argument('request'));
