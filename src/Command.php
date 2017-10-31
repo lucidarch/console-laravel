@@ -60,7 +60,7 @@ trait Command
         $this->input = $input;
         $this->output = $output;
 
-        return (int) $this->fire();
+        return (int) $this->handle();
     }
 
     /**

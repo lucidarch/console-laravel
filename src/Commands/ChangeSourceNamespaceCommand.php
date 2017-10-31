@@ -69,7 +69,7 @@ class ChangeSourceNamespaceCommand extends SymfonyCommand
     /**
      * Execute the console command.
      */
-    public function fire()
+    public function handle()
     {
         try {
             $this->setAppDirectoryNamespace();

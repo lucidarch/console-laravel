@@ -49,7 +49,7 @@ class RequestMakeCommand extends SymfonyCommand
      *
      * @return bool|null
      */
-    public function fire()
+    public function handle()
     {
         $generator = new RequestGenerator();
 

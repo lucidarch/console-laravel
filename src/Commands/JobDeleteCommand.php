@@ -53,7 +53,7 @@ class JobDeleteCommand extends SymfonyCommand
      *
      * @return bool|null
      */
-    public function fire()
+    public function handle()
     {
         try {
             $domain = studly_case($this->argument('domain'));

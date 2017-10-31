@@ -49,7 +49,7 @@ class ModelMakeCommand extends SymfonyCommand
      *
      * @return bool|null
      */
-    public function fire()
+    public function handle()
     {
         $generator = new ModelGenerator();
 

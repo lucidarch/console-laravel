@@ -70,7 +70,7 @@ class ServiceMakeCommand extends SymfonyCommand
      *
      * @return bool|null
      */
-    public function fire()
+    public function handle()
     {
         try {
             $name = $this->argument('name');

@@ -49,7 +49,7 @@ class PolicyDeleteCommand extends SymfonyCommand
      *
      * @return bool|null
      */
-    public function fire()
+    public function handle()
     {
         try {
             $policy = $this->parsePolicyName($this->argument('policy'));

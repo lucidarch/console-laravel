@@ -37,7 +37,7 @@ class ServicesListCommand extends SymfonyCommand
      */
     protected $description = 'List the services in this project.';
 
-    public function fire()
+    public function handle()
     {
         $services = $this->listServices()->all();
 

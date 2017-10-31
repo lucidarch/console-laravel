@@ -70,7 +70,7 @@ class ServiceDeleteCommand extends SymfonyCommand
      *
      * @return bool|null
      */
-    public function fire()
+    public function handle()
     {
         if ($this->isMicroservice()) {
             return $this->error('This functionality is disabled in a Microservice');

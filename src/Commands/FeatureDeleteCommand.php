@@ -53,7 +53,7 @@ class FeatureDeleteCommand extends SymfonyCommand
      *
      * @return bool|null
      */
-    public function fire()
+    public function handle()
     {
         try {
             $service = Str::service($this->argument('service'));

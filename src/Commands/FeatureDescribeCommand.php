@@ -43,7 +43,7 @@
       *
       * @return bool|null
       */
-     public function fire()
+     public function handle()
      {
          if ($feature = $this->findFeature($this->argument('feature'))) {
             $parser = new Parser();

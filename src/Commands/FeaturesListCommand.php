@@ -43,7 +43,7 @@ class FeaturesListCommand extends SymfonyCommand
      *
      * @return bool|null
      */
-    public function fire()
+    public function handle()
     {
         foreach ($this->listFeatures($this->argument('service')) as $service => $features) {
             $this->comment("\n$service\n");
