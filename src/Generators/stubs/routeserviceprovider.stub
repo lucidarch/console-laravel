@@ -17,6 +17,7 @@ class RouteServiceProvider extends ServiceProvider
         $pathApi = __DIR__.'/../routes/api.php';
         $pathWeb = __DIR__.'/../routes/web.php';
 
-        $this->loadRoutesFiles($router, $namespace, $pathApi, $pathWeb);
+        $this->mapWebRoutes($router, $namespace, $pathWeb);
+        $this->mapApiRoutes($router, $namespace, $pathApi, 'api/{{slug}}');
     }
 }

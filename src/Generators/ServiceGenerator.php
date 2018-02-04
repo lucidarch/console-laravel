@@ -147,8 +147,8 @@ class ServiceGenerator extends Generator
 
         $content = file_get_contents(__DIR__.'/stubs/routeserviceprovider.stub');
         $content = str_replace(
-            ['{{name}}', '{{namespace}}', '{{controllers_namespace}}', '{{foundation_namespace}}'],
-            [$name, $namespace, $controllers, $foundation],
+            ['{{name}}', '{{namespace}}', '{{controllers_namespace}}', '{{foundation_namespace}}', '{{slug}}'],
+            [$name, $namespace, $controllers, $foundation, $slug],
             $content
         );
 
