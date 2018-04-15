@@ -18,6 +18,7 @@ $commands = [
     new Lucid\Console\Commands\FeatureMakeCommand(),
     new Lucid\Console\Commands\FeatureDeleteCommand(),
     new Lucid\Console\Commands\ControllerMakeCommand(),
+    new Lucid\Console\Commands\MigrationMakeCommand(),
     new Lucid\Console\Commands\ServicesListCommand(),
     new Lucid\Console\Commands\FeaturesListCommand(),
 
