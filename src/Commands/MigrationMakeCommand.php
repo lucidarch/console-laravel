@@ -41,19 +41,18 @@ class MigrationMakeCommand extends SymfonyCommand
 
     /**
      * Execute the console command.
-     *
-     * @return void
      */
     public function handle()
     {
         $service = $this->argument('service');
         $migration = $this->argument('migration');
 
-        $path = $this->findServicePath($service) . "/database/migrations";
+        $path = $this->relativeFromReal($this->findServicePath($service) . "/database/migrations");
 
-        Artisan::call('make:migration', ['name' => $migration, '--path' => $path]);
+        $output = shell_exec('php artisan make:migration '.$migration.' --path='.$path);
 
-        $this->info('Migration class created successfully.' . "\n" . "\n" . 'Find it at <comment>' . $path . '</comment>' . "\n");
+        $this->info($output);
+        $this->info("\n".'Find it at <comment>'.$path.'</comment>'."\n");
     }
 
     /**
