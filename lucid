@@ -7,7 +7,7 @@ if (file_exists(getcwd().'/vendor/autoload.php')) {
     require getcwd().'/../../../bootstrap/autoload.php';
 }
 
-$laravel = require getcwd().'/../../../bootstrap/app.php';
+$laravel = require getcwd().'/bootstrap/app.php';
 
 $commands = [
     new Lucid\Console\Commands\ChangeSourceNamespaceCommand(),
