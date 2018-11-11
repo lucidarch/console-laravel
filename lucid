@@ -1,13 +1,13 @@
 #!/usr/bin/env php
 <?php
 
-if (file_exists(__DIR__.'/vendor/autoload.php')) {
-    require __DIR__.'/vendor/autoload.php';
+if (file_exists(getcwd().'/vendor/autoload.php')) {
+    require getcwd().'/vendor/autoload.php';
 } else {
-    require __DIR__.'/../../../bootstrap/autoload.php';
+    require getcwd().'/../../../bootstrap/autoload.php';
 }
 
-$laravel = require __DIR__.'/../../../bootstrap/app.php';
+$laravel = require getcwd().'/../../../bootstrap/app.php';
 
 $commands = [
     new Lucid\Console\Commands\ChangeSourceNamespaceCommand(),
