@@ -44,7 +44,7 @@ class MigrationMakeCommand extends SymfonyCommand
      */
     public function handle()
     {
-        $service = $this->argument('service');
+        $service = studly_case($this->argument('service'));
         $migration = $this->argument('migration');
 
         $path = $this->relativeFromReal($this->findServicePath($service) . "/database/migrations");
