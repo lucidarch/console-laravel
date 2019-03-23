@@ -141,7 +141,7 @@ trait Finder
     public function findRootNamespace()
     {
         // read composer.json file contents to determine the namespace
-        $composer = json_decode(file_get_contents(base_path().'/composer.json'), true);
+        $composer = $this->getComposerConfig();
 
         // see which one refers to the "src/" directory
         foreach ($composer['autoload']['psr-4'] as $namespace => $directory) {
@@ -151,6 +151,28 @@ trait Finder
         }
 
         throw new Exception('App namespace not set in composer.json');
+    }
+
+    /**
+     * Get the namespace used for the application.
+     *
+     * @return string
+     *
+     * @throws \Exception
+     */
+    public function findTestsNamespace()
+    {
+        // read composer.json file contents to determine the namespace
+        $composer = $this->getComposerConfig();
+
+        // see which one refers to the "tests/" directory
+        foreach ($composer['autoload']['psr-4'] as $namespace => $directory) {
+            if ($directory === 'tests/') {
+                return trim($namespace, '\\');
+            }
+        }
+
+        throw new Exception('Tests namespace not set in composer.json');
     }
 
     /**
@@ -271,6 +293,10 @@ trait Finder
      */
     public function findFeatureTestNamespace($service)
     {
+        if ($this->isMicroservice()) {
+            return $this->findTestsNamespace().'\\Features';
+        }
+
         return $this->findServiceNamespace($service).'\\Tests\\Features';
     }
 
@@ -335,6 +361,10 @@ trait Finder
      */
     public function findOperationTestNamespace($service)
     {
+        if ($this->isMicroservice()) {
+            return $this->findTestsNamespace().'\\Operations';
+        }
+
         return $this->findServiceNamespace($service).'\\Tests\\Operations';
     }
 
@@ -394,8 +424,7 @@ trait Finder
      * List the jobs per domain,
      * optionally provide a domain name to list its jobs.
      *
-     * @param string $domain
-     *
+     * @param null $domainName
      * @return Collection
      */
     public function listJobs($domainName = null)
@@ -479,6 +508,10 @@ trait Finder
      */
     public function findDomainJobsTestsNamespace($domain)
     {
+        if ($this->isMicroservice()) {
+            return $this->findTestsNamespace().'\\Domains\\'.$domain.'\\Jobs';
+        }
+
         return $this->findDomainNamespace($domain).'\Tests\Jobs';
     }
 
@@ -675,9 +708,10 @@ trait Finder
      *
      * @param string $serviceName
      *
-     * @return \Illuminate\Support\Collection
+     * @return array
      *
      * @throws \Exception
+     *
      */
     public function listFeatures($serviceName = '')
     {
@@ -833,6 +867,14 @@ trait Finder
     protected function getComposerPath()
     {
         return app()->basePath().'/composer.json';
+    }
+
+    /**
+     * @return array
+     */
+    protected function getComposerConfig()
+    {
+        return json_decode(file_get_contents(base_path().'/composer.json'), true);
     }
 
     /**
