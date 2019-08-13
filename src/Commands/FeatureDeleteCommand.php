@@ -60,7 +60,11 @@ class FeatureDeleteCommand extends SymfonyCommand
             $title = $this->parseName($this->argument('feature'));
 
             if (!$this->exists($feature = $this->findFeaturePath($service, $title))) {
-                $this->error('Feature class '.$title.' cannot be found.');
+                if($service != "") {
+                    $this->error('Feature class '.$title.' cannot be found.');
+                } else {
+                    $this->error('Couldn\'t find feature class. Maybe missing "service" argument?');
+                }
             } else {
                 $this->delete($feature);
 
