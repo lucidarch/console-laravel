@@ -81,6 +81,7 @@ class OperationMakeCommand extends SymfonyCommand
         return [
             ['operation', InputArgument::REQUIRED, 'The operation\'s name.'],
             ['service', InputArgument::OPTIONAL, 'The service in which the operation should be implemented.'],
+            ['jobs', InputArgument::IS_ARRAY, 'A list of Jobs Operation calls']
         ];
     }
 

@@ -37,18 +37,7 @@ class OperationGenerator extends Generator
 
         $content = file_get_contents($this->getStub($isQueueable));
 
-        $useJobs = ''; // stores the `use` statements of the jobs
-        $runJobs = ''; // stores the `$this->run` statements of the jobs
-
-        foreach ($jobs as $index => $job) {
-            $useJobs .= 'use '.$job['namespace'].'\\'.$job['className'].";\n";
-            $runJobs .= "\t\t".'$this->run('.$job['className'].'::class);';
-
-            // only add carriage returns when it's not the last job
-            if ($index != count($jobs) - 1) {
-                $runJobs .= "\n\n";
-            }
-        }
+        list($useJobs, $runJobs) = self::getUsesAndRunners($jobs);
 
         $content = str_replace(
             ['{{operation}}', '{{namespace}}', '{{foundation_namespace}}', '{{use_jobs}}', '{{run_jobs}}'],
@@ -121,4 +110,47 @@ class OperationGenerator extends Generator
     {
         return __DIR__.'/stubs/operation-test.stub';
     }
+
+    /**
+     * Get de use to import the right class
+     * Get de job run command
+     * @param $job
+     * @return array
+     * @author jgnovais <jgnx@hotmail.com>
+     */
+    static private function getUseAndJobRunCommand($job)
+    {
+        $str = str_replace_last('\\','#', $job);
+        $explode = explode('#', $str);
+
+        $use = 'use '.$explode[0].'\\'.$explode['1'].";\n";
+        $runJobs = "\t\t".'$this->run('.$explode['1'].'::class);';
+
+        return array($use, $runJobs);
+    }
+
+    /**
+     * Returns all users and all $this->run() generated
+     * @param $jobs
+     * @return array
+     * @author jgnovais <jgnx@hotmail.com>
+     */
+    static private function getUsesAndRunners($jobs)
+    {
+        $useJobs = '';
+        $runJobs = '';
+        foreach ($jobs as $index => $job) {
+
+            list($useLine, $runLine) = self::getUseAndJobRunCommand($job);
+            $useJobs .= $useLine;
+            $runJobs .= $runLine;
+            // only add carriage returns when it's not the last job
+            if ($index != count($jobs) - 1) {
+                $runJobs .= "\n\n";
+            }
+        }
+        return array($useJobs, $runJobs);
+    }
+
+
 }
