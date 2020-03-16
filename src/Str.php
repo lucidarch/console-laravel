@@ -11,11 +11,36 @@
 
 namespace Lucid\Console;
 
+use Illuminate\Support\Str as LaravelStr;
+
 /**
  * @author Abed Halawi <abed.halawi@vinelab.com>
  */
 class Str
 {
+    /**
+     * Convert a value to studly caps case.
+     *
+     * @param  string  $value
+     * @return string
+     */
+    public static function studly($value)
+    {
+        return LaravelStr::studly($value);
+    }
+
+    /**
+     * Convert a string to snake case.
+     *
+     * @param  string  $value
+     * @param  string  $delimiter
+     * @return string
+     */
+    public static function snake($value, $delimiter = '_')
+    {
+        return LaravelStr::snake($value, $delimiter);
+    }
+
     /**
      * Determine the real name of the given name,
      * excluding the given pattern.
@@ -47,7 +72,7 @@ class Str
      */
     public static function feature($name)
     {
-        return studly_case(preg_replace('/Feature(\.php)?$/', '', $name).'Feature');
+        return self::studly(preg_replace('/Feature(\.php)?$/', '', $name).'Feature');
     }
 
     /**
@@ -63,7 +88,7 @@ class Str
      */
     public static function job($name)
     {
-        return studly_case(preg_replace('/Job(\.php)?$/', '', $name).'Job');
+        return self::studly(preg_replace('/Job(\.php)?$/', '', $name).'Job');
     }
 
     /**
@@ -79,7 +104,7 @@ class Str
      */
     public static function operation($name)
     {
-        return studly_case(preg_replace('/Operation(\.php)?$/', '', $name).'Operation');
+        return self::studly(preg_replace('/Operation(\.php)?$/', '', $name).'Operation');
     }
 
     /**
@@ -93,7 +118,7 @@ class Str
      */
     public static function domain($name)
     {
-        return studly_case($name);
+        return self::studly($name);
     }
 
     /**
@@ -105,7 +130,7 @@ class Str
      */
     public static function service($name)
     {
-        return studly_case($name);
+        return self::studly($name);
     }
 
     /**
@@ -117,7 +142,7 @@ class Str
      */
     public static function controller($name)
     {
-        return studly_case(preg_replace('/Controller(\.php)?$/', '', $name).'Controller');
+        return self::studly(preg_replace('/Controller(\.php)?$/', '', $name).'Controller');
     }
 
     /**
@@ -131,7 +156,7 @@ class Str
      */
     public static function model($name)
     {
-        return studly_case($name);
+        return self::studly($name);
     }
 
     /**
@@ -142,7 +167,7 @@ class Str
      */
     public static function policy($name)
     {
-        return studly_case(preg_replace('/Policy(\.php)?$/', '', $name) . 'Policy');
+        return self::studly(preg_replace('/Policy(\.php)?$/', '', $name) . 'Policy');
     }
 
     /**
@@ -153,6 +178,6 @@ class Str
      */
     public static function request($name)
     {
-        return studly_case(preg_replace('/Request(\.php)?$/', '', $name) . 'Request');
+        return self::studly(preg_replace('/Request(\.php)?$/', '', $name) . 'Request');
     }
 }

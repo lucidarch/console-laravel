@@ -56,7 +56,7 @@ class JobDeleteCommand extends SymfonyCommand
     public function handle()
     {
         try {
-            $domain = studly_case($this->argument('domain'));
+            $domain = Str::studly($this->argument('domain'));
             $title = $this->parseName($this->argument('job'));
 
             if (!$this->exists($job = $this->findJobPath($domain, $title))) {

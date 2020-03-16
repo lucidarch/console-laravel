@@ -11,6 +11,8 @@
 
 namespace Lucid\Console\Components;
 
+use Lucid\Console\Str;
+
 /**
  * @author Abed Halawi <abed.halawi@vinelab.com>
  */
@@ -20,7 +22,7 @@ class Service extends Component
     {
         $this->setAttributes([
             'name' => $name,
-            'slug' => snake_case($name),
+            'slug' => Str::snake($name),
             'realPath' => $realPath,
             'relativePath' => $relativePath,
         ]);

@@ -59,7 +59,7 @@ class OperationMakeCommand extends SymfonyCommand
     {
         $generator = new OperationGenerator();
 
-        $service = studly_case($this->argument('service'));
+        $service = Str::studly($this->argument('service'));
         $title = $this->parseName($this->argument('operation'));
         $isQueueable = $this->option('queue');
         try {

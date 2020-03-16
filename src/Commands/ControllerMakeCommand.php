@@ -14,6 +14,7 @@ namespace Lucid\Console\Commands;
 use Lucid\Console\Finder;
 use Lucid\Console\Command;
 use Lucid\Console\Filesystem;
+use Lucid\Console\Str;
 use Symfony\Component\Console\Input\InputOption;
 use Lucid\Console\Generators\ControllerGenerator;
 use Symfony\Component\Console\Input\InputArgument;
@@ -110,7 +111,7 @@ class ControllerMakeCommand extends SymfonyCommand
      */
     protected function parseName($name)
     {
-        return studly_case(preg_replace('/Controller(\.php)?$/', '', $name).'Controller');
+        return Str::studly(preg_replace('/Controller(\.php)?$/', '', $name).'Controller');
     }
 
     /**

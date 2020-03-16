@@ -49,7 +49,7 @@ class ServiceGenerator extends Generator
     public function generate($name)
     {
         $name = Str::service($name);
-        $slug = snake_case($name);
+        $slug = Str::snake($name);
         $path = $this->findServicePath($name);
 
         if ($this->exists($path)) {
