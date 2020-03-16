@@ -22,5 +22,12 @@
         "symfony/finder": "^5.0",
         "symfony/filesystem": "^5.0",
         "phploc/phploc": "^6.0"
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Lucid\\Console\\LucidServiceProvider"
+            ]
+        }
     }
 }
