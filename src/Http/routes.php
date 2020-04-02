@@ -2,7 +2,8 @@
 
 namespace Lucid\Console;
 
-use Route;
+use Illuminate\Support\Facades\Route;
+use Lucid\Console\Http\Controller;
 
 Route::group(['prefix' => 'lucid'], function () {
 
@@ -88,8 +89,3 @@ Route::group(['prefix' => 'lucid'], function () {
     });
 
 });
-
-class Controller
-{
-    use Finder;
-}

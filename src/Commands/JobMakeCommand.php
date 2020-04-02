@@ -59,7 +59,7 @@ class JobMakeCommand extends SymfonyCommand
     {
         $generator = new JobGenerator();
 
-        $domain = studly_case($this->argument('domain'));
+        $domain = Str::studly($this->argument('domain'));
         $title = $this->parseName($this->argument('job'));
         $isQueueable = $this->option('queue');
         try {
